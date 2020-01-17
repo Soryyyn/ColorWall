@@ -129,6 +129,18 @@ function generateWall() {
     });
 }
 /**
+ *  sets last generated picture
+ *  as wallpaper
+ */
+function setWallpaper() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"));
+            return [2 /*return*/];
+        });
+    });
+}
+/**
  *  executes all functions in a
  *  "main" function
  */
@@ -147,6 +159,9 @@ function main() {
                     _a.sent();
                     return [4 /*yield*/, generateWall()];
                 case 4:
+                    _a.sent();
+                    return [4 /*yield*/, setWallpaper()];
+                case 5:
                     _a.sent();
                     return [2 /*return*/];
             }

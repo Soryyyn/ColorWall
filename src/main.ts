@@ -76,6 +76,14 @@ async function generateWall() {
 }
 
 /**
+ *  sets last generated picture
+ *  as wallpaper
+ */
+async function setWallpaper() {
+  wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"));
+}
+
+/**
  *  executes all functions in a
  *  "main" function
  */
@@ -84,6 +92,7 @@ async function main() {
   await cleanupFolder();
   await generateColor()
   await generateWall();
+  await setWallpaper();
 }
 
 main();

@@ -28,6 +28,11 @@ declare function generateColor(): Promise<void>;
  */
 declare function generateWall(): Promise<void>;
 /**
+ *  sets last generated picture
+ *  as wallpaper
+ */
+declare function setWallpaper(): Promise<void>;
+/**
  *  executes all functions in a
  *  "main" function
  */
