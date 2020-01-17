@@ -4,10 +4,11 @@ const canvas = require("canvas");
 const schedule = require("node-schedule");
 const resolution = require("screen-resolution");
 const converter = require("color-convert");
+const path = require("path");
 
 const wallDir = "./walls";
-let randomHexColor;
-let fontColor;
+let randomHexColor: any;
+let fontColor: any;
 
 /**
  *  checks wallpaper directory if it exists,
@@ -24,7 +25,9 @@ async function checkWallpaperFolder() {
  */
 async function cleanupFolder() {
   const images = fs.readdirSync(wallDir);
-  fs.unlinkSync(wallDir + "/" + images.pop());
+  if (images.length > 0) {
+    fs.unlinkSync(wallDir + "/" + images.pop());
+  }
 }
 
 /**
@@ -38,9 +41,9 @@ async function generateColor() {
   const rgb = r + g + b;
 
   if (rgb > 382) {
-    fontColor = "#FFFFFF";
-  } else {
     fontColor = "#000000";
+  } else {
+    fontColor = "#FFFFFF";
   }
   randomHexColor = "#" + converter.rgb.hex(r, g, b);
 }
@@ -51,12 +54,36 @@ async function generateColor() {
  */
 async function generateWall() {
   const res = await resolution.get();
-  const w = res.get("width");
-  const h = res.get("height");
+  const w = res.width;
+  const h = res.height;
 
   const wall = canvas.createCanvas(w, h);
-  const wallctx = wall.getcontext("2d");
+  const wallctx = wall.getContext("2d");
 
+  // bg
+  wallctx.fillStyle = randomHexColor;
+  wallctx.fillRect(0, 0, w, h);
+
+  // text
+  wallctx.fillStyle = fontColor;
+  wallctx.font = "128px Unifont";
+  wallctx.textAlign = "center";
+  wallctx.fillText(randomHexColor, w / 2, h / 2);
+
+  // write buffer to image
+  const buffer = wall.toBuffer("image/png");
+  fs.writeFileSync(path.join(wallDir + "/" + randomHexColor + ".png"), buffer);
 }
 
-generateWall();
+/**
+ *  executes all functions in a
+ *  "main" function
+ */
+async function main() {
+  await checkWallpaperFolder();
+  await cleanupFolder();
+  await generateColor()
+  await generateWall();
+}
+
+main();

@@ -41,6 +41,7 @@ var canvas = require("canvas");
 var schedule = require("node-schedule");
 var resolution = require("screen-resolution");
 var converter = require("color-convert");
+var path = require("path");
 var wallDir = "./walls";
 var randomHexColor;
 var fontColor;
@@ -66,7 +67,9 @@ function cleanupFolder() {
         var images;
         return __generator(this, function (_a) {
             images = fs.readdirSync(wallDir);
-            fs.unlinkSync(wallDir + "/" + images.pop());
+            if (images.length > 0) {
+                fs.unlinkSync(wallDir + "/" + images.pop());
+            }
             return [2 /*return*/];
         });
     });
@@ -84,10 +87,10 @@ function generateColor() {
             b = Math.floor(Math.random() * 255 + 1);
             rgb = r + g + b;
             if (rgb > 382) {
-                fontColor = "#FFFFFF";
+                fontColor = "#000000";
             }
             else {
-                fontColor = "#000000";
+                fontColor = "#FFFFFF";
             }
             randomHexColor = "#" + converter.rgb.hex(r, g, b);
             return [2 /*return*/];
@@ -100,19 +103,54 @@ function generateColor() {
  */
 function generateWall() {
     return __awaiter(this, void 0, void 0, function () {
-        var res, w, h, wall, wallctx;
+        var res, w, h, wall, wallctx, buffer;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, resolution.get()];
                 case 1:
                     res = _a.sent();
-                    w = res.get("width");
-                    h = res.get("height");
+                    w = res.width;
+                    h = res.height;
                     wall = canvas.createCanvas(w, h);
-                    wallctx = wall.getcontext("2d");
+                    wallctx = wall.getContext("2d");
+                    // bg
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(0, 0, w, h);
+                    // text
+                    wallctx.fillStyle = fontColor;
+                    wallctx.font = "128px Unifont";
+                    wallctx.textAlign = "center";
+                    wallctx.fillText(randomHexColor, w / 2, h / 2);
+                    buffer = wall.toBuffer("image/png");
+                    fs.writeFileSync(path.join(wallDir + "/" + randomHexColor + ".png"), buffer);
                     return [2 /*return*/];
             }
         });
     });
 }
-generateWall();
+/**
+ *  executes all functions in a
+ *  "main" function
+ */
+function main() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, checkWallpaperFolder()];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, cleanupFolder()];
+                case 2:
+                    _a.sent();
+                    return [4 /*yield*/, generateColor()];
+                case 3:
+                    _a.sent();
+                    return [4 /*yield*/, generateWall()];
+                case 4:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+main();

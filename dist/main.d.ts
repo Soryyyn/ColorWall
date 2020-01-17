@@ -4,6 +4,7 @@ declare const canvas: any;
 declare const schedule: any;
 declare const resolution: any;
 declare const converter: any;
+declare const path: any;
 declare const wallDir = "./walls";
 declare let randomHexColor: any;
 declare let fontColor: any;
@@ -26,3 +27,8 @@ declare function generateColor(): Promise<void>;
  *  to the wall folder
  */
 declare function generateWall(): Promise<void>;
+/**
+ *  executes all functions in a
+ *  "main" function
+ */
+declare function main(): Promise<void>;
