@@ -1,10 +1,11 @@
+#!/usr/bin/env node
 declare const fs: any;
 declare const wallpaper: any;
 declare const canvas: any;
-declare const schedule: any;
 declare const resolution: any;
 declare const converter: any;
 declare const path: any;
+declare const chalk: any;
 declare const wallDir = "./walls";
 declare let randomHexColor: any;
 declare let fontColor: any;
@@ -33,7 +34,6 @@ declare function generateWall(): Promise<void>;
  */
 declare function setWallpaper(): Promise<void>;
 /**
- *  executes all functions in a
- *  "main" function
+ *  executes all hexwall functions
  */
 declare function main(): Promise<void>;

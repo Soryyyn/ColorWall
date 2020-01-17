@@ -1,5 +1,8 @@
-# HexWall
-set a Hex Code Wallpaper everyday
+![logo](media/icon.png)
 
-## Reference
-![Reference](https://i.redd.it/tko26do7w9b41.png)
+## Installation
+1. Install NodeJS. Link to download [here](https://nodejs.org/en/).
+2. open up your terminal of choice (or the one you've been punished with), and type: `npm install hexwall -g`. This installs it globally on your machine.
+
+## Usage
+Just type in `hexwall` in your terminal and the wallpaper should quickly change!.

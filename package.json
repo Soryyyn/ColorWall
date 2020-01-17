@@ -1,10 +1,12 @@
 {
-  "name": "@soryyyn/hexall",
+  "name": "@soryyyn/hexwall",
   "version": "1.0.0",
   "description": "generates a wallpaper & sets it everyday",
   "main": "dist/main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "types": "dist/main.d.ts",
+  "bin": {
+    "@soryyyn/hexwall": "./dist/main.js",
+    "hexwall": "./dist/main.js"
   },
   "repository": {
     "type": "git",
@@ -26,8 +28,8 @@
   },
   "dependencies": {
     "canvas": "^2.6.1",
+    "chalk": "^3.0.0",
     "color-convert": "^2.0.1",
-    "node-schedule": "^1.3.2",
     "screen-resolution": "^1.0.0",
     "wallpaper": "^4.4.1"
   }

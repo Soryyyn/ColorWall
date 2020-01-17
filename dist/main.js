@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -38,10 +39,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var fs = require("fs");
 var wallpaper = require("wallpaper");
 var canvas = require("canvas");
-var schedule = require("node-schedule");
 var resolution = require("screen-resolution");
 var converter = require("color-convert");
 var path = require("path");
+var chalk = require("chalk");
 var wallDir = "./walls";
 var randomHexColor;
 var fontColor;
@@ -135,14 +136,18 @@ function generateWall() {
 function setWallpaper() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"));
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"))];
+                case 1:
+                    _a.sent();
+                    console.log(chalk.greenBright("new wallpaper set!"));
+                    return [2 /*return*/];
+            }
         });
     });
 }
 /**
- *  executes all functions in a
- *  "main" function
+ *  executes all hexwall functions
  */
 function main() {
     return __awaiter(this, void 0, void 0, function () {

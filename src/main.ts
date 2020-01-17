@@ -1,10 +1,11 @@
+#!/usr/bin/env node
 const fs = require("fs");
 const wallpaper = require("wallpaper");
 const canvas = require("canvas");
-const schedule = require("node-schedule");
 const resolution = require("screen-resolution");
 const converter = require("color-convert");
 const path = require("path");
+const chalk = require("chalk");
 
 const wallDir = "./walls";
 let randomHexColor: any;
@@ -80,12 +81,12 @@ async function generateWall() {
  *  as wallpaper
  */
 async function setWallpaper() {
-  wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"));
+  await wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"));
+  console.log(chalk.greenBright("new wallpaper set!"))
 }
 
 /**
- *  executes all functions in a
- *  "main" function
+ *  executes all hexwall functions
  */
 async function main() {
   await checkWallpaperFolder();
