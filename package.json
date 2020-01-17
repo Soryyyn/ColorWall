@@ -1,0 +1,32 @@
+{
+  "name": "colorwall",
+  "version": "1.0.0",
+  "description": "generates a wallpaper & sets it everyday",
+  "main": "dist/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Soryyyn/ColorWall.git"
+  },
+  "keywords": [
+    "color",
+    "wallpaper",
+    "hex"
+  ],
+  "author": "Soryn Bächli",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Soryyyn/ColorWall/issues"
+  },
+  "homepage": "https://github.com/Soryyyn/ColorWall#readme",
+  "devDependencies": {
+    "@types/node": "^13.1.7"
+  },
+  "dependencies": {
+    "canvas": "^2.6.1",
+    "node-schedule": "^1.3.2",
+    "wallpaper": "^4.4.1"
+  }
+}
