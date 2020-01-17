@@ -1,4 +1,4 @@
-# ColorWall
+# HexWall
 set a Hex Code Wallpaper everyday
 
 ## Reference

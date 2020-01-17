@@ -1,5 +1,5 @@
 {
-  "name": "colorwall",
+  "name": "@soryyyn/hexall",
   "version": "1.0.0",
   "description": "generates a wallpaper & sets it everyday",
   "main": "dist/main.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Soryyyn/ColorWall.git"
+    "url": "git+https://github.com/Soryyyn/HexWall.git"
   },
   "keywords": [
     "color",
@@ -18,9 +18,9 @@
   "author": "Soryn Bächli",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Soryyyn/ColorWall/issues"
+    "url": "https://github.com/Soryyyn/HexWall/issues"
   },
-  "homepage": "https://github.com/Soryyyn/ColorWall#readme",
+  "homepage": "https://github.com/Soryyyn/HexWall#readme",
   "devDependencies": {
     "@types/node": "^13.1.7"
   },
