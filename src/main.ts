@@ -124,9 +124,8 @@ async function newHexWallCustom(hex: String) {
  *  electron stuff
  */
 const electron = require("electron");
-const inputPrompt = require('electron-prompt');
-const { app, Menu, Tray, dialog } = require("electron");
-
+const { app, Menu, Tray } = require("electron");
+const AutoLaunch = require('auto-launch');
 
 let tray: any = null
 
@@ -135,43 +134,32 @@ app.on("ready", () => {
 
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: "Quit",
-      click: function () {
-        tray.destroy();
-        app.quit();
-      }
-    },
-    {
       label: "New Wallpaper",
       click: function () {
         newHexWallRandom();
       }
     },
     {
-      label: "Custom Hex Value Wallpaper",
+      label: "Auto Launch",
+      enabled: false
+    },
+    {
+      label: "Quit",
       click: function () {
-        inputPrompt({
-          title: "Custom Hex Value",
-          label: "Hex Value:",
-          value: "#000000",
-          type: "input",
-          menuBarVisible: false,
-          icon: path.join(__dirname, "../media/single_icon.png")
-        })
-          .then((input: any) => {
-            if (input === null) {
-              console.log("user cancelled or no input");
-            } else {
-              console.log("custom");
-              console.log(input);
-              newHexWallCustom(input)
-            }
-          })
-          .catch(console.error);
+        tray.destroy();
+        app.quit();
       }
     }
   ]);
 
   tray.setToolTip("HexWall");
   tray.setContextMenu(contextMenu);
+
+  // let autoLaunch = new AutoLaunch({
+  //   name: 'HexWall',
+  //   path: app.getPath('exe'),
+  // });
+  // autoLaunch.isEnabled().then((isEnabled: Boolean) => {
+  //   if (!isEnabled) autoLaunch.enable();
+  // });
 });

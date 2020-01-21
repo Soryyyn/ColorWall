@@ -45,6 +45,6 @@ declare function newHexWallCustom(hex: String): Promise<void>;
  *  electron stuff
  */
 declare const electron: any;
-declare const inputPrompt: any;
-declare const app: any, Menu: any, Tray: any, dialog: any;
+declare const app: any, Menu: any, Tray: any;
+declare const AutoLaunch: any;
 declare let tray: any;

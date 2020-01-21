@@ -216,19 +216,12 @@ function newHexWallCustom(hex) {
  *  electron stuff
  */
 var electron = require("electron");
-var inputPrompt = require('electron-prompt');
-var _a = require("electron"), app = _a.app, Menu = _a.Menu, Tray = _a.Tray, dialog = _a.dialog;
+var _a = require("electron"), app = _a.app, Menu = _a.Menu, Tray = _a.Tray;
+var AutoLaunch = require('auto-launch');
 var tray = null;
 app.on("ready", function () {
     tray = new Tray(path.join(__dirname, "../media/single_icon.png"));
     var contextMenu = Menu.buildFromTemplate([
-        {
-            label: "Quit",
-            click: function () {
-                tray.destroy();
-                app.quit();
-            }
-        },
         {
             label: "New Wallpaper",
             click: function () {
@@ -236,30 +229,24 @@ app.on("ready", function () {
             }
         },
         {
-            label: "Custom Hex Value Wallpaper",
+            label: "Auto Launch",
+            enabled: false
+        },
+        {
+            label: "Quit",
             click: function () {
-                inputPrompt({
-                    title: "Custom Hex Value",
-                    label: "Hex Value:",
-                    value: "#000000",
-                    type: "input",
-                    menuBarVisible: false,
-                    icon: path.join(__dirname, "../media/single_icon.png")
-                })
-                    .then(function (input) {
-                    if (input === null) {
-                        console.log("user cancelled or no input");
-                    }
-                    else {
-                        console.log("custom");
-                        console.log(input);
-                        newHexWallCustom(input);
-                    }
-                })
-                    .catch(console.error);
+                tray.destroy();
+                app.quit();
             }
         }
     ]);
     tray.setToolTip("HexWall");
     tray.setContextMenu(contextMenu);
+    // let autoLaunch = new AutoLaunch({
+    //   name: 'HexWall',
+    //   path: app.getPath('exe'),
+    // });
+    // autoLaunch.isEnabled().then((isEnabled: Boolean) => {
+    //   if (!isEnabled) autoLaunch.enable();
+    // });
 });
