@@ -102,11 +102,30 @@ async function main() {
  *  electron stuff
  */
 const electron = require("electron");
-const { app, Tray } = require("electron");
+const { app, Menu, Tray, dialog } = require("electron");
 
-const trayIcon = path.join(__dirname, "./../media/single_icon.png")
+
+let tray: any = null
 
 app.on("ready", () => {
-  console.log("hexwall started");
+  tray = new Tray(path.join(__dirname, "../media/single_icon.png"))
 
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: "Quit",
+      click: function () {
+        tray.destroy();
+        app.quit();
+      }
+    },
+    {
+      label: "New Wallpaper",
+      click: function () {
+        main();
+      }
+    }
+  ]);
+
+  tray.setToolTip("HexWall");
+  tray.setContextMenu(contextMenu);
 });

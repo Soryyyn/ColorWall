@@ -178,8 +178,25 @@ function main() {
  *  electron stuff
  */
 var electron = require("electron");
-var _a = require("electron"), app = _a.app, Tray = _a.Tray;
-var trayIcon = path.join(__dirname, "./../media/single_icon.png");
+var _a = require("electron"), app = _a.app, Menu = _a.Menu, Tray = _a.Tray, dialog = _a.dialog;
+var tray = null;
 app.on("ready", function () {
-    console.log("hexwall started");
+    tray = new Tray(path.join(__dirname, "../media/single_icon.png"));
+    var contextMenu = Menu.buildFromTemplate([
+        {
+            label: "Quit",
+            click: function () {
+                tray.destroy();
+                app.quit();
+            }
+        },
+        {
+            label: "New Wallpaper",
+            click: function () {
+                main();
+            }
+        }
+    ]);
+    tray.setToolTip("HexWall");
+    tray.setContextMenu(contextMenu);
 });

@@ -41,5 +41,5 @@ declare function main(): Promise<void>;
  *  electron stuff
  */
 declare const electron: any;
-declare const app: any, Tray: any;
-declare const trayIcon: any;
+declare const app: any, Menu: any, Tray: any, dialog: any;
+declare let tray: any;
