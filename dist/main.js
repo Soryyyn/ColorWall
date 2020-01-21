@@ -173,4 +173,13 @@ function main() {
         });
     });
 }
-main();
+// main();
+/**
+ *  electron stuff
+ */
+var electron = require("electron");
+var _a = require("electron"), app = _a.app, Tray = _a.Tray;
+var trayIcon = path.join(__dirname, "./../media/single_icon.png");
+app.on("ready", function () {
+    console.log("hexwall started");
+});

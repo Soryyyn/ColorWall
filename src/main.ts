@@ -96,4 +96,17 @@ async function main() {
   await setWallpaper();
 }
 
-main();
+// main();
+
+/**
+ *  electron stuff
+ */
+const electron = require("electron");
+const { app, Tray } = require("electron");
+
+const trayIcon = path.join(__dirname, "./../media/single_icon.png")
+
+app.on("ready", () => {
+  console.log("hexwall started");
+
+});

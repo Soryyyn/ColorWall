@@ -37,3 +37,9 @@ declare function setWallpaper(): Promise<void>;
  *  executes all hexwall functions
  */
 declare function main(): Promise<void>;
+/**
+ *  electron stuff
+ */
+declare const electron: any;
+declare const app: any, Tray: any;
+declare const trayIcon: any;

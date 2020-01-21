@@ -8,6 +8,10 @@
     "@soryyyn/hexwall": "./dist/main.js",
     "hexwall": "./dist/main.js"
   },
+  "scripts": {
+    "start": "electron .",
+    "rebuild": "electron-rebuild -f -w hexwall"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Soryyyn/HexWall.git"
