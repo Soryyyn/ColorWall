@@ -32,7 +32,6 @@
     "electron": "^7.1.9"
   },
   "dependencies": {
-    "auto-launch": "^5.0.5",
     "canvas": "^2.6.1",
     "chalk": "^3.0.0",
     "color-convert": "^2.0.1",

@@ -121,16 +121,60 @@ async function newHexWallCustom(hex: String) {
 }
 
 /**
- *  electron stuff
+ *  system tray handling
  */
 const electron = require("electron");
-const { app, Menu, Tray } = require("electron");
-const AutoLaunch = require('auto-launch');
+const { app, Menu, Tray, dialog } = require("electron");
 
 let tray: any = null
+const appFolder = path.basename(process.execPath);
+console.log(appFolder);
 
+
+
+/**
+ *  prompt if auto launch should be enabled or not
+ */
+function askAutoLaunch() {
+  const whenDisabled = {
+    type: 'question',
+    buttons: ['Cancel', 'Yes, please', 'No, thanks'],
+    defaultId: 2,
+    title: 'Auto Launch',
+    message: 'HexWall on System Startup currently disabled, want to enable?',
+  };
+
+  const whenEnabled = {
+    type: 'question',
+    buttons: ['Cancel', 'Yes, please', 'No, thanks'],
+    defaultId: 2,
+    title: 'Auto Launch',
+    message: 'HexWall on System Startup currently enabled, want to disable?',
+  };
+
+  // if (autoLaunch.isEnabled()) {
+  //   const response = dialog.showMessageBoxSync(whenEnabled);
+  //   if (response == 1) {
+
+  //   }
+  // } else {
+  //   const response = dialog.showMessageBoxSync(whenDisabled);
+  //   if (response == 1) {
+
+  //   }
+  // }
+
+}
+
+/**
+ *  if app is started add to tray and listen on menu
+ */
 app.on("ready", () => {
+
+  console.log(app.getPath("exe"));
+
   tray = new Tray(path.join(__dirname, "../media/single_icon.png"))
+
 
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -141,7 +185,9 @@ app.on("ready", () => {
     },
     {
       label: "Auto Launch",
-      enabled: false
+      click: function () {
+        askAutoLaunch();
+      }
     },
     {
       label: "Quit",
@@ -155,11 +201,6 @@ app.on("ready", () => {
   tray.setToolTip("HexWall");
   tray.setContextMenu(contextMenu);
 
-  // let autoLaunch = new AutoLaunch({
-  //   name: 'HexWall',
-  //   path: app.getPath('exe'),
-  // });
-  // autoLaunch.isEnabled().then((isEnabled: Boolean) => {
-  //   if (!isEnabled) autoLaunch.enable();
-  // });
+
+
 });

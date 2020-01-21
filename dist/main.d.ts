@@ -42,9 +42,13 @@ declare function newHexWallRandom(): Promise<void>;
  */
 declare function newHexWallCustom(hex: String): Promise<void>;
 /**
- *  electron stuff
+ *  system tray handling
  */
 declare const electron: any;
-declare const app: any, Menu: any, Tray: any;
-declare const AutoLaunch: any;
+declare const app: any, Menu: any, Tray: any, dialog: any;
 declare let tray: any;
+declare const appFolder: any;
+/**
+ *  prompt if auto launch should be enabled or not
+ */
+declare function askAutoLaunch(): void;
