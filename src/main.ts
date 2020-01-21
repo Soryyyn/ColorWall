@@ -35,25 +35,38 @@ async function cleanupFolder() {
  *  generates a random color & decides
  *  if the font color should be white or black
  */
-async function generateColor() {
-  const r = Math.floor(Math.random() * 255 + 1);
-  const g = Math.floor(Math.random() * 255 + 1);
-  const b = Math.floor(Math.random() * 255 + 1);
-  const rgb = r + g + b;
+async function generateColor(hex?: String) {
 
-  if (rgb > 382) {
-    fontColor = "#000000";
+  if (hex == null || hex == "" || hex == undefined) {
+    const r = Math.floor(Math.random() * 255 + 1);
+    const g = Math.floor(Math.random() * 255 + 1);
+    const b = Math.floor(Math.random() * 255 + 1);
+    const rgb = r + g + b;
+
+    if (rgb > 382) {
+      fontColor = "#000000";
+    } else {
+      fontColor = "#FFFFFF";
+    }
+    randomHexColor = "#" + converter.rgb.hex(r, g, b);
   } else {
-    fontColor = "#FFFFFF";
+    hex = converter.hex.rgb(hex);
+    const rgb = Number(hex[0]) + Number(hex[1]) + Number(hex[2]);
+
+    if (rgb > 382) {
+      fontColor = "#000000";
+    } else {
+      fontColor = "#FFFFFF";
+    }
   }
-  randomHexColor = "#" + converter.rgb.hex(r, g, b);
+
 }
 
 /**
  *  generates the wallpaper, and saves it
  *  to the wall folder
  */
-async function generateWall() {
+async function generateWall(hex: String) {
   const res = await resolution.get();
   const w = res.width;
   const h = res.height;
@@ -62,46 +75,56 @@ async function generateWall() {
   const wallctx = wall.getContext("2d");
 
   // bg
-  wallctx.fillStyle = randomHexColor;
+  wallctx.fillStyle = hex;
   wallctx.fillRect(0, 0, w, h);
 
   // text
   wallctx.fillStyle = fontColor;
   wallctx.font = "128px Unifont";
   wallctx.textAlign = "center";
-  wallctx.fillText(randomHexColor, w / 2, h / 2);
+  wallctx.fillText(hex, w / 2, h / 2);
 
   // write buffer to image
   const buffer = wall.toBuffer("image/png");
-  fs.writeFileSync(path.join(wallDir + "/" + randomHexColor + ".png"), buffer);
+  fs.writeFileSync(path.join(wallDir + "/" + hex + ".png"), buffer);
 }
 
 /**
  *  sets last generated picture
  *  as wallpaper
  */
-async function setWallpaper() {
-  await wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"));
+async function setWallpaper(hex: String) {
+  await wallpaper.set(path.join(wallDir + "/" + hex + ".png"));
   console.log(chalk.greenBright("new wallpaper set!"))
 }
 
 /**
  *  executes all hexwall functions
  */
-async function main() {
+async function newHexWallRandom() {
   await checkWallpaperFolder();
   await cleanupFolder();
   await generateColor()
-  await generateWall();
-  await setWallpaper();
+  await generateWall(randomHexColor);
+  await setWallpaper(randomHexColor);
 }
 
-// main();
+/**
+ *  for custom hexwall
+ */
+async function newHexWallCustom(hex: String) {
+  await checkWallpaperFolder();
+  await cleanupFolder();
+  await generateColor(hex)
+  await generateWall(hex);
+  await setWallpaper(hex);
+}
 
 /**
  *  electron stuff
  */
 const electron = require("electron");
+const inputPrompt = require('electron-prompt');
 const { app, Menu, Tray, dialog } = require("electron");
 
 
@@ -121,7 +144,30 @@ app.on("ready", () => {
     {
       label: "New Wallpaper",
       click: function () {
-        main();
+        newHexWallRandom();
+      }
+    },
+    {
+      label: "Custom Hex Value Wallpaper",
+      click: function () {
+        inputPrompt({
+          title: "Custom Hex Value",
+          label: "Hex Value:",
+          value: "#000000",
+          type: "input",
+          menuBarVisible: false,
+          icon: path.join(__dirname, "../media/single_icon.png")
+        })
+          .then((input: any) => {
+            if (input === null) {
+              console.log("user cancelled or no input");
+            } else {
+              console.log("custom");
+              console.log(input);
+              newHexWallCustom(input)
+            }
+          })
+          .catch(console.error);
       }
     }
   ]);

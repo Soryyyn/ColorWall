@@ -79,21 +79,33 @@ function cleanupFolder() {
  *  generates a random color & decides
  *  if the font color should be white or black
  */
-function generateColor() {
+function generateColor(hex) {
     return __awaiter(this, void 0, void 0, function () {
-        var r, g, b, rgb;
+        var r, g, b, rgb, rgb;
         return __generator(this, function (_a) {
-            r = Math.floor(Math.random() * 255 + 1);
-            g = Math.floor(Math.random() * 255 + 1);
-            b = Math.floor(Math.random() * 255 + 1);
-            rgb = r + g + b;
-            if (rgb > 382) {
-                fontColor = "#000000";
+            if (hex == null || hex == "" || hex == undefined) {
+                r = Math.floor(Math.random() * 255 + 1);
+                g = Math.floor(Math.random() * 255 + 1);
+                b = Math.floor(Math.random() * 255 + 1);
+                rgb = r + g + b;
+                if (rgb > 382) {
+                    fontColor = "#000000";
+                }
+                else {
+                    fontColor = "#FFFFFF";
+                }
+                randomHexColor = "#" + converter.rgb.hex(r, g, b);
             }
             else {
-                fontColor = "#FFFFFF";
+                hex = converter.hex.rgb(hex);
+                rgb = Number(hex[0]) + Number(hex[1]) + Number(hex[2]);
+                if (rgb > 382) {
+                    fontColor = "#000000";
+                }
+                else {
+                    fontColor = "#FFFFFF";
+                }
             }
-            randomHexColor = "#" + converter.rgb.hex(r, g, b);
             return [2 /*return*/];
         });
     });
@@ -102,7 +114,7 @@ function generateColor() {
  *  generates the wallpaper, and saves it
  *  to the wall folder
  */
-function generateWall() {
+function generateWall(hex) {
     return __awaiter(this, void 0, void 0, function () {
         var res, w, h, wall, wallctx, buffer;
         return __generator(this, function (_a) {
@@ -115,15 +127,15 @@ function generateWall() {
                     wall = canvas.createCanvas(w, h);
                     wallctx = wall.getContext("2d");
                     // bg
-                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillStyle = hex;
                     wallctx.fillRect(0, 0, w, h);
                     // text
                     wallctx.fillStyle = fontColor;
                     wallctx.font = "128px Unifont";
                     wallctx.textAlign = "center";
-                    wallctx.fillText(randomHexColor, w / 2, h / 2);
+                    wallctx.fillText(hex, w / 2, h / 2);
                     buffer = wall.toBuffer("image/png");
-                    fs.writeFileSync(path.join(wallDir + "/" + randomHexColor + ".png"), buffer);
+                    fs.writeFileSync(path.join(wallDir + "/" + hex + ".png"), buffer);
                     return [2 /*return*/];
             }
         });
@@ -133,11 +145,11 @@ function generateWall() {
  *  sets last generated picture
  *  as wallpaper
  */
-function setWallpaper() {
+function setWallpaper(hex) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"))];
+                case 0: return [4 /*yield*/, wallpaper.set(path.join(wallDir + "/" + hex + ".png"))];
                 case 1:
                     _a.sent();
                     console.log(chalk.greenBright("new wallpaper set!"));
@@ -149,7 +161,7 @@ function setWallpaper() {
 /**
  *  executes all hexwall functions
  */
-function main() {
+function newHexWallRandom() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -162,10 +174,10 @@ function main() {
                     return [4 /*yield*/, generateColor()];
                 case 3:
                     _a.sent();
-                    return [4 /*yield*/, generateWall()];
+                    return [4 /*yield*/, generateWall(randomHexColor)];
                 case 4:
                     _a.sent();
-                    return [4 /*yield*/, setWallpaper()];
+                    return [4 /*yield*/, setWallpaper(randomHexColor)];
                 case 5:
                     _a.sent();
                     return [2 /*return*/];
@@ -173,11 +185,38 @@ function main() {
         });
     });
 }
-// main();
+/**
+ *  for custom hexwall
+ */
+function newHexWallCustom(hex) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, checkWallpaperFolder()];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, cleanupFolder()];
+                case 2:
+                    _a.sent();
+                    return [4 /*yield*/, generateColor(hex)];
+                case 3:
+                    _a.sent();
+                    return [4 /*yield*/, generateWall(hex)];
+                case 4:
+                    _a.sent();
+                    return [4 /*yield*/, setWallpaper(hex)];
+                case 5:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 /**
  *  electron stuff
  */
 var electron = require("electron");
+var inputPrompt = require('electron-prompt');
 var _a = require("electron"), app = _a.app, Menu = _a.Menu, Tray = _a.Tray, dialog = _a.dialog;
 var tray = null;
 app.on("ready", function () {
@@ -193,7 +232,31 @@ app.on("ready", function () {
         {
             label: "New Wallpaper",
             click: function () {
-                main();
+                newHexWallRandom();
+            }
+        },
+        {
+            label: "Custom Hex Value Wallpaper",
+            click: function () {
+                inputPrompt({
+                    title: "Custom Hex Value",
+                    label: "Hex Value:",
+                    value: "#000000",
+                    type: "input",
+                    menuBarVisible: false,
+                    icon: path.join(__dirname, "../media/single_icon.png")
+                })
+                    .then(function (input) {
+                    if (input === null) {
+                        console.log("user cancelled or no input");
+                    }
+                    else {
+                        console.log("custom");
+                        console.log(input);
+                        newHexWallCustom(input);
+                    }
+                })
+                    .catch(console.error);
             }
         }
     ]);
