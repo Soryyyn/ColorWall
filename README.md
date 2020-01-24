@@ -1,8 +1,14 @@
 ![logo](media/icon.png)
 
 ## Installation
-1. Install NodeJS. Link to download [here](https://nodejs.org/en/).
-2. open up your terminal of choice (or the one you've been punished with), and type: `npm install hexwall -g`. This installs it globally on your machine.
+Download setup file from [releases](https://github.com/Soryyyn/HexWall/releases).
 
 ## Usage
-Just type in `hexwall` in your terminal and the wallpaper should quickly change!.
+After installation it should show up in the tray. Everything else should be self explanatory.
+
+## Changelog
+### v.1.0.0
++ auto launch on system startup (toggle)
++ new wallpaper on start or demand
++ closeable by right clicking in tray and then quit
++ 4k wallpaper (resolution choice wip)

@@ -39,7 +39,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var fs = require("fs");
 var wallpaper = require("wallpaper");
 var canvas = require("canvas");
-var resolution = require("screen-resolution");
 var converter = require("color-convert");
 var path = require("path");
 var chalk = require("chalk");
@@ -116,28 +115,23 @@ function generateColor(hex) {
  */
 function generateWall(hex) {
     return __awaiter(this, void 0, void 0, function () {
-        var res, w, h, wall, wallctx, buffer;
+        var w, h, wall, wallctx, buffer;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, resolution.get()];
-                case 1:
-                    res = _a.sent();
-                    w = res.width;
-                    h = res.height;
-                    wall = canvas.createCanvas(w, h);
-                    wallctx = wall.getContext("2d");
-                    // bg
-                    wallctx.fillStyle = hex;
-                    wallctx.fillRect(0, 0, w, h);
-                    // text
-                    wallctx.fillStyle = fontColor;
-                    wallctx.font = "128px Unifont";
-                    wallctx.textAlign = "center";
-                    wallctx.fillText(hex, w / 2, h / 2);
-                    buffer = wall.toBuffer("image/png");
-                    fs.writeFileSync(path.join(wallDir + "/" + hex + ".png"), buffer);
-                    return [2 /*return*/];
-            }
+            w = 3840;
+            h = 2160;
+            wall = canvas.createCanvas(w, h);
+            wallctx = wall.getContext("2d");
+            // bg
+            wallctx.fillStyle = hex;
+            wallctx.fillRect(0, 0, w, h);
+            // text
+            wallctx.fillStyle = fontColor;
+            wallctx.font = "128px Unifont";
+            wallctx.textAlign = "center";
+            wallctx.fillText(hex, w / 2, h / 2);
+            buffer = wall.toBuffer("image/png");
+            fs.writeFileSync(path.join(wallDir + "/" + hex + ".png"), buffer);
+            return [2 /*return*/];
         });
     });
 }
@@ -152,7 +146,6 @@ function setWallpaper(hex) {
                 case 0: return [4 /*yield*/, wallpaper.set(path.join(wallDir + "/" + hex + ".png"))];
                 case 1:
                     _a.sent();
-                    console.log(chalk.greenBright("new wallpaper set!"));
                     return [2 /*return*/];
             }
         });
@@ -161,7 +154,7 @@ function setWallpaper(hex) {
 /**
  *  executes all hexwall functions
  */
-function newHexWallRandom() {
+function newRandomHexWall() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -188,7 +181,7 @@ function newHexWallRandom() {
 /**
  *  for custom hexwall
  */
-function newHexWallCustom(hex) {
+function newCustomHexWall(hex) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -218,8 +211,10 @@ function newHexWallCustom(hex) {
 var electron = require("electron");
 var _a = require("electron"), app = _a.app, Menu = _a.Menu, Tray = _a.Tray, dialog = _a.dialog;
 var tray = null;
-var appFolder = path.basename(process.execPath);
-console.log(appFolder);
+app.setLoginItemSettings({
+    openAtLogin: false,
+    path: electron.app.getPath("exe")
+});
 /**
  *  prompt if auto launch should be enabled or not
  */
@@ -238,27 +233,39 @@ function askAutoLaunch() {
         title: 'Auto Launch',
         message: 'HexWall on System Startup currently enabled, want to disable?',
     };
-    // if (autoLaunch.isEnabled()) {
-    //   const response = dialog.showMessageBoxSync(whenEnabled);
-    //   if (response == 1) {
-    //   }
-    // } else {
-    //   const response = dialog.showMessageBoxSync(whenDisabled);
-    //   if (response == 1) {
-    //   }
-    // }
+    if (app.getLoginItemSettings().openAtLogin) {
+        var response = dialog.showMessageBoxSync(whenEnabled);
+        if (response == 1) {
+            app.setLoginItemSettings({
+                openAtLogin: false,
+                path: app.getPath("exe")
+            });
+            console.log("disabled auto-launch");
+        }
+    }
+    else {
+        var response = dialog.showMessageBoxSync(whenDisabled);
+        if (response == 1) {
+            app.setLoginItemSettings({
+                openAtLogin: true,
+                path: app.getPath("exe")
+            });
+            console.log("enabled auto-launch");
+        }
+    }
+    console.log(app.getLoginItemSettings().openAtLogin);
 }
 /**
  *  if app is started add to tray and listen on menu
  */
 app.on("ready", function () {
-    console.log(app.getPath("exe"));
+    newRandomHexWall();
     tray = new Tray(path.join(__dirname, "../media/single_icon.png"));
     var contextMenu = Menu.buildFromTemplate([
         {
             label: "New Wallpaper",
             click: function () {
-                newHexWallRandom();
+                newRandomHexWall();
             }
         },
         {

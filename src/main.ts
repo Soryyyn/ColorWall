@@ -2,7 +2,6 @@
 const fs = require("fs");
 const wallpaper = require("wallpaper");
 const canvas = require("canvas");
-const resolution = require("screen-resolution");
 const converter = require("color-convert");
 const path = require("path");
 const chalk = require("chalk");
@@ -67,9 +66,8 @@ async function generateColor(hex?: String) {
  *  to the wall folder
  */
 async function generateWall(hex: String) {
-  const res = await resolution.get();
-  const w = res.width;
-  const h = res.height;
+  const w = 3840;
+  const h = 2160;
 
   const wall = canvas.createCanvas(w, h);
   const wallctx = wall.getContext("2d");
@@ -95,13 +93,12 @@ async function generateWall(hex: String) {
  */
 async function setWallpaper(hex: String) {
   await wallpaper.set(path.join(wallDir + "/" + hex + ".png"));
-  console.log(chalk.greenBright("new wallpaper set!"))
 }
 
 /**
  *  executes all hexwall functions
  */
-async function newHexWallRandom() {
+async function newRandomHexWall() {
   await checkWallpaperFolder();
   await cleanupFolder();
   await generateColor()
@@ -112,7 +109,7 @@ async function newHexWallRandom() {
 /**
  *  for custom hexwall
  */
-async function newHexWallCustom(hex: String) {
+async function newCustomHexWall(hex: String) {
   await checkWallpaperFolder();
   await cleanupFolder();
   await generateColor(hex)
@@ -127,9 +124,11 @@ const electron = require("electron");
 const { app, Menu, Tray, dialog } = require("electron");
 
 let tray: any = null
-const appFolder = path.basename(process.execPath);
-console.log(appFolder);
 
+app.setLoginItemSettings({
+  openAtLogin: false,
+  path: electron.app.getPath("exe")
+});
 
 
 /**
@@ -152,17 +151,30 @@ function askAutoLaunch() {
     message: 'HexWall on System Startup currently enabled, want to disable?',
   };
 
-  // if (autoLaunch.isEnabled()) {
-  //   const response = dialog.showMessageBoxSync(whenEnabled);
-  //   if (response == 1) {
+  if (app.getLoginItemSettings().openAtLogin) {
+    const response = dialog.showMessageBoxSync(whenEnabled);
+    if (response == 1) {
+      app.setLoginItemSettings({
+        openAtLogin: false,
+        path: app.getPath("exe")
+      });
 
-  //   }
-  // } else {
-  //   const response = dialog.showMessageBoxSync(whenDisabled);
-  //   if (response == 1) {
+      console.log("disabled auto-launch");
+    }
 
-  //   }
-  // }
+  } else {
+    const response = dialog.showMessageBoxSync(whenDisabled);
+    if (response == 1) {
+      app.setLoginItemSettings({
+        openAtLogin: true,
+        path: app.getPath("exe")
+      });
+
+      console.log("enabled auto-launch");
+    }
+  }
+
+  console.log(app.getLoginItemSettings().openAtLogin);
 
 }
 
@@ -170,17 +182,15 @@ function askAutoLaunch() {
  *  if app is started add to tray and listen on menu
  */
 app.on("ready", () => {
-
-  console.log(app.getPath("exe"));
+  newRandomHexWall();
 
   tray = new Tray(path.join(__dirname, "../media/single_icon.png"))
-
 
   const contextMenu = Menu.buildFromTemplate([
     {
       label: "New Wallpaper",
       click: function () {
-        newHexWallRandom();
+        newRandomHexWall();
       }
     },
     {
@@ -200,7 +210,4 @@ app.on("ready", () => {
 
   tray.setToolTip("HexWall");
   tray.setContextMenu(contextMenu);
-
-
-
 });

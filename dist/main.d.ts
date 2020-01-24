@@ -2,7 +2,6 @@
 declare const fs: any;
 declare const wallpaper: any;
 declare const canvas: any;
-declare const resolution: any;
 declare const converter: any;
 declare const path: any;
 declare const chalk: any;
@@ -36,18 +35,17 @@ declare function setWallpaper(hex: String): Promise<void>;
 /**
  *  executes all hexwall functions
  */
-declare function newHexWallRandom(): Promise<void>;
+declare function newRandomHexWall(): Promise<void>;
 /**
  *  for custom hexwall
  */
-declare function newHexWallCustom(hex: String): Promise<void>;
+declare function newCustomHexWall(hex: String): Promise<void>;
 /**
  *  system tray handling
  */
 declare const electron: any;
 declare const app: any, Menu: any, Tray: any, dialog: any;
 declare let tray: any;
-declare const appFolder: any;
 /**
  *  prompt if auto launch should be enabled or not
  */

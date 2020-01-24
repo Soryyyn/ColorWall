@@ -1,16 +1,30 @@
 {
-  "name": "@soryyyn/hexwall",
+  "name": "hexwall",
   "version": "1.0.0",
   "description": "generates a wallpaper & sets it everyday",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
   "bin": {
-    "@soryyyn/hexwall": "./dist/main.js",
     "hexwall": "./dist/main.js"
   },
   "scripts": {
     "start": "electron .",
-    "rebuild": "electron-rebuild -f -w hexwall"
+    "rebuild": "electron-rebuild -f -w hexwall",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.soryyyn.hexwall",
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "media/single_icon.ico"
+    },
+    "directories": {
+      "output": "builds"
+    },
+    "asar": true
   },
   "repository": {
     "type": "git",
@@ -29,13 +43,13 @@
   "homepage": "https://github.com/Soryyyn/HexWall#readme",
   "devDependencies": {
     "@types/node": "^13.1.7",
-    "electron": "^7.1.9"
+    "electron": "^7.1.9",
+    "electron-builder": "^22.2.0"
   },
   "dependencies": {
     "canvas": "^2.6.1",
     "chalk": "^3.0.0",
     "color-convert": "^2.0.1",
-    "screen-resolution": "^1.0.0",
     "wallpaper": "^4.4.1"
   }
 }
