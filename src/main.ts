@@ -4,11 +4,23 @@ const wallpaper = require("wallpaper");
 const canvas = require("canvas");
 const converter = require("color-convert");
 const path = require("path");
-const chalk = require("chalk");
+const electron = require("electron");
 
+const { app, Menu, Tray, dialog } = require("electron");
+
+const monitor = electron.screen;
 const wallDir = "./walls";
 let randomHexColor: any;
 let fontColor: any;
+let tray: any = null
+
+/**
+ *  disable auto-launch default
+ */
+app.setLoginItemSettings({
+  openAtLogin: false,
+  path: app.getPath("exe")
+});
 
 /**
  *  checks wallpaper directory if it exists,
@@ -34,65 +46,52 @@ async function cleanupFolder() {
  *  generates a random color & decides
  *  if the font color should be white or black
  */
-async function generateColor(hex?: String) {
+async function generateColor() {
+  const r = Math.floor(Math.random() * 255 + 1);
+  const g = Math.floor(Math.random() * 255 + 1);
+  const b = Math.floor(Math.random() * 255 + 1);
+  const rgb = r + g + b;
 
-  if (hex == null || hex == "" || hex == undefined) {
-    const r = Math.floor(Math.random() * 255 + 1);
-    const g = Math.floor(Math.random() * 255 + 1);
-    const b = Math.floor(Math.random() * 255 + 1);
-    const rgb = r + g + b;
-
-    if (rgb > 382) {
-      fontColor = "#000000";
-    } else {
-      fontColor = "#FFFFFF";
-    }
-    randomHexColor = "#" + converter.rgb.hex(r, g, b);
+  if (rgb > 382) {
+    fontColor = "#000000";
   } else {
-    hex = converter.hex.rgb(hex);
-    const rgb = Number(hex[0]) + Number(hex[1]) + Number(hex[2]);
-
-    if (rgb > 382) {
-      fontColor = "#000000";
-    } else {
-      fontColor = "#FFFFFF";
-    }
+    fontColor = "#FFFFFF";
   }
-
+  randomHexColor = "#" + converter.rgb.hex(r, g, b);
 }
 
 /**
  *  generates the wallpaper, and saves it
  *  to the wall folder
  */
-async function generateWall(hex: String) {
-  const w = 3840;
-  const h = 2160;
+async function generateWall() {
+  const w = monitor.getPrimaryDisplay().size.width;
+  const h = monitor.getPrimaryDisplay().size.height;
 
   const wall = canvas.createCanvas(w, h);
   const wallctx = wall.getContext("2d");
 
   // bg
-  wallctx.fillStyle = hex;
+  wallctx.fillStyle = randomHexColor;
   wallctx.fillRect(0, 0, w, h);
 
   // text
   wallctx.fillStyle = fontColor;
   wallctx.font = "128px Unifont";
   wallctx.textAlign = "center";
-  wallctx.fillText(hex, w / 2, h / 2);
+  wallctx.fillText(randomHexColor, w / 2, h / 2);
 
   // write buffer to image
   const buffer = wall.toBuffer("image/png");
-  fs.writeFileSync(path.join(wallDir + "/" + hex + ".png"), buffer);
+  fs.writeFileSync(path.join(wallDir + "/" + randomHexColor + ".png"), buffer);
 }
 
 /**
  *  sets last generated picture
  *  as wallpaper
  */
-async function setWallpaper(hex: String) {
-  await wallpaper.set(path.join(wallDir + "/" + hex + ".png"));
+async function setWallpaper() {
+  await wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"));
 }
 
 /**
@@ -102,34 +101,9 @@ async function newRandomHexWall() {
   await checkWallpaperFolder();
   await cleanupFolder();
   await generateColor()
-  await generateWall(randomHexColor);
-  await setWallpaper(randomHexColor);
+  await generateWall();
+  await setWallpaper();
 }
-
-/**
- *  for custom hexwall
- */
-async function newCustomHexWall(hex: String) {
-  await checkWallpaperFolder();
-  await cleanupFolder();
-  await generateColor(hex)
-  await generateWall(hex);
-  await setWallpaper(hex);
-}
-
-/**
- *  system tray handling
- */
-const electron = require("electron");
-const { app, Menu, Tray, dialog } = require("electron");
-
-let tray: any = null
-
-app.setLoginItemSettings({
-  openAtLogin: false,
-  path: electron.app.getPath("exe")
-});
-
 
 /**
  *  prompt if auto launch should be enabled or not
@@ -173,19 +147,13 @@ function askAutoLaunch() {
       console.log("enabled auto-launch");
     }
   }
-
-  console.log(app.getLoginItemSettings().openAtLogin);
-
 }
 
 /**
- *  if app is started add to tray and listen on menu
+ *  adds hexwall to systemtray
  */
-app.on("ready", () => {
-  newRandomHexWall();
-
+async function createTray() {
   tray = new Tray(path.join(__dirname, "../media/single_icon.png"))
-
   const contextMenu = Menu.buildFromTemplate([
     {
       label: "New Wallpaper",
@@ -210,4 +178,12 @@ app.on("ready", () => {
 
   tray.setToolTip("HexWall");
   tray.setContextMenu(contextMenu);
+}
+
+/**
+ *  if app is started add to tray and listen on menu
+ */
+app.on("ready", () => {
+  createTray();
+  newRandomHexWall();
 });

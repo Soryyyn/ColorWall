@@ -10,15 +10,11 @@
   "scripts": {
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w hexwall",
-    "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
   "build": {
     "appId": "com.soryyyn.hexwall",
     "win": {
-      "target": [
-        "nsis"
-      ],
       "icon": "media/single_icon.ico"
     },
     "directories": {
@@ -48,7 +44,6 @@
   },
   "dependencies": {
     "canvas": "^2.6.1",
-    "chalk": "^3.0.0",
     "color-convert": "^2.0.1",
     "wallpaper": "^4.4.1"
   }

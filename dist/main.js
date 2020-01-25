@@ -41,10 +41,20 @@ var wallpaper = require("wallpaper");
 var canvas = require("canvas");
 var converter = require("color-convert");
 var path = require("path");
-var chalk = require("chalk");
+var electron = require("electron");
+var _a = require("electron"), app = _a.app, Menu = _a.Menu, Tray = _a.Tray, dialog = _a.dialog;
+var monitor = electron.screen;
 var wallDir = "./walls";
 var randomHexColor;
 var fontColor;
+var tray = null;
+/**
+ *  disable auto-launch default
+ */
+app.setLoginItemSettings({
+    openAtLogin: false,
+    path: app.getPath("exe")
+});
 /**
  *  checks wallpaper directory if it exists,
  *  if it doesn't, it creates it
@@ -78,33 +88,21 @@ function cleanupFolder() {
  *  generates a random color & decides
  *  if the font color should be white or black
  */
-function generateColor(hex) {
+function generateColor() {
     return __awaiter(this, void 0, void 0, function () {
-        var r, g, b, rgb, rgb;
+        var r, g, b, rgb;
         return __generator(this, function (_a) {
-            if (hex == null || hex == "" || hex == undefined) {
-                r = Math.floor(Math.random() * 255 + 1);
-                g = Math.floor(Math.random() * 255 + 1);
-                b = Math.floor(Math.random() * 255 + 1);
-                rgb = r + g + b;
-                if (rgb > 382) {
-                    fontColor = "#000000";
-                }
-                else {
-                    fontColor = "#FFFFFF";
-                }
-                randomHexColor = "#" + converter.rgb.hex(r, g, b);
+            r = Math.floor(Math.random() * 255 + 1);
+            g = Math.floor(Math.random() * 255 + 1);
+            b = Math.floor(Math.random() * 255 + 1);
+            rgb = r + g + b;
+            if (rgb > 382) {
+                fontColor = "#000000";
             }
             else {
-                hex = converter.hex.rgb(hex);
-                rgb = Number(hex[0]) + Number(hex[1]) + Number(hex[2]);
-                if (rgb > 382) {
-                    fontColor = "#000000";
-                }
-                else {
-                    fontColor = "#FFFFFF";
-                }
+                fontColor = "#FFFFFF";
             }
+            randomHexColor = "#" + converter.rgb.hex(r, g, b);
             return [2 /*return*/];
         });
     });
@@ -113,24 +111,24 @@ function generateColor(hex) {
  *  generates the wallpaper, and saves it
  *  to the wall folder
  */
-function generateWall(hex) {
+function generateWall() {
     return __awaiter(this, void 0, void 0, function () {
         var w, h, wall, wallctx, buffer;
         return __generator(this, function (_a) {
-            w = 3840;
-            h = 2160;
+            w = monitor.getPrimaryDisplay().size.width;
+            h = monitor.getPrimaryDisplay().size.height;
             wall = canvas.createCanvas(w, h);
             wallctx = wall.getContext("2d");
             // bg
-            wallctx.fillStyle = hex;
+            wallctx.fillStyle = randomHexColor;
             wallctx.fillRect(0, 0, w, h);
             // text
             wallctx.fillStyle = fontColor;
             wallctx.font = "128px Unifont";
             wallctx.textAlign = "center";
-            wallctx.fillText(hex, w / 2, h / 2);
+            wallctx.fillText(randomHexColor, w / 2, h / 2);
             buffer = wall.toBuffer("image/png");
-            fs.writeFileSync(path.join(wallDir + "/" + hex + ".png"), buffer);
+            fs.writeFileSync(path.join(wallDir + "/" + randomHexColor + ".png"), buffer);
             return [2 /*return*/];
         });
     });
@@ -139,11 +137,11 @@ function generateWall(hex) {
  *  sets last generated picture
  *  as wallpaper
  */
-function setWallpaper(hex) {
+function setWallpaper() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, wallpaper.set(path.join(wallDir + "/" + hex + ".png"))];
+                case 0: return [4 /*yield*/, wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"))];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
@@ -167,10 +165,10 @@ function newRandomHexWall() {
                     return [4 /*yield*/, generateColor()];
                 case 3:
                     _a.sent();
-                    return [4 /*yield*/, generateWall(randomHexColor)];
+                    return [4 /*yield*/, generateWall()];
                 case 4:
                     _a.sent();
-                    return [4 /*yield*/, setWallpaper(randomHexColor)];
+                    return [4 /*yield*/, setWallpaper()];
                 case 5:
                     _a.sent();
                     return [2 /*return*/];
@@ -178,43 +176,6 @@ function newRandomHexWall() {
         });
     });
 }
-/**
- *  for custom hexwall
- */
-function newCustomHexWall(hex) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, checkWallpaperFolder()];
-                case 1:
-                    _a.sent();
-                    return [4 /*yield*/, cleanupFolder()];
-                case 2:
-                    _a.sent();
-                    return [4 /*yield*/, generateColor(hex)];
-                case 3:
-                    _a.sent();
-                    return [4 /*yield*/, generateWall(hex)];
-                case 4:
-                    _a.sent();
-                    return [4 /*yield*/, setWallpaper(hex)];
-                case 5:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-/**
- *  system tray handling
- */
-var electron = require("electron");
-var _a = require("electron"), app = _a.app, Menu = _a.Menu, Tray = _a.Tray, dialog = _a.dialog;
-var tray = null;
-app.setLoginItemSettings({
-    openAtLogin: false,
-    path: electron.app.getPath("exe")
-});
 /**
  *  prompt if auto launch should be enabled or not
  */
@@ -253,35 +214,46 @@ function askAutoLaunch() {
             console.log("enabled auto-launch");
         }
     }
-    console.log(app.getLoginItemSettings().openAtLogin);
+}
+/**
+ *  adds hexwall to systemtray
+ */
+function createTray() {
+    return __awaiter(this, void 0, void 0, function () {
+        var contextMenu;
+        return __generator(this, function (_a) {
+            tray = new Tray(path.join(__dirname, "../media/single_icon.png"));
+            contextMenu = Menu.buildFromTemplate([
+                {
+                    label: "New Wallpaper",
+                    click: function () {
+                        newRandomHexWall();
+                    }
+                },
+                {
+                    label: "Auto Launch",
+                    click: function () {
+                        askAutoLaunch();
+                    }
+                },
+                {
+                    label: "Quit",
+                    click: function () {
+                        tray.destroy();
+                        app.quit();
+                    }
+                }
+            ]);
+            tray.setToolTip("HexWall");
+            tray.setContextMenu(contextMenu);
+            return [2 /*return*/];
+        });
+    });
 }
 /**
  *  if app is started add to tray and listen on menu
  */
 app.on("ready", function () {
+    createTray();
     newRandomHexWall();
-    tray = new Tray(path.join(__dirname, "../media/single_icon.png"));
-    var contextMenu = Menu.buildFromTemplate([
-        {
-            label: "New Wallpaper",
-            click: function () {
-                newRandomHexWall();
-            }
-        },
-        {
-            label: "Auto Launch",
-            click: function () {
-                askAutoLaunch();
-            }
-        },
-        {
-            label: "Quit",
-            click: function () {
-                tray.destroy();
-                app.quit();
-            }
-        }
-    ]);
-    tray.setToolTip("HexWall");
-    tray.setContextMenu(contextMenu);
 });
