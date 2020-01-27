@@ -127,7 +127,7 @@ function askAutoLaunch() {
 
   if (app.getLoginItemSettings().openAtLogin) {
     const response = dialog.showMessageBoxSync(whenEnabled);
-    if (response == 1) {
+    if (response === 1) {
       app.setLoginItemSettings({
         openAtLogin: false,
         path: app.getPath("exe")
@@ -153,19 +153,19 @@ async function createTray() {
   const contextMenu = Menu.buildFromTemplate([
     {
       label: "New Wallpaper",
-      click: function () {
+      click() {
         newRandomHexWall();
       }
     },
     {
       label: "Auto Launch",
-      click: function () {
+      click() {
         askAutoLaunch();
       }
     },
     {
       label: "Quit",
-      click: function () {
+      click() {
         tray.destroy();
         app.quit();
       }
