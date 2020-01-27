@@ -11,6 +11,7 @@ const { app, Menu, Tray, dialog } = require("electron");
 const monitor = electron.screen;
 const wallDir = "./walls";
 let randomHexColor: any;
+let ditherColor: any;
 let fontColor: any;
 let tray: any = null;
 
@@ -47,9 +48,9 @@ async function cleanupFolder() {
  *  if the font color should be white or black
  */
 async function generateColor() {
-  const r = Math.floor(Math.random() * 255 + 1);
-  const g = Math.floor(Math.random() * 255 + 1);
-  const b = Math.floor(Math.random() * 255 + 1);
+  let r = Math.floor(Math.random() * 255 + 1);
+  let g = Math.floor(Math.random() * 255 + 1);
+  let b = Math.floor(Math.random() * 255 + 1);
   const rgb = r + g + b;
 
   if (rgb > 382) {
@@ -58,6 +59,27 @@ async function generateColor() {
     fontColor = "#FFFFFF";
   }
   randomHexColor = "#" + converter.rgb.hex(r, g, b);
+
+  // for dark dither color
+  if (r - 65 > 0) {
+    r -= 65;
+  } else {
+    r = 0;
+  }
+
+  if (g - 65 > 0) {
+    g -= 65;
+  } else {
+    g = 0;
+  }
+
+  if (b - 65 > 0) {
+    b -= 65;
+  } else {
+    b = 0;
+  }
+
+  ditherColor = "#" + converter.rgb.hex(r, g, b);
 }
 
 /**
@@ -163,6 +185,18 @@ async function createTray() {
         askAutoLaunch();
       }
     },
+    {
+      label: "Dithering",
+      submenu: [
+        {
+          label: "Enable/Disable"
+        },
+        {
+          label: "Darken Main Color by"
+        }
+      ]
+    },
+    { type: 'separator' },
     {
       label: "Quit",
       click() {

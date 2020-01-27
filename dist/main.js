@@ -46,6 +46,7 @@ var _a = require("electron"), app = _a.app, Menu = _a.Menu, Tray = _a.Tray, dial
 var monitor = electron.screen;
 var wallDir = "./walls";
 var randomHexColor;
+var ditherColor;
 var fontColor;
 var tray = null;
 /**
@@ -57,7 +58,7 @@ app.setLoginItemSettings({
 });
 /**
  *  checks wallpaper directory if it exists,
- *  if it doesn't, it creates it
+ *  if it doesn"t, it creates it
  */
 function checkWallpaperFolder() {
     return __awaiter(this, void 0, void 0, function () {
@@ -103,6 +104,26 @@ function generateColor() {
                 fontColor = "#FFFFFF";
             }
             randomHexColor = "#" + converter.rgb.hex(r, g, b);
+            // for dark dither color
+            if (r - 65 > 0) {
+                r -= 65;
+            }
+            else {
+                r = 0;
+            }
+            if (g - 65 > 0) {
+                g -= 65;
+            }
+            else {
+                g = 0;
+            }
+            if (b - 65 > 0) {
+                b -= 65;
+            }
+            else {
+                b = 0;
+            }
+            ditherColor = "#" + converter.rgb.hex(r, g, b);
             return [2 /*return*/];
         });
     });
@@ -181,37 +202,35 @@ function newRandomHexWall() {
  */
 function askAutoLaunch() {
     var whenDisabled = {
-        type: 'question',
-        buttons: ['Cancel', 'Yes, please', 'No, thanks'],
+        type: "question",
+        buttons: ["Cancel", "Yes, please", "No, thanks"],
         defaultId: 2,
-        title: 'Auto Launch',
-        message: 'HexWall on System Startup currently disabled, want to enable?',
+        title: "Auto Launch",
+        message: "HexWall on System Startup currently disabled, want to enable?",
     };
     var whenEnabled = {
-        type: 'question',
-        buttons: ['Cancel', 'Yes, please', 'No, thanks'],
+        type: "question",
+        buttons: ["Cancel", "Yes, please", "No, thanks"],
         defaultId: 2,
-        title: 'Auto Launch',
-        message: 'HexWall on System Startup currently enabled, want to disable?',
+        title: "Auto Launch",
+        message: "HexWall on System Startup currently enabled, want to disable?",
     };
     if (app.getLoginItemSettings().openAtLogin) {
         var response = dialog.showMessageBoxSync(whenEnabled);
-        if (response == 1) {
+        if (response === 1) {
             app.setLoginItemSettings({
                 openAtLogin: false,
                 path: app.getPath("exe")
             });
-            console.log("disabled auto-launch");
         }
     }
     else {
         var response = dialog.showMessageBoxSync(whenDisabled);
-        if (response == 1) {
+        if (response === 1) {
             app.setLoginItemSettings({
                 openAtLogin: true,
                 path: app.getPath("exe")
             });
-            console.log("enabled auto-launch");
         }
     }
 }
@@ -236,6 +255,18 @@ function createTray() {
                         askAutoLaunch();
                     }
                 },
+                {
+                    label: "Dithering",
+                    submenu: [
+                        {
+                            label: "Enable/Disable"
+                        },
+                        {
+                            label: "Darken Main Color by"
+                        }
+                    ]
+                },
+                { type: 'separator' },
                 {
                     label: "Quit",
                     click: function () {

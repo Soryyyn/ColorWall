@@ -9,11 +9,12 @@ declare const app: any, Menu: any, Tray: any, dialog: any;
 declare const monitor: any;
 declare const wallDir = "./walls";
 declare let randomHexColor: any;
+declare let ditherColor: any;
 declare let fontColor: any;
 declare let tray: any;
 /**
  *  checks wallpaper directory if it exists,
- *  if it doesn't, it creates it
+ *  if it doesn"t, it creates it
  */
 declare function checkWallpaperFolder(): Promise<void>;
 /**
