@@ -12,6 +12,7 @@ const monitor = electron.screen;
 const wallDir = "./walls";
 let randomHexColor: any;
 let ditherColor: any;
+let ditherEnabled: Boolean = true;
 let fontColor: any;
 let tray: any = null;
 
@@ -93,9 +94,20 @@ async function generateWall() {
   const wall = canvas.createCanvas(w, h);
   const wallctx = wall.getContext("2d");
 
-  // bg
-  wallctx.fillStyle = randomHexColor;
-  wallctx.fillRect(0, 0, w, h);
+  if (!ditherEnabled) {
+    // bg
+    wallctx.fillStyle = randomHexColor;
+    wallctx.fillRect(0, 0, w, h);
+  } else {
+    // bg
+    wallctx.fillStyle = randomHexColor;
+    wallctx.fillRect(0, 0, w, h);
+
+    // dither
+    wallctx.fillStyle = ditherColor;
+    wallctx.fillRect(0, h, w, -64);
+  }
+
 
   // text
   wallctx.fillStyle = fontColor;
@@ -196,7 +208,9 @@ async function createTray() {
         }
       ]
     },
-    { type: 'separator' },
+    {
+      type: "separator"
+    },
     {
       label: "Quit",
       click() {

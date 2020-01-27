@@ -47,6 +47,7 @@ var monitor = electron.screen;
 var wallDir = "./walls";
 var randomHexColor;
 var ditherColor;
+var ditherEnabled = true;
 var fontColor;
 var tray = null;
 /**
@@ -140,9 +141,19 @@ function generateWall() {
             h = monitor.getPrimaryDisplay().size.height;
             wall = canvas.createCanvas(w, h);
             wallctx = wall.getContext("2d");
-            // bg
-            wallctx.fillStyle = randomHexColor;
-            wallctx.fillRect(0, 0, w, h);
+            if (!ditherEnabled) {
+                // bg
+                wallctx.fillStyle = randomHexColor;
+                wallctx.fillRect(0, 0, w, h);
+            }
+            else {
+                // bg
+                wallctx.fillStyle = randomHexColor;
+                wallctx.fillRect(0, 0, w, h);
+                // dither
+                wallctx.fillStyle = ditherColor;
+                wallctx.fillRect(0, h, w, -64);
+            }
             // text
             wallctx.fillStyle = fontColor;
             wallctx.font = "128px Unifont";
@@ -266,7 +277,9 @@ function createTray() {
                         }
                     ]
                 },
-                { type: 'separator' },
+                {
+                    type: "separator"
+                },
                 {
                     label: "Quit",
                     click: function () {

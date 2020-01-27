@@ -10,6 +10,7 @@ declare const monitor: any;
 declare const wallDir = "./walls";
 declare let randomHexColor: any;
 declare let ditherColor: any;
+declare let ditherEnabled: Boolean;
 declare let fontColor: any;
 declare let tray: any;
 /**
