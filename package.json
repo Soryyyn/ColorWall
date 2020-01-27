@@ -40,7 +40,7 @@
   "devDependencies": {
     "@types/node": "^13.1.7",
     "electron": "^7.1.10",
-    "electron-builder": "^22.2.0"
+    "electron-builder": "^22.3.2"
   },
   "dependencies": {
     "canvas": "^2.6.1",
