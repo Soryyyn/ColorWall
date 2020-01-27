@@ -12,7 +12,7 @@ const monitor = electron.screen;
 const wallDir = "./walls";
 let randomHexColor: any;
 let fontColor: any;
-let tray: any = null
+let tray: any = null;
 
 /**
  *  disable auto-launch default
@@ -24,7 +24,7 @@ app.setLoginItemSettings({
 
 /**
  *  checks wallpaper directory if it exists,
- *  if it doesn't, it creates it
+ *  if it doesn"t, it creates it
  */
 async function checkWallpaperFolder() {
   if (!fs.existsSync(wallDir)) {
@@ -100,7 +100,7 @@ async function setWallpaper() {
 async function newRandomHexWall() {
   await checkWallpaperFolder();
   await cleanupFolder();
-  await generateColor()
+  await generateColor();
   await generateWall();
   await setWallpaper();
 }
@@ -110,19 +110,19 @@ async function newRandomHexWall() {
  */
 function askAutoLaunch() {
   const whenDisabled = {
-    type: 'question',
-    buttons: ['Cancel', 'Yes, please', 'No, thanks'],
+    type: "question",
+    buttons: ["Cancel", "Yes, please", "No, thanks"],
     defaultId: 2,
-    title: 'Auto Launch',
-    message: 'HexWall on System Startup currently disabled, want to enable?',
+    title: "Auto Launch",
+    message: "HexWall on System Startup currently disabled, want to enable?",
   };
 
   const whenEnabled = {
-    type: 'question',
-    buttons: ['Cancel', 'Yes, please', 'No, thanks'],
+    type: "question",
+    buttons: ["Cancel", "Yes, please", "No, thanks"],
     defaultId: 2,
-    title: 'Auto Launch',
-    message: 'HexWall on System Startup currently enabled, want to disable?',
+    title: "Auto Launch",
+    message: "HexWall on System Startup currently enabled, want to disable?",
   };
 
   if (app.getLoginItemSettings().openAtLogin) {
@@ -132,19 +132,15 @@ function askAutoLaunch() {
         openAtLogin: false,
         path: app.getPath("exe")
       });
-
-      console.log("disabled auto-launch");
     }
 
   } else {
     const response = dialog.showMessageBoxSync(whenDisabled);
-    if (response == 1) {
+    if (response === 1) {
       app.setLoginItemSettings({
         openAtLogin: true,
         path: app.getPath("exe")
       });
-
-      console.log("enabled auto-launch");
     }
   }
 }
@@ -153,7 +149,7 @@ function askAutoLaunch() {
  *  adds hexwall to systemtray
  */
 async function createTray() {
-  tray = new Tray(path.join(__dirname, "../media/single_icon.png"))
+  tray = new Tray(path.join(__dirname, "../media/single_icon.png"));
   const contextMenu = Menu.buildFromTemplate([
     {
       label: "New Wallpaper",
