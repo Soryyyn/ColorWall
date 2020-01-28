@@ -106,20 +106,20 @@ function generateColor() {
             }
             randomHexColor = "#" + converter.rgb.hex(r, g, b);
             // for dark dither color
-            if (r - 65 > 0) {
-                r -= 65;
+            if (r - 20 > 0) {
+                r -= 20;
             }
             else {
                 r = 0;
             }
-            if (g - 65 > 0) {
-                g -= 65;
+            if (g - 20 > 0) {
+                g -= 20;
             }
             else {
                 g = 0;
             }
-            if (b - 65 > 0) {
-                b -= 65;
+            if (b - 20 > 0) {
+                b -= 20;
             }
             else {
                 b = 0;
@@ -135,7 +135,7 @@ function generateColor() {
  */
 function generateWall() {
     return __awaiter(this, void 0, void 0, function () {
-        var w, h, wall, wallctx, buffer;
+        var w, h, wall, wallctx, i, buffer;
         return __generator(this, function (_a) {
             w = monitor.getPrimaryDisplay().size.width;
             h = monitor.getPrimaryDisplay().size.height;
@@ -152,7 +152,60 @@ function generateWall() {
                 wallctx.fillRect(0, 0, w, h);
                 // dither
                 wallctx.fillStyle = ditherColor;
-                wallctx.fillRect(0, h, w, -64);
+                wallctx.fillRect(0, h, w, -80);
+                for (i = 0; i < w; i += 20) {
+                    // pattern 1
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i, h - 90, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i + 10, h - 90, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(0, h - 100, w, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i, h - 110, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i + 10, h - 110, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(0, h - 120, w, 10);
+                    // pattern 2
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i, h - 130, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i + 10, h - 130, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i + 10, h - 140, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i, h - 140, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i, h - 150, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i + 10, h - 150, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i + 10, h - 160, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i, h - 160, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i, h - 170, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i + 10, h - 170, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i + 10, h - 180, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i, h - 180, 10, 10);
+                    // pattern 3
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(0, h - 190, w, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i, h - 200, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i + 10, h - 200, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(0, h - 210, w, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i, h - 220, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i + 10, h - 220, 10, 10);
+                }
             }
             // text
             wallctx.fillStyle = fontColor;
