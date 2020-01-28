@@ -24,7 +24,7 @@ app.setLoginItemSettings({
 
 /**
  *  checks wallpaper directory if it exists,
- *  if it doesn"t, it creates it
+ *  if it doesn't, it creates it
  */
 async function checkWallpaperFolder() {
   if (!fs.existsSync(wallDir)) {

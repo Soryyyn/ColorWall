@@ -181,37 +181,35 @@ function newRandomHexWall() {
  */
 function askAutoLaunch() {
     var whenDisabled = {
-        type: 'question',
-        buttons: ['Cancel', 'Yes, please', 'No, thanks'],
+        type: "question",
+        buttons: ["Cancel", "Yes, please", "No, thanks"],
         defaultId: 2,
-        title: 'Auto Launch',
-        message: 'HexWall on System Startup currently disabled, want to enable?',
+        title: "Auto Launch",
+        message: "HexWall on System Startup currently disabled, want to enable?",
     };
     var whenEnabled = {
-        type: 'question',
-        buttons: ['Cancel', 'Yes, please', 'No, thanks'],
+        type: "question",
+        buttons: ["Cancel", "Yes, please", "No, thanks"],
         defaultId: 2,
-        title: 'Auto Launch',
-        message: 'HexWall on System Startup currently enabled, want to disable?',
+        title: "Auto Launch",
+        message: "HexWall on System Startup currently enabled, want to disable?",
     };
     if (app.getLoginItemSettings().openAtLogin) {
         var response = dialog.showMessageBoxSync(whenEnabled);
-        if (response == 1) {
+        if (response === 1) {
             app.setLoginItemSettings({
                 openAtLogin: false,
                 path: app.getPath("exe")
             });
-            console.log("disabled auto-launch");
         }
     }
     else {
         var response = dialog.showMessageBoxSync(whenDisabled);
-        if (response == 1) {
+        if (response === 1) {
             app.setLoginItemSettings({
                 openAtLogin: true,
                 path: app.getPath("exe")
             });
-            console.log("enabled auto-launch");
         }
     }
 }
