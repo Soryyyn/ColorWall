@@ -299,6 +299,37 @@ function askAutoLaunch() {
     }
 }
 /**
+ *  prompt if dithering should be enabled or not
+ */
+function askDithering() {
+    var whenDisabled = {
+        type: "question",
+        buttons: ["Cancel", "Yes, please", "No, thanks"],
+        defaultId: 2,
+        title: "Dithering",
+        message: "Dithering currently disabled, want to enable?",
+    };
+    var whenEnabled = {
+        type: "question",
+        buttons: ["Cancel", "Yes, please", "No, thanks"],
+        defaultId: 2,
+        title: "Dithering",
+        message: "Dithering currently currently enabled, want to disable?",
+    };
+    if (ditherEnabled) {
+        var response = dialog.showMessageBoxSync(whenEnabled);
+        if (response === 1) {
+            ditherEnabled = false;
+        }
+    }
+    else {
+        var response = dialog.showMessageBoxSync(whenDisabled);
+        if (response === 1) {
+            ditherEnabled = true;
+        }
+    }
+}
+/**
  *  adds hexwall to systemtray
  */
 function createTray() {
@@ -307,6 +338,12 @@ function createTray() {
         return __generator(this, function (_a) {
             tray = new Tray(path.join(__dirname, "../media/single_icon.png"));
             contextMenu = Menu.buildFromTemplate([
+                {
+                    label: "HexWall"
+                },
+                {
+                    type: "separator"
+                },
                 {
                     label: "New Wallpaper",
                     click: function () {
@@ -320,15 +357,10 @@ function createTray() {
                     }
                 },
                 {
-                    label: "Dithering",
-                    submenu: [
-                        {
-                            label: "Enable/Disable"
-                        },
-                        {
-                            label: "Darken Main Color by"
-                        }
-                    ]
+                    label: "Enable/Disable Dithering",
+                    click: function () {
+                        askDithering();
+                    }
                 },
                 {
                     type: "separator"

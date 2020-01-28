@@ -226,7 +226,6 @@ function askAutoLaunch() {
         path: app.getPath("exe")
       });
     }
-
   } else {
     const response = dialog.showMessageBoxSync(whenDisabled);
     if (response === 1) {
@@ -234,6 +233,40 @@ function askAutoLaunch() {
         openAtLogin: true,
         path: app.getPath("exe")
       });
+    }
+  }
+
+}
+
+/**
+ *  prompt if dithering should be enabled or not
+ */
+function askDithering() {
+  const whenDisabled = {
+    type: "question",
+    buttons: ["Cancel", "Yes, please", "No, thanks"],
+    defaultId: 2,
+    title: "Dithering",
+    message: "Dithering currently disabled, want to enable?",
+  };
+
+  const whenEnabled = {
+    type: "question",
+    buttons: ["Cancel", "Yes, please", "No, thanks"],
+    defaultId: 2,
+    title: "Dithering",
+    message: "Dithering currently currently enabled, want to disable?",
+  };
+
+  if (ditherEnabled) {
+    const response = dialog.showMessageBoxSync(whenEnabled);
+    if (response === 1) {
+      ditherEnabled = false;
+    }
+  } else {
+    const response = dialog.showMessageBoxSync(whenDisabled);
+    if (response === 1) {
+      ditherEnabled = true;
     }
   }
 }
@@ -244,6 +277,12 @@ function askAutoLaunch() {
 async function createTray() {
   tray = new Tray(path.join(__dirname, "../media/single_icon.png"));
   const contextMenu = Menu.buildFromTemplate([
+    {
+      label: "HexWall"
+    },
+    {
+      type: "separator"
+    },
     {
       label: "New Wallpaper",
       click() {
@@ -257,15 +296,10 @@ async function createTray() {
       }
     },
     {
-      label: "Dithering",
-      submenu: [
-        {
-          label: "Enable/Disable"
-        },
-        {
-          label: "Darken Main Color by"
-        }
-      ]
+      label: "Enable/Disable Dithering",
+      click() {
+        askDithering();
+      }
     },
     {
       type: "separator"

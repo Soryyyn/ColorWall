@@ -46,6 +46,10 @@ declare function newRandomHexWall(): Promise<void>;
  */
 declare function askAutoLaunch(): void;
 /**
+ *  prompt if dithering should be enabled or not
+ */
+declare function askDithering(): void;
+/**
  *  adds hexwall to systemtray
  */
 declare function createTray(): Promise<void>;
