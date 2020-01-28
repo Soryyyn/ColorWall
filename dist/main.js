@@ -46,6 +46,8 @@ var _a = require("electron"), app = _a.app, Menu = _a.Menu, Tray = _a.Tray, dial
 var monitor = electron.screen;
 var wallDir = "./walls";
 var randomHexColor;
+var ditherColor;
+var ditherEnabled = true;
 var fontColor;
 var tray = null;
 /**
@@ -103,6 +105,26 @@ function generateColor() {
                 fontColor = "#FFFFFF";
             }
             randomHexColor = "#" + converter.rgb.hex(r, g, b);
+            // for dark dither color
+            if (r - 20 > 0) {
+                r -= 20;
+            }
+            else {
+                r = 0;
+            }
+            if (g - 20 > 0) {
+                g -= 20;
+            }
+            else {
+                g = 0;
+            }
+            if (b - 20 > 0) {
+                b -= 20;
+            }
+            else {
+                b = 0;
+            }
+            ditherColor = "#" + converter.rgb.hex(r, g, b);
             return [2 /*return*/];
         });
     });
@@ -113,15 +135,78 @@ function generateColor() {
  */
 function generateWall() {
     return __awaiter(this, void 0, void 0, function () {
-        var w, h, wall, wallctx, buffer;
+        var w, h, wall, wallctx, i, buffer;
         return __generator(this, function (_a) {
             w = monitor.getPrimaryDisplay().size.width;
             h = monitor.getPrimaryDisplay().size.height;
             wall = canvas.createCanvas(w, h);
             wallctx = wall.getContext("2d");
-            // bg
-            wallctx.fillStyle = randomHexColor;
-            wallctx.fillRect(0, 0, w, h);
+            if (!ditherEnabled) {
+                // bg
+                wallctx.fillStyle = randomHexColor;
+                wallctx.fillRect(0, 0, w, h);
+            }
+            else {
+                // bg
+                wallctx.fillStyle = randomHexColor;
+                wallctx.fillRect(0, 0, w, h);
+                // dither
+                wallctx.fillStyle = ditherColor;
+                wallctx.fillRect(0, h, w, -80);
+                for (i = 0; i < w; i += 20) {
+                    // pattern 1
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i, h - 90, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i + 10, h - 90, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(0, h - 100, w, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i, h - 110, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i + 10, h - 110, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(0, h - 120, w, 10);
+                    // pattern 2
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i, h - 130, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i + 10, h - 130, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i + 10, h - 140, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i, h - 140, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i, h - 150, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i + 10, h - 150, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i + 10, h - 160, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i, h - 160, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i, h - 170, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i + 10, h - 170, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i + 10, h - 180, 10, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i, h - 180, 10, 10);
+                    // pattern 3
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(0, h - 190, w, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i, h - 200, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i + 10, h - 200, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(0, h - 210, w, 10);
+                    wallctx.fillStyle = ditherColor;
+                    wallctx.fillRect(i, h - 220, 10, 10);
+                    wallctx.fillStyle = randomHexColor;
+                    wallctx.fillRect(i + 10, h - 220, 10, 10);
+                }
+            }
             // text
             wallctx.fillStyle = fontColor;
             wallctx.font = "128px Unifont";
@@ -214,6 +299,37 @@ function askAutoLaunch() {
     }
 }
 /**
+ *  prompt if dithering should be enabled or not
+ */
+function askDithering() {
+    var whenDisabled = {
+        type: "question",
+        buttons: ["Cancel", "Yes, please", "No, thanks"],
+        defaultId: 2,
+        title: "Dithering",
+        message: "Dithering currently disabled, want to enable?",
+    };
+    var whenEnabled = {
+        type: "question",
+        buttons: ["Cancel", "Yes, please", "No, thanks"],
+        defaultId: 2,
+        title: "Dithering",
+        message: "Dithering currently currently enabled, want to disable?",
+    };
+    if (ditherEnabled) {
+        var response = dialog.showMessageBoxSync(whenEnabled);
+        if (response === 1) {
+            ditherEnabled = false;
+        }
+    }
+    else {
+        var response = dialog.showMessageBoxSync(whenDisabled);
+        if (response === 1) {
+            ditherEnabled = true;
+        }
+    }
+}
+/**
  *  adds hexwall to systemtray
  */
 function createTray() {
@@ -222,6 +338,12 @@ function createTray() {
         return __generator(this, function (_a) {
             tray = new Tray(path.join(__dirname, "../media/single_icon.png"));
             contextMenu = Menu.buildFromTemplate([
+                {
+                    label: "HexWall"
+                },
+                {
+                    type: "separator"
+                },
                 {
                     label: "New Wallpaper",
                     click: function () {
@@ -233,6 +355,15 @@ function createTray() {
                     click: function () {
                         askAutoLaunch();
                     }
+                },
+                {
+                    label: "Enable/Disable Dithering",
+                    click: function () {
+                        askDithering();
+                    }
+                },
+                {
+                    type: "separator"
                 },
                 {
                     label: "Quit",

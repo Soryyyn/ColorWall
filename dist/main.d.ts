@@ -9,6 +9,8 @@ declare const app: any, Menu: any, Tray: any, dialog: any;
 declare const monitor: any;
 declare const wallDir = "./walls";
 declare let randomHexColor: any;
+declare let ditherColor: any;
+declare let ditherEnabled: Boolean;
 declare let fontColor: any;
 declare let tray: any;
 /**
@@ -43,6 +45,10 @@ declare function newRandomHexWall(): Promise<void>;
  *  prompt if auto launch should be enabled or not
  */
 declare function askAutoLaunch(): void;
+/**
+ *  prompt if dithering should be enabled or not
+ */
+declare function askDithering(): void;
 /**
  *  adds hexwall to systemtray
  */
