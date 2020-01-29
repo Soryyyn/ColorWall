@@ -407,13 +407,11 @@ function createTray() {
  *  if app is started add to tray and listen on menu
  */
 app.on("ready", function () {
-    fs.unlinkSync("./log.txt");
     createTray();
     newRandomHexWall();
 });
 app.on("activate", function () {
     if (tray === null) {
-        fs.unlinkSync("./log.txt");
         createTray();
         newRandomHexWall();
     }

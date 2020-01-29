@@ -344,14 +344,12 @@ async function createTray() {
  *  if app is started add to tray and listen on menu
  */
 app.on("ready", () => {
-  fs.unlinkSync("./log.txt");
   createTray();
   newRandomHexWall();
 });
 
 app.on("activate", () => {
   if (tray === null) {
-    fs.unlinkSync("./log.txt");
     createTray();
     newRandomHexWall();
   }
