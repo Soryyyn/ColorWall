@@ -91,6 +91,7 @@ async function generateWall() {
   const w = monitor.getPrimaryDisplay().size.width;
   const h = monitor.getPrimaryDisplay().size.height;
 
+  canvas.registerFont("./unifont.ttf", { family: "Unifont" });
   const wall = canvas.createCanvas(w, h);
   const wallctx = wall.getContext("2d");
 

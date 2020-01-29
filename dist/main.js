@@ -139,6 +139,7 @@ function generateWall() {
         return __generator(this, function (_a) {
             w = monitor.getPrimaryDisplay().size.width;
             h = monitor.getPrimaryDisplay().size.height;
+            canvas.registerFont("./unifont.ttf", { family: "Unifont" });
             wall = canvas.createCanvas(w, h);
             wallctx = wall.getContext("2d");
             if (!ditherEnabled) {
