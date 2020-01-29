@@ -5,6 +5,7 @@ const canvas = require("canvas");
 const converter = require("color-convert");
 const path = require("path");
 const electron = require("electron");
+const moment = require("moment");
 
 const { app, Menu, Tray, dialog } = require("electron");
 
@@ -25,11 +26,21 @@ app.setLoginItemSettings({
 });
 
 /**
+ * adding to log.txt for debug purposes
+ * @param text
+ */
+function logEntry(text: String) {
+  fs.writeFileSync("./log.txt", moment().format("YYYY-MM-DD HH:mm:ss") + ": " + text + "\n", { flag: "a" });
+}
+
+/**
  *  checks wallpaper directory if it exists,
  *  if it doesn't, it creates it
  */
 async function checkWallpaperFolder() {
+  logEntry("checking if walls folder exists");
   if (!fs.existsSync(wallDir)) {
+    logEntry("creating wall folder");
     fs.mkdirSync(wallDir);
   }
 }
@@ -38,10 +49,12 @@ async function checkWallpaperFolder() {
  *  cleans up the wallpaper folder
  */
 async function cleanupFolder() {
+  logEntry("cleaning up wall folder");
   const images = fs.readdirSync(wallDir);
   if (images.length > 0) {
     fs.unlinkSync(wallDir + "/" + images.pop());
   }
+  logEntry("cleaned up wall folder");
 }
 
 /**
@@ -49,6 +62,7 @@ async function cleanupFolder() {
  *  if the font color should be white or black
  */
 async function generateColor() {
+  logEntry("generating color");
   let r = Math.floor(Math.random() * 255 + 1);
   let g = Math.floor(Math.random() * 255 + 1);
   let b = Math.floor(Math.random() * 255 + 1);
@@ -81,6 +95,7 @@ async function generateColor() {
   }
 
   ditherColor = "#" + converter.rgb.hex(r, g, b);
+  logEntry("finished generating color");
 }
 
 /**
@@ -88,10 +103,10 @@ async function generateColor() {
  *  to the wall folder
  */
 async function generateWall() {
+  logEntry("generating wallpaper");
   const w = monitor.getPrimaryDisplay().size.width;
   const h = monitor.getPrimaryDisplay().size.height;
 
-  canvas.registerFont("./unifont.ttf", { family: "Unifont" });
   const wall = canvas.createCanvas(w, h);
   const wallctx = wall.getContext("2d");
 
@@ -176,6 +191,7 @@ async function generateWall() {
   wallctx.fillText(randomHexColor, w / 2, h / 2);
 
   // write buffer to image
+  logEntry("creating wallpaper file");
   const buffer = wall.toBuffer("image/png");
   fs.writeFileSync(path.join(wallDir + "/" + randomHexColor + ".png"), buffer);
 }
@@ -185,6 +201,7 @@ async function generateWall() {
  *  as wallpaper
  */
 async function setWallpaper() {
+  logEntry("setting wallpaper");
   await wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"));
 }
 
@@ -197,6 +214,7 @@ async function newRandomHexWall() {
   await generateColor();
   await generateWall();
   await setWallpaper();
+  logEntry("---------------------------------");
 }
 
 /**
@@ -226,6 +244,7 @@ function askAutoLaunch() {
         openAtLogin: false,
         path: app.getPath("exe")
       });
+      logEntry("disabling autolaunch");
     }
   } else {
     const response = dialog.showMessageBoxSync(whenDisabled);
@@ -234,6 +253,7 @@ function askAutoLaunch() {
         openAtLogin: true,
         path: app.getPath("exe")
       });
+      logEntry("enabling autolaunch");
     }
   }
 
@@ -263,11 +283,13 @@ function askDithering() {
     const response = dialog.showMessageBoxSync(whenEnabled);
     if (response === 1) {
       ditherEnabled = false;
+      logEntry("disabling dithering");
     }
   } else {
     const response = dialog.showMessageBoxSync(whenDisabled);
     if (response === 1) {
       ditherEnabled = true;
+      logEntry("enabling dithering");
     }
   }
 }
@@ -322,6 +344,22 @@ async function createTray() {
  *  if app is started add to tray and listen on menu
  */
 app.on("ready", () => {
+  fs.unlinkSync("./log.txt");
   createTray();
   newRandomHexWall();
+});
+
+app.on("activate", () => {
+  if (tray === null) {
+    fs.unlinkSync("./log.txt");
+    createTray();
+    newRandomHexWall();
+  }
+});
+
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+    fs.unlinkSync("./log.txt");
+  }
 });

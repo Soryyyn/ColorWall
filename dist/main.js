@@ -42,6 +42,7 @@ var canvas = require("canvas");
 var converter = require("color-convert");
 var path = require("path");
 var electron = require("electron");
+var moment = require("moment");
 var _a = require("electron"), app = _a.app, Menu = _a.Menu, Tray = _a.Tray, dialog = _a.dialog;
 var monitor = electron.screen;
 var wallDir = "./walls";
@@ -58,13 +59,22 @@ app.setLoginItemSettings({
     path: app.getPath("exe")
 });
 /**
+ * adding to log.txt for debug purposes
+ * @param text
+ */
+function logEntry(text) {
+    fs.writeFileSync("./log.txt", moment().format("YYYY-MM-DD HH:mm:ss") + ": " + text + "\n", { flag: "a" });
+}
+/**
  *  checks wallpaper directory if it exists,
  *  if it doesn't, it creates it
  */
 function checkWallpaperFolder() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
+            logEntry("checking if walls folder exists");
             if (!fs.existsSync(wallDir)) {
+                logEntry("creating wall folder");
                 fs.mkdirSync(wallDir);
             }
             return [2 /*return*/];
@@ -78,10 +88,12 @@ function cleanupFolder() {
     return __awaiter(this, void 0, void 0, function () {
         var images;
         return __generator(this, function (_a) {
+            logEntry("cleaning up wall folder");
             images = fs.readdirSync(wallDir);
             if (images.length > 0) {
                 fs.unlinkSync(wallDir + "/" + images.pop());
             }
+            logEntry("cleaned up wall folder");
             return [2 /*return*/];
         });
     });
@@ -94,6 +106,7 @@ function generateColor() {
     return __awaiter(this, void 0, void 0, function () {
         var r, g, b, rgb;
         return __generator(this, function (_a) {
+            logEntry("generating color");
             r = Math.floor(Math.random() * 255 + 1);
             g = Math.floor(Math.random() * 255 + 1);
             b = Math.floor(Math.random() * 255 + 1);
@@ -125,6 +138,7 @@ function generateColor() {
                 b = 0;
             }
             ditherColor = "#" + converter.rgb.hex(r, g, b);
+            logEntry("finished generating color");
             return [2 /*return*/];
         });
     });
@@ -137,9 +151,9 @@ function generateWall() {
     return __awaiter(this, void 0, void 0, function () {
         var w, h, wall, wallctx, i, buffer;
         return __generator(this, function (_a) {
+            logEntry("generating wallpaper");
             w = monitor.getPrimaryDisplay().size.width;
             h = monitor.getPrimaryDisplay().size.height;
-            canvas.registerFont("./unifont.ttf", { family: "Unifont" });
             wall = canvas.createCanvas(w, h);
             wallctx = wall.getContext("2d");
             if (!ditherEnabled) {
@@ -213,6 +227,8 @@ function generateWall() {
             wallctx.font = "128px Unifont";
             wallctx.textAlign = "center";
             wallctx.fillText(randomHexColor, w / 2, h / 2);
+            // write buffer to image
+            logEntry("creating wallpaper file");
             buffer = wall.toBuffer("image/png");
             fs.writeFileSync(path.join(wallDir + "/" + randomHexColor + ".png"), buffer);
             return [2 /*return*/];
@@ -227,7 +243,9 @@ function setWallpaper() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"))];
+                case 0:
+                    logEntry("setting wallpaper");
+                    return [4 /*yield*/, wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"))];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
@@ -257,6 +275,7 @@ function newRandomHexWall() {
                     return [4 /*yield*/, setWallpaper()];
                 case 5:
                     _a.sent();
+                    logEntry("---------------------------------");
                     return [2 /*return*/];
             }
         });
@@ -287,6 +306,7 @@ function askAutoLaunch() {
                 openAtLogin: false,
                 path: app.getPath("exe")
             });
+            logEntry("disabling autolaunch");
         }
     }
     else {
@@ -296,6 +316,7 @@ function askAutoLaunch() {
                 openAtLogin: true,
                 path: app.getPath("exe")
             });
+            logEntry("enabling autolaunch");
         }
     }
 }
@@ -321,12 +342,14 @@ function askDithering() {
         var response = dialog.showMessageBoxSync(whenEnabled);
         if (response === 1) {
             ditherEnabled = false;
+            logEntry("disabling dithering");
         }
     }
     else {
         var response = dialog.showMessageBoxSync(whenDisabled);
         if (response === 1) {
             ditherEnabled = true;
+            logEntry("enabling dithering");
         }
     }
 }
@@ -384,6 +407,20 @@ function createTray() {
  *  if app is started add to tray and listen on menu
  */
 app.on("ready", function () {
+    fs.unlinkSync("./log.txt");
     createTray();
     newRandomHexWall();
+});
+app.on("activate", function () {
+    if (tray === null) {
+        fs.unlinkSync("./log.txt");
+        createTray();
+        newRandomHexWall();
+    }
+});
+app.on("window-all-closed", function () {
+    if (process.platform !== "darwin") {
+        app.quit();
+        fs.unlinkSync("./log.txt");
+    }
 });

@@ -5,6 +5,7 @@ declare const canvas: any;
 declare const converter: any;
 declare const path: any;
 declare const electron: any;
+declare const moment: any;
 declare const app: any, Menu: any, Tray: any, dialog: any;
 declare const monitor: any;
 declare const wallDir = "./walls";
@@ -13,6 +14,11 @@ declare let ditherColor: any;
 declare let ditherEnabled: Boolean;
 declare let fontColor: any;
 declare let tray: any;
+/**
+ * adding to log.txt for debug purposes
+ * @param text
+ */
+declare function logEntry(text: String): void;
 /**
  *  checks wallpaper directory if it exists,
  *  if it doesn't, it creates it

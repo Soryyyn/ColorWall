@@ -19,8 +19,7 @@
     },
     "directories": {
       "output": "builds"
-    },
-    "asar": true
+    }
   },
   "repository": {
     "type": "git",
@@ -45,6 +44,7 @@
   "dependencies": {
     "canvas": "^2.6.1",
     "color-convert": "^2.0.1",
-    "wallpaper": "^4.4.1"
+    "wallpaper": "^4.4.1",
+    "moment": "^2.24.0"
   }
 }
