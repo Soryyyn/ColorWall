@@ -4,10 +4,12 @@ const wallpaper = require("wallpaper");
 const canvas = require("canvas");
 const converter = require("color-convert");
 const path = require("path");
+// @ts-ignore
 const electron = require("electron");
 const moment = require("moment");
+const url = require("url");
 
-const { app, Menu, Tray, dialog } = require("electron");
+const { app, Menu, Tray, dialog, BrowserWindow, ipcMain } = require("electron");
 
 const monitor = electron.screen;
 const wallDir = "./walls";
@@ -16,6 +18,7 @@ let ditherColor: any;
 let ditherEnabled: Boolean = true;
 let fontColor: any;
 let tray: any = null;
+let win;
 
 /**
  *  disable auto-launch default
@@ -301,7 +304,10 @@ async function createTray() {
   tray = new Tray(path.join(__dirname, "../media/single_icon.png"));
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: "HexWall"
+      label: "HexWall",
+      click() {
+        createWindow()
+      }
     },
     {
       type: "separator"
@@ -341,7 +347,35 @@ async function createTray() {
 }
 
 /**
- *  if app is started add to tray and listen on menu
+ *  create window
+ */
+function createWindow() {
+  win = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true
+    },
+    resizable: false,
+    width: 800,
+    height: 600,
+    frame: false,
+    titleBarStyle: 'hidden'
+  });
+
+  win.loadURL(
+    url.format({
+      pathname: path.join(__dirname, "../page/index.html"),
+      protocol: "file:",
+      slashes: true
+    })
+  );
+
+  win.on("closed", () => {
+    win = null;
+  });
+}
+
+/**
+ *  signal management
  */
 app.on("ready", () => {
   createTray();
@@ -355,9 +389,6 @@ app.on("activate", () => {
   }
 });
 
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-    fs.unlinkSync("./log.txt");
-  }
+app.on("window-all-closed", (e: any) => {
+  e.preventDefault()
 });

@@ -41,9 +41,11 @@ var wallpaper = require("wallpaper");
 var canvas = require("canvas");
 var converter = require("color-convert");
 var path = require("path");
+// @ts-ignore
 var electron = require("electron");
 var moment = require("moment");
-var _a = require("electron"), app = _a.app, Menu = _a.Menu, Tray = _a.Tray, dialog = _a.dialog;
+var url = require("url");
+var _a = require("electron"), app = _a.app, Menu = _a.Menu, Tray = _a.Tray, dialog = _a.dialog, BrowserWindow = _a.BrowserWindow, ipcMain = _a.ipcMain;
 var monitor = electron.screen;
 var wallDir = "./walls";
 var randomHexColor;
@@ -51,6 +53,7 @@ var ditherColor;
 var ditherEnabled = true;
 var fontColor;
 var tray = null;
+var win;
 /**
  *  disable auto-launch default
  */
@@ -363,7 +366,10 @@ function createTray() {
             tray = new Tray(path.join(__dirname, "../media/single_icon.png"));
             contextMenu = Menu.buildFromTemplate([
                 {
-                    label: "HexWall"
+                    label: "HexWall",
+                    click: function () {
+                        createWindow();
+                    }
                 },
                 {
                     type: "separator"
@@ -404,7 +410,30 @@ function createTray() {
     });
 }
 /**
- *  if app is started add to tray and listen on menu
+ *  create window
+ */
+function createWindow() {
+    win = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true
+        },
+        resizable: false,
+        width: 800,
+        height: 600,
+        frame: false,
+        titleBarStyle: 'hidden'
+    });
+    win.loadURL(url.format({
+        pathname: path.join(__dirname, "../page/index.html"),
+        protocol: "file:",
+        slashes: true
+    }));
+    win.on("closed", function () {
+        win = null;
+    });
+}
+/**
+ *  signal management
  */
 app.on("ready", function () {
     createTray();
@@ -416,9 +445,6 @@ app.on("activate", function () {
         newRandomHexWall();
     }
 });
-app.on("window-all-closed", function () {
-    if (process.platform !== "darwin") {
-        app.quit();
-        fs.unlinkSync("./log.txt");
-    }
+app.on("window-all-closed", function (e) {
+    e.preventDefault();
 });

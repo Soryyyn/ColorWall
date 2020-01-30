@@ -6,7 +6,8 @@ declare const converter: any;
 declare const path: any;
 declare const electron: any;
 declare const moment: any;
-declare const app: any, Menu: any, Tray: any, dialog: any;
+declare const url: any;
+declare const app: any, Menu: any, Tray: any, dialog: any, BrowserWindow: any, ipcMain: any;
 declare const monitor: any;
 declare const wallDir = "./walls";
 declare let randomHexColor: any;
@@ -14,6 +15,7 @@ declare let ditherColor: any;
 declare let ditherEnabled: Boolean;
 declare let fontColor: any;
 declare let tray: any;
+declare let win: any;
 /**
  * adding to log.txt for debug purposes
  * @param text
@@ -59,3 +61,7 @@ declare function askDithering(): void;
  *  adds hexwall to systemtray
  */
 declare function createTray(): Promise<void>;
+/**
+ *  create window
+ */
+declare function createWindow(): void;
