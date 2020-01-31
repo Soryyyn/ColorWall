@@ -356,9 +356,7 @@ function createWindow() {
     },
     resizable: false,
     width: 800,
-    height: 600,
-    frame: false,
-    titleBarStyle: 'hidden'
+    height: 600
   });
 
   win.loadURL(

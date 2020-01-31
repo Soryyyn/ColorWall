@@ -1,15 +1,29 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: 'Montserrat', sans-serif;
 }
 
-#windowBar {
-  background-color:lightblue;
-  width: auto;
-  height: 1rem;
-  position: relative;
-  #closeButton {
-    position: absolute;
-    cursor: pointer;
+nav {
+  position: fixed;
+  float: left;
+  height: 100%;
+  background-color: #e3e3e3;
+  ul li {
+    display: block;
+    text-decoration: none;
+    padding: 1rem 2rem 1rem 1rem;
+    &:hover{
+      background-color: #c8c8c8;
+      cursor: pointer;
+    }
+  }
+}
+
+main {
+  h1 {
+    position: fixed;
+    margin-left: 15%;
+    padding: 1rem;
   }
 }
