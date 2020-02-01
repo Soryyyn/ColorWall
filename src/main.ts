@@ -18,7 +18,7 @@ let ditherColor: any;
 let ditherEnabled: Boolean = true;
 let fontColor: any;
 let tray: any = null;
-let win;
+let win: any;
 
 /**
  *  disable auto-launch default
@@ -347,7 +347,7 @@ async function createTray() {
 }
 
 /**
- *  create window
+ *  create manager window
  */
 function createWindow() {
   win = new BrowserWindow({
@@ -355,8 +355,10 @@ function createWindow() {
       nodeIntegration: true
     },
     resizable: false,
-    width: 800,
-    height: 600
+    width: 600,
+    height: 400,
+    frame: false,
+    transparent: true
   });
 
   win.loadURL(
@@ -367,8 +369,8 @@ function createWindow() {
     })
   );
 
-  win.on("closed", () => {
-    win = null;
+  win.on("blur", () => {
+    win.close();
   });
 }
 

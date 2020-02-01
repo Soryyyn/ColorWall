@@ -410,7 +410,7 @@ function createTray() {
     });
 }
 /**
- *  create window
+ *  create manager window
  */
 function createWindow() {
     win = new BrowserWindow({
@@ -418,16 +418,18 @@ function createWindow() {
             nodeIntegration: true
         },
         resizable: false,
-        width: 800,
-        height: 600
+        width: 600,
+        height: 400,
+        frame: false,
+        transparent: true
     });
     win.loadURL(url.format({
         pathname: path.join(__dirname, "../page/index.html"),
         protocol: "file:",
         slashes: true
     }));
-    win.on("closed", function () {
-        win = null;
+    win.on("blur", function () {
+        win.close();
     });
 }
 /**

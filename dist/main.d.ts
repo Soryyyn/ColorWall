@@ -62,6 +62,6 @@ declare function askDithering(): void;
  */
 declare function createTray(): Promise<void>;
 /**
- *  create window
+ *  create manager window
  */
 declare function createWindow(): void;

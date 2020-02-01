@@ -1,34 +1,8 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: 'Montserrat', sans-serif;
 }
 
-nav {
-  position: fixed;
-  float: left;
-  height: 100%;
-  background-color: #e3e3e3;
-  ul li {
-    display: block;
-    text-decoration: none;
-    padding: 1rem 2rem 1rem 1rem;
-    &:hover{
-      background-color: #c8c8c8;
-      cursor: pointer;
-    }
-  }
-  img {
-    width: 80px;
-    height: 80px;
-    margin: 10px;
-  }
-}
-
-main {
-  h1 {
-    position: fixed;
-    margin-left: 15%;
-    padding: 1rem;
-  }
+body {
+  background: rgba($color: #000000, $alpha: 0.5)
 }
