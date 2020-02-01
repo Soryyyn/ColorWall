@@ -428,9 +428,7 @@ function createWindow() {
         protocol: "file:",
         slashes: true
     }));
-    win.on("blur", function () {
-        win.close();
-    });
+    win.center();
 }
 /**
  *  signal management
@@ -445,6 +443,11 @@ app.on("activate", function () {
         newRandomHexWall();
     }
 });
+// focus lost
+win.on("blur", function () {
+    win.close();
+});
+// on window close dont close app
 app.on("window-all-closed", function (e) {
     e.preventDefault();
 });

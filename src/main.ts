@@ -369,9 +369,7 @@ function createWindow() {
     })
   );
 
-  win.on("blur", () => {
-    win.close();
-  });
+  win.center();
 }
 
 /**
@@ -389,6 +387,12 @@ app.on("activate", () => {
   }
 });
 
+// focus lost
+win.on("blur", () => {
+  win.close();
+});
+
+// on window close dont close app
 app.on("window-all-closed", (e: any) => {
   e.preventDefault()
 });
