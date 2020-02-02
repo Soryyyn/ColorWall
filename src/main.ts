@@ -18,6 +18,7 @@ let ditherColor: any;
 let ditherEnabled: Boolean = true;
 let fontColor: any;
 let tray: any = null;
+// @ts-ignore
 let win: any;
 
 /**
@@ -370,6 +371,8 @@ function createWindow() {
   );
 
   win.center();
+
+  win.webContents.openDevTools()
 }
 
 /**
@@ -385,11 +388,6 @@ app.on("activate", () => {
     createTray();
     newRandomHexWall();
   }
-});
-
-// focus lost
-win.on("blur", () => {
-  win.close();
 });
 
 // on window close dont close app

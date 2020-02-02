@@ -1,3 +1,5 @@
 declare const ipcRenderer: any, remote: any;
-declare function addAppInfos(): void;
-declare function closeWindow(): void;
+declare let win: any;
+declare const pin: HTMLElement;
+declare let pinSet: Boolean;
+declare function pinWindow(): void;

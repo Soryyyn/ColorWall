@@ -1,17 +1,25 @@
 const { ipcRenderer, remote } = require("electron");
 
-function addAppInfos() {
-  // @ts-ignore
-  document.getElementById("node-version").innerHTML = "Node.js Version: " + process.versions.node;
-  // @ts-ignore
-  document.getElementById("chrome-version").innerHTML = "Chrome Version: " + process.versions.chrome;
-  // @ts-ignore
-  document.getElementById("electron-version").innerHTML = "Electron Version: " + process.versions.electron;
-}
+// @ts-ignore
+let win = remote.getCurrentWindow();
 
-function closeWindow() {
-  var window = remote.getCurrentWindow();
-  window.close();
-}
+const pin = document.getElementById("pin");
+let pinSet: Boolean = false;
 
-addAppInfos();
+win.on("blur", () => {
+  win.close();
+});
+
+function pinWindow() {
+  if (pinSet === false) {
+    pinSet = true;
+    win.removeAllListeners("blur");
+    // pin.setAttribute("color", "white");
+  } else {
+    pinSet = false;
+    win.on("blur", () => {
+      win.close();
+    });
+    // pin.removeAttribute("color");
+  }
+}

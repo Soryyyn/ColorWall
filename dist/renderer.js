@@ -1,15 +1,23 @@
 "use strict";
 var _a = require("electron"), ipcRenderer = _a.ipcRenderer, remote = _a.remote;
-function addAppInfos() {
-    // @ts-ignore
-    document.getElementById("node-version").innerHTML = "Node.js Version: " + process.versions.node;
-    // @ts-ignore
-    document.getElementById("chrome-version").innerHTML = "Chrome Version: " + process.versions.chrome;
-    // @ts-ignore
-    document.getElementById("electron-version").innerHTML = "Electron Version: " + process.versions.electron;
+// @ts-ignore
+var win = remote.getCurrentWindow();
+var pin = document.getElementById("pin");
+var pinSet = false;
+win.on("blur", function () {
+    win.close();
+});
+function pinWindow() {
+    if (pinSet === false) {
+        pinSet = true;
+        win.removeAllListeners("blur");
+        // pin.setAttribute("color", "white");
+    }
+    else {
+        pinSet = false;
+        win.on("blur", function () {
+            win.close();
+        });
+        // pin.removeAttribute("color");
+    }
 }
-function closeWindow() {
-    var window = remote.getCurrentWindow();
-    window.close();
-}
-addAppInfos();

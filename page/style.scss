@@ -1,8 +1,24 @@
+$bg: rgba($color: #000000, $alpha: 0.5);
+
 * {
   margin: 0;
   padding: 0;
+  transition: 0.2s;
 }
 
 body {
-  background: rgba($color: #000000, $alpha: 0.5)
+  background: $bg;
+}
+
+#pin {
+  position: fixed;
+  top: 0;
+  right: 0;
+  i {
+    color: #6e6e6e;
+    padding: 0.5rem;
+    &:hover {
+      color: white;
+    }
+  }
 }

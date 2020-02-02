@@ -1,1 +1,1 @@
-*{margin:0;padding:0}body{background:rgba(0,0,0,0.5)}
+*{margin:0;padding:0;-webkit-transition:0.2s;transition:0.2s}body{background:rgba(0,0,0,0.5)}#pin{position:fixed;top:0;right:0}#pin i{color:#6e6e6e;padding:0.5rem}#pin i:hover{color:white}

@@ -53,6 +53,7 @@ var ditherColor;
 var ditherEnabled = true;
 var fontColor;
 var tray = null;
+// @ts-ignore
 var win;
 /**
  *  disable auto-launch default
@@ -429,6 +430,7 @@ function createWindow() {
         slashes: true
     }));
     win.center();
+    win.webContents.openDevTools();
 }
 /**
  *  signal management
@@ -442,10 +444,6 @@ app.on("activate", function () {
         createTray();
         newRandomHexWall();
     }
-});
-// focus lost
-win.on("blur", function () {
-    win.close();
 });
 // on window close dont close app
 app.on("window-all-closed", function (e) {
