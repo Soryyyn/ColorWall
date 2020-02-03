@@ -18,11 +18,6 @@ declare let fontColor: any;
 declare let tray: any;
 declare let win: any;
 /**
- * adding to log.txt for debug purposes
- * @param text
- */
-declare function logEntry(text: String): void;
-/**
  *  checks wallpaper directory if it exists,
  *  if it doesn't, it creates it
  */
