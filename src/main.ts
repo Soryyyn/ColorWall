@@ -8,6 +8,7 @@ const path = require("path");
 const electron = require("electron");
 const moment = require("moment");
 const url = require("url");
+const opn = require("opn");
 
 const { app, Menu, Tray, dialog, BrowserWindow, ipcMain } = require("electron");
 
@@ -356,8 +357,8 @@ function createWindow() {
       nodeIntegration: true
     },
     resizable: false,
-    width: 600,
-    height: 400,
+    width: 800,
+    height: 600,
     frame: false,
     transparent: true,
     icon: path.join(__dirname, "../media/single_icon.png")
@@ -394,4 +395,10 @@ app.on("activate", () => {
 // on window close dont close app
 app.on("window-all-closed", (e: any) => {
   e.preventDefault()
+});
+
+// open clicked link in front end
+ipcMain.on("openLink", (event: any, arg: any) => {
+  opn(arg);
+  event.returnValue = true;
 });

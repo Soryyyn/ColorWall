@@ -45,6 +45,7 @@ var path = require("path");
 var electron = require("electron");
 var moment = require("moment");
 var url = require("url");
+var opn = require("opn");
 var _a = require("electron"), app = _a.app, Menu = _a.Menu, Tray = _a.Tray, dialog = _a.dialog, BrowserWindow = _a.BrowserWindow, ipcMain = _a.ipcMain;
 var monitor = electron.screen;
 var wallDir = "./walls";
@@ -419,8 +420,8 @@ function createWindow() {
             nodeIntegration: true
         },
         resizable: false,
-        width: 600,
-        height: 400,
+        width: 800,
+        height: 600,
         frame: false,
         transparent: true,
         icon: path.join(__dirname, "../media/single_icon.png")
@@ -449,4 +450,9 @@ app.on("activate", function () {
 // on window close dont close app
 app.on("window-all-closed", function (e) {
     e.preventDefault();
+});
+// open clicked link in front end
+ipcMain.on("openLink", function (event, arg) {
+    opn(arg);
+    event.returnValue = true;
 });

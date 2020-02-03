@@ -44,7 +44,8 @@
   "dependencies": {
     "canvas": "^2.6.1",
     "color-convert": "^2.0.1",
-    "wallpaper": "^4.4.1",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "opn": "^6.0.0",
+    "wallpaper": "^4.4.1"
   }
 }

@@ -13,6 +13,8 @@ $fontHovered: white;
 
 body {
   background: $bg-back;
+  width: 100%;
+  height: 100%;
 }
 
 #pin {
@@ -36,6 +38,7 @@ nav {
   left: 0;
   overflow-x: hidden;
   height: 100%;
+  width: 8rem;
   li {
     display: block;
     padding: 1rem;
@@ -44,5 +47,25 @@ nav {
     &:hover {
       color: $fontHovered;
     }
+  }
+}
+
+main {
+  margin: 1rem;
+  position: fixed;
+  top: 0;
+  left: 9rem;
+  div {
+    display: block;
+    h1 {
+      margin-bottom: 2rem;
+    }
+    #linkInText {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+  #aboutLogo {
+    width: 90%;
   }
 }

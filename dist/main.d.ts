@@ -7,6 +7,7 @@ declare const path: any;
 declare const electron: any;
 declare const moment: any;
 declare const url: any;
+declare const opn: any;
 declare const app: any, Menu: any, Tray: any, dialog: any, BrowserWindow: any, ipcMain: any;
 declare const monitor: any;
 declare const wallDir = "./walls";

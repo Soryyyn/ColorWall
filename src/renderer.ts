@@ -6,9 +6,20 @@ let win = remote.getCurrentWindow();
 const pin = document.getElementsByClassName("fa-thumbtack")[0];
 let pinSet: Boolean = false;
 
-win.on("blur", () => {
-  win.close();
-});
+/**
+ *  set defaults (close window on focus lost, hide main divs)
+ */
+function setDefaults() {
+  win.on("blur", () => {
+    win.close();
+  });
+
+  document.getElementById("lastcolors").style.display = "none";
+  document.getElementById("favorites").style.display = "none";
+  document.getElementById("settings").style.display = "none";
+
+  document.getElementById("aboutNav").style.color = "white";
+}
 
 /**
  * disable window from closing on focus lost
@@ -28,10 +39,70 @@ function pinWindow() {
 }
 
 /**
- *  get current loaded file for main html
+ *  show / hide element on click
+ * @param element
  */
-function getLoadedFile() {
-  let currentURL = win.webContents.getURL();
-  currentURL = currentURL.split("/");
-  return currentURL[currentURL.length - 1];
+function showElement(element: String) {
+  if (element === "about") {
+    document.getElementById("about").style.display = "block";
+    document.getElementById("aboutNav").style.color = "white";
+
+    document.getElementById("lastcolors").style.display = "none";
+    document.getElementById("lastcolorsNav").style.color = "#6e6e6e";
+
+    document.getElementById("favorites").style.display = "none";
+    document.getElementById("favoritesNav").style.color = "#6e6e6e";
+
+    document.getElementById("settings").style.display = "none";
+    document.getElementById("settingsNav").style.color = "#6e6e6e";
+
+  } else if (element === "lastcolors") {
+    document.getElementById("about").style.display = "none";
+    document.getElementById("aboutNav").style.color = "#6e6e6e";
+
+    document.getElementById("lastcolors").style.display = "block";
+    document.getElementById("lastcolorsNav").style.color = "white";
+
+    document.getElementById("favorites").style.display = "none";
+    document.getElementById("favoritesNav").style.color = "#6e6e6e";
+
+    document.getElementById("settings").style.display = "none";
+    document.getElementById("settingsNav").style.color = "#6e6e6e";
+
+  } else if (element === "favorites") {
+    document.getElementById("about").style.display = "none";
+    document.getElementById("aboutNav").style.color = "#6e6e6e";
+
+    document.getElementById("lastcolors").style.display = "none";
+    document.getElementById("lastcolorsNav").style.color = "#6e6e6e";
+
+    document.getElementById("favorites").style.display = "block";
+    document.getElementById("favoritesNav").style.color = "white";
+
+    document.getElementById("settings").style.display = "none";
+    document.getElementById("settingsNav").style.color = "#6e6e6e";
+
+  } else if (element === "settings") {
+    document.getElementById("about").style.display = "none";
+    document.getElementById("aboutNav").style.color = "#6e6e6e";
+
+    document.getElementById("lastcolors").style.display = "none";
+    document.getElementById("lastcolorsNav").style.color = "#6e6e6e";
+
+    document.getElementById("favorites").style.display = "none";
+    document.getElementById("favoritesNav").style.color = "#6e6e6e";
+
+    document.getElementById("settings").style.display = "block";
+    document.getElementById("settingsNav").style.color = "white";
+  }
 }
+
+/**
+ * send link to main process to open in browser
+ * @param link
+ */
+function openLink(link: String) {
+  ipcRenderer.sendSync("openLink", link);
+}
+
+setDefaults();
