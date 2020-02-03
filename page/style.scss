@@ -1,24 +1,48 @@
-$bg: rgba($color: #000000, $alpha: 0.5);
+$bg-back: rgba($color: #000000, $alpha: 0.5);
+$bg-front: rgba($color: #000000, $alpha: 0.2);
+$fontNormal: #868686;
+$fontHovered: white;
 
 * {
   margin: 0;
   padding: 0;
   transition: 0.2s;
+  font-family: 'Montserrat', sans-serif;
+  color: white;
 }
 
 body {
-  background: $bg;
+  background: $bg-back;
 }
 
 #pin {
   position: fixed;
   top: 0;
   right: 0;
-  i {
-    color: #6e6e6e;
-    padding: 0.5rem;
+  background: $bg-front;
+  .fa-thumbtack {
+    color: $fontNormal;
+    padding: 0.75rem;
     &:hover {
-      color: white;
+      color: $fontHovered;
+    }
+  }
+}
+
+nav {
+  background: $bg-front;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  height: 100%;
+  li {
+    display: block;
+    padding: 1rem;
+    font-size: 18px;
+    color: $fontNormal;
+    &:hover {
+      color: $fontHovered;
     }
   }
 }

@@ -422,7 +422,8 @@ function createWindow() {
         width: 600,
         height: 400,
         frame: false,
-        transparent: true
+        transparent: true,
+        icon: path.join(__dirname, "../media/single_icon.png")
     });
     win.loadURL(url.format({
         pathname: path.join(__dirname, "../page/index.html"),
@@ -430,7 +431,7 @@ function createWindow() {
         slashes: true
     }));
     win.center();
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools()
 }
 /**
  *  signal management

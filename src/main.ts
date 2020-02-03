@@ -359,7 +359,8 @@ function createWindow() {
     width: 600,
     height: 400,
     frame: false,
-    transparent: true
+    transparent: true,
+    icon: path.join(__dirname, "../media/single_icon.png")
   });
 
   win.loadURL(
@@ -372,7 +373,7 @@ function createWindow() {
 
   win.center();
 
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 }
 
 /**
