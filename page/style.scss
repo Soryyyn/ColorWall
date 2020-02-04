@@ -1,4 +1,4 @@
-$bg-back: rgba($color: #000000, $alpha: 0.5);
+$bg-back: rgba($color: #000000, $alpha: 0.75);
 $bg-front: rgba($color: #000000, $alpha: 0.2);
 $fontNormal: #868686;
 $fontHovered: white;
@@ -15,6 +15,7 @@ body {
   background: $bg-back;
   width: 100%;
   height: 100%;
+  border-radius: 5px;
 }
 
 #pin {
@@ -29,6 +30,10 @@ body {
       color: $fontHovered;
     }
   }
+}
+
+#grab {
+  cursor: -webkit-grab; cursor: grab;
 }
 
 nav {
@@ -61,6 +66,8 @@ main {
       margin-bottom: 2rem;
     }
     #linkInText {
+      color: #33CCff;
+      font-weight: bold;
       text-decoration: underline;
       cursor: pointer;
     }
