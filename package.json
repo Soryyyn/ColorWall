@@ -38,7 +38,7 @@
   "homepage": "https://github.com/Soryyyn/HexWall#readme",
   "devDependencies": {
     "@types/node": "^13.7.0",
-    "electron": "^7.1.11",
+    "electron": "^8.0.0",
     "electron-builder": "^22.3.2"
   },
   "dependencies": {
