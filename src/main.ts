@@ -18,14 +18,6 @@ let fontColor: any;
 let tray: any = null;
 
 /**
- *  disable auto-launch default
- */
-app.setLoginItemSettings({
-  openAtLogin: false,
-  path: app.getPath("exe")
-});
-
-/**
  * adding to log.txt for debug purposes
  * @param text
  */
