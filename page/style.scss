@@ -19,9 +19,7 @@ body {
 }
 
 #pin {
-  position: fixed;
-  top: 0;
-  right: 0;
+  float: right;
   background: $bg-front;
   .fa-thumbtack {
     color: $fontNormal;
@@ -30,10 +28,6 @@ body {
       color: $fontHovered;
     }
   }
-}
-
-#grab {
-  cursor: -webkit-grab; cursor: grab;
 }
 
 nav {

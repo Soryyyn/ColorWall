@@ -23,14 +23,6 @@ let tray: any = null;
 let win: any;
 
 /**
- *  disable auto-launch default
- */
-app.setLoginItemSettings({
-  openAtLogin: false,
-  path: app.getPath("exe")
-});
-
-/**
  *  checks wallpaper directory if it exists,
  *  if it doesn't, it creates it
  */
@@ -351,8 +343,6 @@ function createWindow() {
   );
 
   win.center();
-
-  // win.webContents.openDevTools()
 }
 
 /**
