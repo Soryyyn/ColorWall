@@ -7,8 +7,8 @@
       "es2017"
     ],
     "declaration": true,
-    "outDir": "dist",
-    "rootDir": "src",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "watch": true,
     "strictNullChecks": false,
     "sourceMap": true,
