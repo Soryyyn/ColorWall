@@ -15,6 +15,7 @@
   "build": {
     "appId": "com.soryyyn.hexwall",
     "win": {
+      "target": "msi",
       "icon": "media/single_icon.ico"
     },
     "directories": {
