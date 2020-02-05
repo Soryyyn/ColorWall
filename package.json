@@ -38,14 +38,13 @@
   "homepage": "https://github.com/Soryyyn/HexWall#readme",
   "devDependencies": {
     "@types/node": "^13.5.2",
-    "electron": "^7.1.10",
-    "electron-builder": "^22.3.2"
-  },
-  "dependencies": {
     "canvas": "^2.6.1",
     "color-convert": "^2.0.1",
+    "electron": "^7.1.10",
+    "electron-builder": "^22.3.2",
     "moment": "^2.24.0",
     "opn": "^6.0.0",
     "wallpaper": "^4.4.1"
-  }
+  },
+  "dependencies": {}
 }

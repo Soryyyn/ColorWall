@@ -1,14 +1,13 @@
-"use strict";
-var _a = require("electron"), ipcRenderer = _a.ipcRenderer, remote = _a.remote;
+const { ipcRenderer, remote } = require("electron");
 // @ts-ignore
-var win = remote.getCurrentWindow();
-var pin = document.getElementsByClassName("fa-thumbtack")[0];
-var pinSet = false;
+let win = remote.getCurrentWindow();
+const pin = document.getElementsByClassName("fa-thumbtack")[0];
+let pinSet = false;
 /**
  *  set defaults (close window on focus lost, hide main divs)
  */
 function setDefaults() {
-    win.on("blur", function () {
+    win.on("blur", () => {
         win.close();
     });
     document.getElementById("lastcolors").style.display = "none";
@@ -27,7 +26,7 @@ function pinWindow() {
     }
     else {
         pinSet = false;
-        win.on("blur", function () {
+        win.on("blur", () => {
             win.close();
         });
         pin.setAttribute("style", "color: #6e6e6e");
@@ -87,3 +86,4 @@ function openLink(link) {
     ipcRenderer.sendSync("openLink", link);
 }
 setDefaults();
+//# sourceMappingURL=renderer.js.map
