@@ -1,5 +1,5 @@
-declare const ipcRenderer: any, remote: any;
-declare let win: any;
+declare const ipcRenderer: Electron.IpcRenderer, remote: Electron.Remote;
+declare let win: Electron.BrowserWindow;
 declare const pin: Element;
 declare let pinSet: Boolean;
 /**

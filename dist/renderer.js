@@ -1,3 +1,4 @@
+"use strict";
 const { ipcRenderer, remote } = require("electron");
 // @ts-ignore
 let win = remote.getCurrentWindow();
@@ -86,4 +87,3 @@ function openLink(link) {
     ipcRenderer.sendSync("openLink", link);
 }
 setDefaults();
-//# sourceMappingURL=renderer.js.map

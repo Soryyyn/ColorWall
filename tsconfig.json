@@ -1,18 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "esnext",
     "module": "commonjs",
     "lib": [
       "dom",
-      "es2017"
+      "esnext"
     ],
     "declaration": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "outDir": "dist",
+    "strict": true,
+    "esModuleInterop": true,
     "watch": true,
-    "strictNullChecks": false,
-    "sourceMap": true,
-    "allowSyntheticDefaultImports": true
+    "strictNullChecks": false
   },
   "exclude": [
     "node_modules",

@@ -1,19 +1,15 @@
 #!/usr/bin/env node
-const fs = require("fs");
-const wallpaper = require("wallpaper");
-const canvas = require("canvas");
-const converter = require("color-convert");
-const path = require("path");
-// @ts-ignore
-const electron = require("electron");
-const moment = require("moment");
-const url = require("url");
-const opn = require("opn");
+import canvas from 'canvas';
+import converter from 'color-convert';
+import electron, { app, BrowserWindow, dialog, ipcMain, Menu, screen, Tray } from 'electron';
+import fs from 'fs';
+import open from 'open';
+import path from 'path';
+import url from 'url';
+import wallpaper from 'wallpaper';
 
-const { app, Menu, Tray, dialog, BrowserWindow, ipcMain } = require("electron");
-
-const monitor = electron.screen;
 const wallDir = "./walls";
+app.allowRendererProcessReuse = true;
 let randomHexColor: any;
 let ditherColor: any;
 let ditherEnabled: Boolean = true;
@@ -57,7 +53,7 @@ async function generateColor() {
   } else {
     fontColor = "#FFFFFF";
   }
-  randomHexColor = "#" + converter.rgb.hex(r, g, b);
+  randomHexColor = "#" + converter.rgb.hex([r, g, b]);
 
   // for dark dither color
   if (r - 20 > 0) {
@@ -78,7 +74,7 @@ async function generateColor() {
     b = 0;
   }
 
-  ditherColor = "#" + converter.rgb.hex(r, g, b);
+  ditherColor = "#" + converter.rgb.hex([r, g, b]);
 }
 
 /**
@@ -86,8 +82,8 @@ async function generateColor() {
  *  to the wall folder
  */
 async function generateWall() {
-  const w = monitor.getPrimaryDisplay().size.width;
-  const h = monitor.getPrimaryDisplay().size.height;
+  const w = screen.getPrimaryDisplay().size.width;
+  const h = screen.getPrimaryDisplay().size.height;
 
   const wall = canvas.createCanvas(w, h);
   const wallctx = wall.getContext("2d");
@@ -367,6 +363,6 @@ app.on("window-all-closed", (e: any) => {
 
 // open clicked link in front end
 ipcMain.on("openLink", (event: any, arg: any) => {
-  opn(arg);
+  open(arg);
   event.returnValue = true;
 });

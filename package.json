@@ -15,7 +15,13 @@
   "build": {
     "appId": "com.soryyyn.hexwall",
     "win": {
+      "target": "nsis",
       "icon": "media/single_icon.ico"
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": "true",
+      "oneClick": false,
+      "perMachine": true
     },
     "directories": {
       "output": "builds"
@@ -37,14 +43,18 @@
   },
   "homepage": "https://github.com/Soryyyn/HexWall#readme",
   "devDependencies": {
-    "@types/node": "^13.5.2",
+    "@types/color-convert": "^1.9.0",
+    "@types/wallpaper": "^2.5.1",
+    "@types/node": "^12.12.26",
+    "electron": "^8.0.0",
+    "electron-builder": "^22.3.2",
+    "electron-rebuild": "^1.10.0"
+  },
+  "dependencies": {
+    "@types/open": "^6.2.1",
     "canvas": "^2.6.1",
     "color-convert": "^2.0.1",
-    "electron": "^7.1.10",
-    "electron-builder": "^22.3.2",
-    "moment": "^2.24.0",
-    "opn": "^6.0.0",
+    "open": "^7.0.2",
     "wallpaper": "^4.4.1"
-  },
-  "dependencies": {}
+  }
 }
