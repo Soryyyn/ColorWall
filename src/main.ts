@@ -1,13 +1,11 @@
 #!/usr/bin/env node
-const fs = require("fs");
-const wallpaper = require("wallpaper");
-const canvas = require("canvas");
-const converter = require("color-convert");
-const path = require("path");
-const electron = require("electron");
-const moment = require("moment");
-
-const { app, Menu, Tray, dialog } = require("electron");
+import fs from "fs";
+import wallpaper from "wallpaper";
+import converter from "color-convert";
+import path from "path";
+import electron from "electron";
+import { app, Menu, Tray, dialog } from "electron";
+import canvas from "canvas";
 
 const monitor = electron.screen;
 const wallDir = "./walls";
@@ -18,21 +16,11 @@ let fontColor: any;
 let tray: any = null;
 
 /**
- * adding to log.txt for debug purposes
- * @param text
- */
-function logEntry(text: String) {
-  fs.writeFileSync("./log.txt", moment().format("YYYY-MM-DD HH:mm:ss") + ": " + text + "\n", { flag: "a" });
-}
-
-/**
  *  checks wallpaper directory if it exists,
  *  if it doesn't, it creates it
  */
 async function checkWallpaperFolder() {
-  logEntry("checking if walls folder exists");
   if (!fs.existsSync(wallDir)) {
-    logEntry("creating wall folder");
     fs.mkdirSync(wallDir);
   }
 }
@@ -41,12 +29,10 @@ async function checkWallpaperFolder() {
  *  cleans up the wallpaper folder
  */
 async function cleanupFolder() {
-  logEntry("cleaning up wall folder");
   const images = fs.readdirSync(wallDir);
   if (images.length > 0) {
     fs.unlinkSync(wallDir + "/" + images.pop());
   }
-  logEntry("cleaned up wall folder");
 }
 
 /**
@@ -54,7 +40,6 @@ async function cleanupFolder() {
  *  if the font color should be white or black
  */
 async function generateColor() {
-  logEntry("generating color");
   let r = Math.floor(Math.random() * 255 + 1);
   let g = Math.floor(Math.random() * 255 + 1);
   let b = Math.floor(Math.random() * 255 + 1);
@@ -65,7 +50,7 @@ async function generateColor() {
   } else {
     fontColor = "#FFFFFF";
   }
-  randomHexColor = "#" + converter.rgb.hex(r, g, b);
+  randomHexColor = "#" + converter.rgb.hex([r, g, b]);
 
   // for dark dither color
   if (r - 20 > 0) {
@@ -86,8 +71,7 @@ async function generateColor() {
     b = 0;
   }
 
-  ditherColor = "#" + converter.rgb.hex(r, g, b);
-  logEntry("finished generating color");
+  ditherColor = "#" + converter.rgb.hex([r, g, b]);
 }
 
 /**
@@ -95,7 +79,8 @@ async function generateColor() {
  *  to the wall folder
  */
 async function generateWall() {
-  logEntry("generating wallpaper");
+  canvas.registerFont("./unifont.ttf", { family: "Unifont" });
+
   const w = monitor.getPrimaryDisplay().size.width;
   const h = monitor.getPrimaryDisplay().size.height;
 
@@ -176,15 +161,13 @@ async function generateWall() {
     }
   }
 
-  // text
   wallctx.fillStyle = fontColor;
-  wallctx.font = "128px Unifont";
+  wallctx.font = "128px 'Unifont'";
   wallctx.textAlign = "center";
   wallctx.fillText(randomHexColor, w / 2, h / 2);
 
   // write buffer to image
-  logEntry("creating wallpaper file");
-  const buffer = wall.toBuffer("image/png");
+  let buffer = wall.toBuffer();
   fs.writeFileSync(path.join(wallDir + "/" + randomHexColor + ".png"), buffer);
 }
 
@@ -193,7 +176,6 @@ async function generateWall() {
  *  as wallpaper
  */
 async function setWallpaper() {
-  logEntry("setting wallpaper");
   await wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"));
 }
 
@@ -206,7 +188,6 @@ async function newRandomHexWall() {
   await generateColor();
   await generateWall();
   await setWallpaper();
-  logEntry("---------------------------------");
 }
 
 /**
@@ -236,7 +217,6 @@ function askAutoLaunch() {
         openAtLogin: false,
         path: app.getPath("exe")
       });
-      logEntry("disabling autolaunch");
     }
   } else {
     const response = dialog.showMessageBoxSync(whenDisabled);
@@ -245,7 +225,6 @@ function askAutoLaunch() {
         openAtLogin: true,
         path: app.getPath("exe")
       });
-      logEntry("enabling autolaunch");
     }
   }
 
@@ -275,13 +254,11 @@ function askDithering() {
     const response = dialog.showMessageBoxSync(whenEnabled);
     if (response === 1) {
       ditherEnabled = false;
-      logEntry("disabling dithering");
     }
   } else {
     const response = dialog.showMessageBoxSync(whenDisabled);
     if (response === 1) {
       ditherEnabled = true;
-      logEntry("enabling dithering");
     }
   }
 }

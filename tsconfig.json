@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "esnext",
     "module": "commonjs",
     "lib": [
-      "es2017",
-      "es7",
-      "es6",
+      "esnext",
       "dom"
     ],
     "declaration": true,
