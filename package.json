@@ -15,8 +15,13 @@
   "build": {
     "appId": "com.soryyyn.hexwall",
     "win": {
-      "target": "msi",
+      "target": "nsis",
       "icon": "media/single_icon.ico"
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": "true",
+      "oneClick": false,
+      "perMachine": true
     },
     "directories": {
       "output": "builds"
