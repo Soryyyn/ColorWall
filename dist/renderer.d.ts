@@ -20,3 +20,7 @@ declare function showElement(element: String): void;
  * @param link
  */
 declare function openLink(link: String): void;
+/**
+ * clear frontend, get all colors from main process, and add to list
+ */
+declare function getLastColors(): void;

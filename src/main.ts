@@ -1,22 +1,26 @@
 #!/usr/bin/env node
 import canvas from 'canvas';
 import converter from 'color-convert';
-import electron, { app, BrowserWindow, dialog, ipcMain, Menu, screen, Tray } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, Menu, screen, Tray } from 'electron';
 import fs from 'fs';
 import open from 'open';
 import path from 'path';
 import url from 'url';
 import wallpaper from 'wallpaper';
 
-const wallDir = "./walls";
-app.allowRendererProcessReuse = true;
+const wallDir = "./wall";
+let lastWalls: any = [];
+let favorites: any = [];
+
 let randomHexColor: any;
 let ditherColor: any;
 let ditherEnabled: Boolean = true;
 let fontColor: any;
-let tray: any = null;
+
 // @ts-ignore
 let win: any;
+app.allowRendererProcessReuse = true;
+let tray: any = null;
 
 /**
  *  checks wallpaper directory if it exists,
@@ -73,8 +77,22 @@ async function generateColor() {
   } else {
     b = 0;
   }
-
   ditherColor = "#" + converter.rgb.hex([r, g, b]);
+  trackLastColors(randomHexColor, ditherColor);
+}
+
+/**
+ * adds last generated colors to array
+ */
+function trackLastColors(color: String, ditherColor: String) {
+  lastWalls.unshift({
+    color: color,
+    ditherColor: ditherColor
+  });
+
+  if (lastWalls.length > 5) {
+    lastWalls.pop();
+  }
 }
 
 /**
@@ -225,7 +243,10 @@ function askAutoLaunch() {
     if (response === 1) {
       app.setLoginItemSettings({
         openAtLogin: true,
-        path: app.getPath("exe")
+        path: app.getPath("exe"),
+        args: [
+          "--processStart", "\"" + app.getPath("exe") + "\""
+        ]
       });
     }
   }
@@ -365,4 +386,11 @@ app.on("window-all-closed", (e: any) => {
 ipcMain.on("openLink", (event: any, arg: any) => {
   open(arg);
   event.returnValue = true;
+});
+
+/**
+ * send last colors to frontend
+ */
+ipcMain.handle("getLastColors", async (event: any, arg: any) => {
+  return lastWalls;
 });

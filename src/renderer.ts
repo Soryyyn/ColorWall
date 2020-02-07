@@ -105,4 +105,22 @@ function openLink(link: String) {
   ipcRenderer.sendSync("openLink", link);
 }
 
+/**
+ * clear frontend, get all colors from main process, and add to list
+ */
+function getLastColors() {
+  ipcRenderer.invoke("getLastColors", null).then((colors: any) => {
+    while (document.getElementById("lastColorsList").firstChild) {
+      document.getElementById("lastColorsList").removeChild(document.getElementById("lastColorsList").firstChild);
+    }
+
+    for (let i = 0; i < colors.length; i++) {
+      let li = document.createElement("li");
+      li.setAttribute("id", `${i}_color`);
+      li.appendChild(document.createTextNode(colors[i].color));
+      document.getElementById("lastColorsList").appendChild(li);
+    }
+  });
+}
+
 setDefaults();

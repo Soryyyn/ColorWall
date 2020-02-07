@@ -46,12 +46,12 @@
     "@types/color-convert": "^1.9.0",
     "@types/wallpaper": "^2.5.1",
     "@types/node": "^12.12.26",
+    "@types/open": "^6.2.1",
     "electron": "^8.0.0",
     "electron-builder": "^22.3.2",
     "electron-rebuild": "^1.10.0"
   },
   "dependencies": {
-    "@types/open": "^6.2.1",
     "canvas": "^2.6.1",
     "color-convert": "^2.0.1",
     "open": "^7.0.2",
