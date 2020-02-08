@@ -9,17 +9,15 @@ let pinSet: Boolean = false;
 /**
  *  set defaults (close window on focus lost, hide main divs)
  */
-function setDefaults() {
-  win.on("blur", () => {
-    win.close();
-  });
+win.on("blur", () => {
+  win.close();
+});
 
-  document.getElementById("lastcolors").style.display = "none";
-  document.getElementById("favorites").style.display = "none";
-  document.getElementById("settings").style.display = "none";
+document.getElementById("lastcolors").style.display = "none";
+document.getElementById("favorites").style.display = "none";
+document.getElementById("settings").style.display = "none";
 
-  document.getElementById("aboutNav").style.color = "white";
-}
+document.getElementById("aboutNav").style.color = "white";
 
 /**
  * disable window from closing on focus lost
@@ -39,7 +37,7 @@ function pinWindow() {
 }
 
 /**
- *  show / hide element on click
+ * show / hide element on click
  * @param element
  */
 function showElement(element: String) {
@@ -109,7 +107,7 @@ function openLink(link: String) {
  * clear frontend, get all colors from main process, and add to list
  */
 function getLastColors() {
-  ipcRenderer.invoke("getLastColors", null).then((colors: any) => {
+  ipcRenderer.invoke("getLastColors", "getting colors").then((colors: any) => {
     while (document.getElementById("lastColorsList").firstChild) {
       document.getElementById("lastColorsList").removeChild(document.getElementById("lastColorsList").firstChild);
     }
@@ -120,7 +118,17 @@ function getLastColors() {
       li.appendChild(document.createTextNode(colors[i].color));
       document.getElementById("lastColorsList").appendChild(li);
     }
+
+    for (let i = 0; i < 5; i++) {
+
+      // if currently used color / wall
+      if (i == 0) {
+        document.getElementById(`${i}_color`).style.color = "green";
+      }
+      document.getElementById(`${i}_color`).style.fontSize = "2rem";
+      document.getElementById(`${i}_color`).style.textDecoration = "none";
+      document.getElementById(`${i}_color`).style.listStyle = "none";
+      document.getElementById(`${i}_color`).style.textAlign = "center";
+    }
   });
 }
-
-setDefaults();

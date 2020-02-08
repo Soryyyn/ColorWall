@@ -83,6 +83,8 @@ async function generateColor() {
 
 /**
  * adds last generated colors to array
+ * @param color
+ * @param ditherColor
  */
 function trackLastColors(color: String, ditherColor: String) {
   lastWalls.unshift({
