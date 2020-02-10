@@ -32,7 +32,7 @@ function pinWindow() {
     win.on("blur", () => {
       win.close();
     });
-    pin.setAttribute("style", "color: #6e6e6e");
+    pin.setAttribute("style", "color: #9e9e9e");
   }
 }
 
@@ -46,49 +46,49 @@ function showElement(element: String) {
     document.getElementById("aboutNav").style.color = "white";
 
     document.getElementById("lastcolors").style.display = "none";
-    document.getElementById("lastcolorsNav").style.color = "#6e6e6e";
+    document.getElementById("lastcolorsNav").style.color = "#9e9e9e";
 
     document.getElementById("favorites").style.display = "none";
-    document.getElementById("favoritesNav").style.color = "#6e6e6e";
+    document.getElementById("favoritesNav").style.color = "#9e9e9e";
 
     document.getElementById("settings").style.display = "none";
-    document.getElementById("settingsNav").style.color = "#6e6e6e";
+    document.getElementById("settingsNav").style.color = "#9e9e9e";
 
   } else if (element === "lastcolors") {
     document.getElementById("about").style.display = "none";
-    document.getElementById("aboutNav").style.color = "#6e6e6e";
+    document.getElementById("aboutNav").style.color = "#9e9e9e";
 
     document.getElementById("lastcolors").style.display = "block";
     document.getElementById("lastcolorsNav").style.color = "white";
 
     document.getElementById("favorites").style.display = "none";
-    document.getElementById("favoritesNav").style.color = "#6e6e6e";
+    document.getElementById("favoritesNav").style.color = "#9e9e9e";
 
     document.getElementById("settings").style.display = "none";
-    document.getElementById("settingsNav").style.color = "#6e6e6e";
+    document.getElementById("settingsNav").style.color = "#9e9e9e";
 
   } else if (element === "favorites") {
     document.getElementById("about").style.display = "none";
-    document.getElementById("aboutNav").style.color = "#6e6e6e";
+    document.getElementById("aboutNav").style.color = "#9e9e9e";
 
     document.getElementById("lastcolors").style.display = "none";
-    document.getElementById("lastcolorsNav").style.color = "#6e6e6e";
+    document.getElementById("lastcolorsNav").style.color = "#9e9e9e";
 
     document.getElementById("favorites").style.display = "block";
     document.getElementById("favoritesNav").style.color = "white";
 
     document.getElementById("settings").style.display = "none";
-    document.getElementById("settingsNav").style.color = "#6e6e6e";
+    document.getElementById("settingsNav").style.color = "#9e9e9e";
 
   } else if (element === "settings") {
     document.getElementById("about").style.display = "none";
-    document.getElementById("aboutNav").style.color = "#6e6e6e";
+    document.getElementById("aboutNav").style.color = "#9e9e9e";
 
     document.getElementById("lastcolors").style.display = "none";
-    document.getElementById("lastcolorsNav").style.color = "#6e6e6e";
+    document.getElementById("lastcolorsNav").style.color = "#9e9e9e";
 
     document.getElementById("favorites").style.display = "none";
-    document.getElementById("favoritesNav").style.color = "#6e6e6e";
+    document.getElementById("favoritesNav").style.color = "#9e9e9e";
 
     document.getElementById("settings").style.display = "block";
     document.getElementById("settingsNav").style.color = "white";
