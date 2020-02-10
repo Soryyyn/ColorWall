@@ -1,5 +1,5 @@
-$bg-back: rgba($color: #000000, $alpha: 0.75);
-$bg-front: rgba($color: #000000, $alpha: 0.2);
+$bg-back: #383849;
+$bg-front: #46465e;
 $fontNormal: #868686;
 $fontHovered: white;
 
@@ -26,6 +26,7 @@ body {
     padding: 0.75rem;
     &:hover {
       color: $fontHovered;
+      cursor: pointer;
     }
   }
 }
@@ -45,6 +46,7 @@ nav {
     color: $fontNormal;
     &:hover {
       color: $fontHovered;
+      cursor: pointer;
     }
   }
 }
