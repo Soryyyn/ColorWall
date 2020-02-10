@@ -120,15 +120,22 @@ function getLastColors() {
     }
 
     for (let i = 0; i < 5; i++) {
-
-      // if currently used color / wall
-      if (i == 0) {
-        document.getElementById(`${i}_color`).style.color = "green";
-      }
       document.getElementById(`${i}_color`).style.fontSize = "2rem";
       document.getElementById(`${i}_color`).style.textDecoration = "none";
       document.getElementById(`${i}_color`).style.listStyle = "none";
       document.getElementById(`${i}_color`).style.textAlign = "center";
+
+      document.getElementById(`${i}_color`).style.padding = "0.5rem 0 0.5rem 0";
+      document.getElementById(`${i}_color`).style.marginBottom = "2rem";
+
+      document.getElementById(`${i}_color`).style.borderColor = "white";
+      document.getElementById(`${i}_color`).style.borderStyle = "solid";
+      document.getElementById(`${i}_color`).style.borderWidth = "2px";
+      document.getElementById(`${i}_color`).style.borderRadius = "5px";
+      document.getElementById(`${i}_color`).style.boxShadow = "2px 2px 10px 0px rgba(0, 0, 0, 1)";
+
+      document.getElementById(`${i}_color`).style.backgroundColor = colors[i].color;
+      document.getElementById(`${i}_color`).style.color = colors[i].fontColor;
     }
   });
 }

@@ -78,7 +78,7 @@ async function generateColor() {
     b = 0;
   }
   ditherColor = "#" + converter.rgb.hex([r, g, b]);
-  trackLastColors(randomHexColor, ditherColor);
+  trackLastColors(randomHexColor, ditherColor, fontColor);
 }
 
 /**
@@ -86,10 +86,11 @@ async function generateColor() {
  * @param color the main color of the wallpaper/background
  * @param ditherColor color of the dithering on the bottom of the wallpaper
  */
-function trackLastColors(color: String, ditherColor: String) {
+function trackLastColors(color: String, ditherColor: String, fontColor: String) {
   lastWalls.unshift({
     color: color,
-    ditherColor: ditherColor
+    ditherColor: ditherColor,
+    fontColor: fontColor
   });
 
   if (lastWalls.length > 5) {
