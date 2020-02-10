@@ -352,9 +352,11 @@ function createWindow() {
     icon: path.join(__dirname, "../media/single_icon.png")
   });
 
+  console.log(path.join(__dirname, "../page/index.html"));
+
   win.loadURL(
     url.format({
-      pathname: path.join(__dirname, "./page/index.html"),
+      pathname: path.join(__dirname, "/page/index.html"),
       protocol: "file:",
       slashes: true
     })
