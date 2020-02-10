@@ -119,7 +119,7 @@ function getLastColors() {
       document.getElementById("lastColorsList").appendChild(li);
     }
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < colors.length; i++) {
       document.getElementById(`${i}_color`).style.fontSize = "2rem";
       document.getElementById(`${i}_color`).style.textDecoration = "none";
       document.getElementById(`${i}_color`).style.listStyle = "none";
