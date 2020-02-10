@@ -1,6 +1,12 @@
+# ignoring because too big
 node_modules/
+
+# generated folders by hexwwall
 walls/
 wall/
 builds/
-log.txt
 dist/
+
+# vscode and github folders
+.vscode/
+.github/

@@ -237,7 +237,8 @@ function askAutoLaunch() {
     if (response === 1) {
       app.setLoginItemSettings({
         openAtLogin: false,
-        path: app.getPath("exe")
+        path: process.execPath,
+        args: []
       });
     }
   } else {
@@ -245,10 +246,8 @@ function askAutoLaunch() {
     if (response === 1) {
       app.setLoginItemSettings({
         openAtLogin: true,
-        path: app.getPath("exe"),
-        args: [
-          "--processStart", "\"" + app.getPath("exe") + "\""
-        ]
+        path: process.execPath,
+        args: []
       });
     }
   }
