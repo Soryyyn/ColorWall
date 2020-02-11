@@ -2,12 +2,10 @@ $bgBack: #24242c;
 $bgFront: #31313b;
 $fontNormal: #9e9e9e;
 $fontHovered: white;
-$titleShadow: 2px 2px 10px #000000;
 
 * {
   margin: 0;
   padding: 0;
-  transition: 0.2s;
   font-family: 'Consolas', sans-serif;
   color: white;
 }
@@ -17,11 +15,17 @@ body {
   width: 100%;
   height: 100%;
   border-radius: 5px;
+  overflow-x: hidden;
 }
 
 #pin {
   float: right;
+  width: 2rem;
+  height: 2rem;
   background: $bgFront;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   .fa-thumbtack {
     color: $fontNormal;
     padding: 0.75rem;
@@ -58,38 +62,31 @@ main {
   top: 0;
   left: 9rem;
   right: 1rem;
-
   div {
     display: block;
-
     h1 {
-      text-shadow: $titleShadow;
-      margin-bottom: 2rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
     }
-
     p {
       font-size: 18px;
     }
-
     #linkInText {
       color: #33CCff;
       font-weight: bold;
       text-decoration: underline;
       cursor: pointer;
     }
-
     #grid_last {
       overflow-y: scroll;
       overflow-x: show;
       width: 100%;
       height: 475px;
       display: grid;
-      padding-right: 1.25rem;
+      padding-right: 1rem;
       grid-template-columns: repeat(8, 1fr);
       grid-template-rows: repeat(50, 3.75rem);
       grid-gap: 1rem;
-
-      // custom scrollbar
       &::-webkit-scrollbar-track {
         border-radius: 5px;
 	      background-color: rgba(0, 0, 0, 0.0);
@@ -103,6 +100,30 @@ main {
       {
         border-radius: 5px;
         background-color: rgba(85, 85, 85, 0.5);
+      }
+      .field {
+        position: relative;
+        overflow: hidden;
+        span {
+          font-size: 13px;
+          font-weight: lighter;
+          opacity: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.75);
+          color: #ffffff;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1;
+          transition: 0.1s;
+        }
+        &:hover span {
+          opacity: 1;
+          transition: 0.1s;
+          cursor: pointer;
+        }
       }
     }
   }

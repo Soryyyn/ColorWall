@@ -116,14 +116,30 @@ function getLastColors() {
       let field = document.createElement("div");
       field.setAttribute("class", "field");
       field.setAttribute("id", `field_${i}`);
-      field.appendChild(document.createTextNode(colors[i].color));
+
+      let text = document.createElement("span");
+      text.setAttribute("id", `text_${i}`);
+      text.appendChild(document.createTextNode(colors[i].color));
+      field.appendChild(text);
       document.getElementById("grid_last").appendChild(field);
     }
 
     for (let i = 0; i < colors.length; i++) {
-      document.getElementById(`field_${i}`).style.backgroundColor = colors[i].color;
+      let field = document.getElementById(`field_${i}`);
+      field.style.backgroundColor = colors[i].color;
+      field.style.borderRadius = "5px";
 
-      document.getElementById(`field_${i}`).style.borderRadius = "5px";
+      // let tooltip = document.getElementById(`text_${i}`);
+      // tooltip.style.visibility = "hidden";
+      // width: 120px;
+      // background - color: black;
+      // color: #fff;
+      // text - align: center;
+      // padding: 5px 0;
+      // border - radius: 6px;
+
+      // position: absolute;
+      // z - index: 1;
 
       // document.getElementById(`${i}_color`).style.fontSize = "2rem";
       // document.getElementById(`${i}_color`).style.textDecoration = "none";
