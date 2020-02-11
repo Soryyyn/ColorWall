@@ -108,34 +108,42 @@ function openLink(link: String) {
  */
 function getLastColors() {
   ipcRenderer.invoke("getLastColors", "getting colors").then((colors: any) => {
-    while (document.getElementById("lastColorsList").firstChild) {
-      document.getElementById("lastColorsList").removeChild(document.getElementById("lastColorsList").firstChild);
+    while (document.getElementById("grid_last").firstChild) {
+      document.getElementById("grid_last").removeChild(document.getElementById("grid_last").firstChild);
     }
 
     for (let i = 0; i < colors.length; i++) {
-      let li = document.createElement("li");
-      li.setAttribute("id", `${i}_color`);
-      li.appendChild(document.createTextNode(colors[i].color));
-      document.getElementById("lastColorsList").appendChild(li);
+      let field = document.createElement("div");
+      field.setAttribute("class", "field");
+      field.setAttribute("id", `field_${i}`);
+      field.appendChild(document.createTextNode(colors[i].color));
+      document.getElementById("grid_last").appendChild(field);
     }
 
     for (let i = 0; i < colors.length; i++) {
-      document.getElementById(`${i}_color`).style.fontSize = "2rem";
-      document.getElementById(`${i}_color`).style.textDecoration = "none";
-      document.getElementById(`${i}_color`).style.listStyle = "none";
-      document.getElementById(`${i}_color`).style.textAlign = "center";
+      document.getElementById(`field_${i}`).style.backgroundColor = colors[i].color;
 
-      document.getElementById(`${i}_color`).style.padding = "0.5rem 0 0.5rem 0";
-      document.getElementById(`${i}_color`).style.marginBottom = "2rem";
+      document.getElementById(`field_${i}`).style.borderRadius = "5px";
 
-      document.getElementById(`${i}_color`).style.borderColor = "white";
-      document.getElementById(`${i}_color`).style.borderStyle = "solid";
-      document.getElementById(`${i}_color`).style.borderWidth = "2px";
-      document.getElementById(`${i}_color`).style.borderRadius = "5px";
-      document.getElementById(`${i}_color`).style.boxShadow = "2px 2px 10px 0px rgba(0, 0, 0, 1)";
+      // document.getElementById(`${i}_color`).style.fontSize = "2rem";
+      // document.getElementById(`${i}_color`).style.textDecoration = "none";
+      // document.getElementById(`${i}_color`).style.listStyle = "none";
+      // document.getElementById(`${i}_color`).style.textAlign = "center";
 
-      document.getElementById(`${i}_color`).style.backgroundColor = colors[i].color;
-      document.getElementById(`${i}_color`).style.color = colors[i].fontColor;
+      // document.getElementById(`${i}_color`).style.padding = "0.5rem 0 0.5rem 0";
+      // document.getElementById(`${i}_color`).style.marginBottom = "2rem";
+
+      // document.getElementById(`${i}_color`).style.borderColor = "white";
+      // document.getElementById(`${i}_color`).style.borderStyle = "solid";
+      // document.getElementById(`${i}_color`).style.borderWidth = "2px";
+      // document.getElementById(`${i}_color`).style.borderRadius = "5px";
+      // document.getElementById(`${i}_color`).style.boxShadow = "2px 2px 10px 0px rgba(0, 0, 0, 1)";
+
+      // document.getElementById(`${i}_color`).style.backgroundColor = colors[i].color;
+      // document.getElementById(`${i}_color`).style.color = colors[i].fontColor;
+
+      // let field = document.getElementsByClassName("field")[i];
+      // field.style.flex = "1";
     }
   });
 }

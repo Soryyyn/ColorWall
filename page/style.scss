@@ -58,20 +58,52 @@ main {
   top: 0;
   left: 9rem;
   right: 1rem;
+
   div {
     display: block;
+
     h1 {
       text-shadow: $titleShadow;
       margin-bottom: 2rem;
     }
+
     p {
       font-size: 18px;
     }
+
     #linkInText {
       color: #33CCff;
       font-weight: bold;
       text-decoration: underline;
       cursor: pointer;
+    }
+
+    #grid_last {
+      overflow-y: scroll;
+      overflow-x: show;
+      width: 100%;
+      height: 475px;
+      display: grid;
+      padding-right: 1.25rem;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(50, 3.75rem);
+      grid-gap: 1rem;
+
+      // custom scrollbar
+      &::-webkit-scrollbar-track {
+        border-radius: 5px;
+	      background-color: rgba(0, 0, 0, 0.0);
+      }
+      &::-webkit-scrollbar
+      {
+        width: 6px;
+        background-color: rgba(0, 0, 0, 0.0);
+      }
+      &::-webkit-scrollbar-thumb
+      {
+        border-radius: 5px;
+        background-color: rgba(85, 85, 85, 0.5);
+      }
     }
   }
 }

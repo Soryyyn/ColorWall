@@ -92,10 +92,6 @@ function trackLastColors(color: String, ditherColor: String, fontColor: String) 
     ditherColor: ditherColor,
     fontColor: fontColor
   });
-
-  if (lastWalls.length > 5) {
-    lastWalls.pop();
-  }
 }
 
 /**
