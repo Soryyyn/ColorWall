@@ -98,115 +98,195 @@ function trackLastColors(color: String, ditherColor: String, fontColor: String) 
  *  generates the wallpaper, and saves it
  *  to the wall folder
  */
-async function generateWall() {
+async function generateWall(main?: string, dither?: string, text?: string) {
   const w = screen.getPrimaryDisplay().size.width;
   const h = screen.getPrimaryDisplay().size.height;
 
   const wall = canvas.createCanvas(w, h);
   const wallctx = wall.getContext("2d");
 
-  if (!ditherEnabled) {
-    // bg
-    wallctx.fillStyle = randomHexColor;
-    wallctx.fillRect(0, 0, w, h);
-  } else {
-    // bg
-    wallctx.fillStyle = randomHexColor;
-    wallctx.fillRect(0, 0, w, h);
+  if (main == null && dither == null && text == null) {
+    if (!ditherEnabled) {
+      // bg
+      wallctx.fillStyle = randomHexColor;
+      wallctx.fillRect(0, 0, w, h);
+    } else {
+      // bg
+      wallctx.fillStyle = randomHexColor;
+      wallctx.fillRect(0, 0, w, h);
 
-    // dither
-    wallctx.fillStyle = ditherColor;
-    wallctx.fillRect(0, h, w, -80);
+      // dither
+      wallctx.fillStyle = ditherColor;
+      wallctx.fillRect(0, h, w, -80);
 
-    for (let i = 0; i < w; i += 20) {
-      // pattern 1
-      wallctx.fillStyle = randomHexColor;
-      wallctx.fillRect(i, h - 90, 10, 10);
-      wallctx.fillStyle = ditherColor;
-      wallctx.fillRect(i + 10, h - 90, 10, 10);
-      wallctx.fillStyle = ditherColor;
-      wallctx.fillRect(0, h - 100, w, 10);
+      for (let i = 0; i < w; i += 20) {
+        // pattern 1
+        wallctx.fillStyle = randomHexColor;
+        wallctx.fillRect(i, h - 90, 10, 10);
+        wallctx.fillStyle = ditherColor;
+        wallctx.fillRect(i + 10, h - 90, 10, 10);
+        wallctx.fillStyle = ditherColor;
+        wallctx.fillRect(0, h - 100, w, 10);
 
-      wallctx.fillStyle = randomHexColor;
-      wallctx.fillRect(i, h - 110, 10, 10);
-      wallctx.fillStyle = ditherColor;
-      wallctx.fillRect(i + 10, h - 110, 10, 10);
-      wallctx.fillStyle = ditherColor;
-      wallctx.fillRect(0, h - 120, w, 10);
+        wallctx.fillStyle = randomHexColor;
+        wallctx.fillRect(i, h - 110, 10, 10);
+        wallctx.fillStyle = ditherColor;
+        wallctx.fillRect(i + 10, h - 110, 10, 10);
+        wallctx.fillStyle = ditherColor;
+        wallctx.fillRect(0, h - 120, w, 10);
 
-      // pattern 2
-      wallctx.fillStyle = randomHexColor;
-      wallctx.fillRect(i, h - 130, 10, 10);
-      wallctx.fillStyle = ditherColor;
-      wallctx.fillRect(i + 10, h - 130, 10, 10);
-      wallctx.fillStyle = randomHexColor;
-      wallctx.fillRect(i + 10, h - 140, 10, 10);
-      wallctx.fillStyle = ditherColor;
-      wallctx.fillRect(i, h - 140, 10, 10);
+        // pattern 2
+        wallctx.fillStyle = randomHexColor;
+        wallctx.fillRect(i, h - 130, 10, 10);
+        wallctx.fillStyle = ditherColor;
+        wallctx.fillRect(i + 10, h - 130, 10, 10);
+        wallctx.fillStyle = randomHexColor;
+        wallctx.fillRect(i + 10, h - 140, 10, 10);
+        wallctx.fillStyle = ditherColor;
+        wallctx.fillRect(i, h - 140, 10, 10);
 
-      wallctx.fillStyle = randomHexColor;
-      wallctx.fillRect(i, h - 150, 10, 10);
-      wallctx.fillStyle = ditherColor;
-      wallctx.fillRect(i + 10, h - 150, 10, 10);
-      wallctx.fillStyle = randomHexColor;
-      wallctx.fillRect(i + 10, h - 160, 10, 10);
-      wallctx.fillStyle = ditherColor;
-      wallctx.fillRect(i, h - 160, 10, 10);
+        wallctx.fillStyle = randomHexColor;
+        wallctx.fillRect(i, h - 150, 10, 10);
+        wallctx.fillStyle = ditherColor;
+        wallctx.fillRect(i + 10, h - 150, 10, 10);
+        wallctx.fillStyle = randomHexColor;
+        wallctx.fillRect(i + 10, h - 160, 10, 10);
+        wallctx.fillStyle = ditherColor;
+        wallctx.fillRect(i, h - 160, 10, 10);
 
-      wallctx.fillStyle = randomHexColor;
-      wallctx.fillRect(i, h - 170, 10, 10);
-      wallctx.fillStyle = ditherColor;
-      wallctx.fillRect(i + 10, h - 170, 10, 10);
-      wallctx.fillStyle = randomHexColor;
-      wallctx.fillRect(i + 10, h - 180, 10, 10);
-      wallctx.fillStyle = ditherColor;
-      wallctx.fillRect(i, h - 180, 10, 10);
+        wallctx.fillStyle = randomHexColor;
+        wallctx.fillRect(i, h - 170, 10, 10);
+        wallctx.fillStyle = ditherColor;
+        wallctx.fillRect(i + 10, h - 170, 10, 10);
+        wallctx.fillStyle = randomHexColor;
+        wallctx.fillRect(i + 10, h - 180, 10, 10);
+        wallctx.fillStyle = ditherColor;
+        wallctx.fillRect(i, h - 180, 10, 10);
 
-      // pattern 3
-      wallctx.fillStyle = randomHexColor;
-      wallctx.fillRect(0, h - 190, w, 10);
-      wallctx.fillStyle = ditherColor;
-      wallctx.fillRect(i, h - 200, 10, 10);
-      wallctx.fillStyle = randomHexColor;
-      wallctx.fillRect(i + 10, h - 200, 10, 10);
+        // pattern 3
+        wallctx.fillStyle = randomHexColor;
+        wallctx.fillRect(0, h - 190, w, 10);
+        wallctx.fillStyle = ditherColor;
+        wallctx.fillRect(i, h - 200, 10, 10);
+        wallctx.fillStyle = randomHexColor;
+        wallctx.fillRect(i + 10, h - 200, 10, 10);
 
-      wallctx.fillStyle = randomHexColor;
-      wallctx.fillRect(0, h - 210, w, 10);
-      wallctx.fillStyle = ditherColor;
-      wallctx.fillRect(i, h - 220, 10, 10);
-      wallctx.fillStyle = randomHexColor;
-      wallctx.fillRect(i + 10, h - 220, 10, 10);
+        wallctx.fillStyle = randomHexColor;
+        wallctx.fillRect(0, h - 210, w, 10);
+        wallctx.fillStyle = ditherColor;
+        wallctx.fillRect(i, h - 220, 10, 10);
+        wallctx.fillStyle = randomHexColor;
+        wallctx.fillRect(i + 10, h - 220, 10, 10);
+      }
     }
+
+    // text
+    wallctx.fillStyle = fontColor;
+    wallctx.font = "128px Unifont";
+    wallctx.textAlign = "center";
+    wallctx.fillText(randomHexColor, w / 2, h / 2);
+
+    // write buffer to image
+    const buffer = wall.toBuffer("image/png");
+    fs.writeFileSync(path.join(wallDir + "/" + randomHexColor + ".png"), buffer);
+
+  } else {
+    if (!ditherEnabled) {
+      // bg
+      wallctx.fillStyle = main;
+      wallctx.fillRect(0, 0, w, h);
+    } else {
+      // bg
+      wallctx.fillStyle = main;
+      wallctx.fillRect(0, 0, w, h);
+
+      // dither
+      wallctx.fillStyle = dither;
+      wallctx.fillRect(0, h, w, -80);
+
+      for (let i = 0; i < w; i += 20) {
+        // pattern 1
+        wallctx.fillStyle = main;
+        wallctx.fillRect(i, h - 90, 10, 10);
+        wallctx.fillStyle = dither;
+        wallctx.fillRect(i + 10, h - 90, 10, 10);
+        wallctx.fillStyle = dither;
+        wallctx.fillRect(0, h - 100, w, 10);
+
+        wallctx.fillStyle = main;
+        wallctx.fillRect(i, h - 110, 10, 10);
+        wallctx.fillStyle = dither;
+        wallctx.fillRect(i + 10, h - 110, 10, 10);
+        wallctx.fillStyle = dither;
+        wallctx.fillRect(0, h - 120, w, 10);
+
+        // pattern 2
+        wallctx.fillStyle = main;
+        wallctx.fillRect(i, h - 130, 10, 10);
+        wallctx.fillStyle = dither;
+        wallctx.fillRect(i + 10, h - 130, 10, 10);
+        wallctx.fillStyle = main;
+        wallctx.fillRect(i + 10, h - 140, 10, 10);
+        wallctx.fillStyle = dither;
+        wallctx.fillRect(i, h - 140, 10, 10);
+
+        wallctx.fillStyle = main;
+        wallctx.fillRect(i, h - 150, 10, 10);
+        wallctx.fillStyle = dither;
+        wallctx.fillRect(i + 10, h - 150, 10, 10);
+        wallctx.fillStyle = main;
+        wallctx.fillRect(i + 10, h - 160, 10, 10);
+        wallctx.fillStyle = dither;
+        wallctx.fillRect(i, h - 160, 10, 10);
+
+        wallctx.fillStyle = main;
+        wallctx.fillRect(i, h - 170, 10, 10);
+        wallctx.fillStyle = dither;
+        wallctx.fillRect(i + 10, h - 170, 10, 10);
+        wallctx.fillStyle = main;
+        wallctx.fillRect(i + 10, h - 180, 10, 10);
+        wallctx.fillStyle = dither;
+        wallctx.fillRect(i, h - 180, 10, 10);
+
+        // pattern 3
+        wallctx.fillStyle = main;
+        wallctx.fillRect(0, h - 190, w, 10);
+        wallctx.fillStyle = dither;
+        wallctx.fillRect(i, h - 200, 10, 10);
+        wallctx.fillStyle = main;
+        wallctx.fillRect(i + 10, h - 200, 10, 10);
+
+        wallctx.fillStyle = main;
+        wallctx.fillRect(0, h - 210, w, 10);
+        wallctx.fillStyle = dither;
+        wallctx.fillRect(i, h - 220, 10, 10);
+        wallctx.fillStyle = main;
+        wallctx.fillRect(i + 10, h - 220, 10, 10);
+      }
+    }
+
+    // text
+    wallctx.fillStyle = text;
+    wallctx.font = "128px Unifont";
+    wallctx.textAlign = "center";
+    wallctx.fillText(main, w / 2, h / 2);
+
+    // write buffer to image
+    const buffer = wall.toBuffer("image/png");
+    fs.writeFileSync(path.join(wallDir + "/" + main + ".png"), buffer);
   }
-
-  // text
-  wallctx.fillStyle = fontColor;
-  wallctx.font = "128px Unifont";
-  wallctx.textAlign = "center";
-  wallctx.fillText(randomHexColor, w / 2, h / 2);
-
-  // write buffer to image
-  const buffer = wall.toBuffer("image/png");
-  fs.writeFileSync(path.join(wallDir + "/" + randomHexColor + ".png"), buffer);
 }
 
 /**
  *  sets last generated picture
  *  as wallpaper
  */
-async function setWallpaper() {
-  await wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"));
-}
-
-/**
- *  executes all hexwall functions
- */
-async function newRandomHexWall() {
-  await checkWallpaperFolder();
-  await cleanupFolder();
-  await generateColor();
-  await generateWall();
-  await setWallpaper();
+async function setWallpaper(main?: string) {
+  if (!main) {
+    await wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"));
+  } else {
+    await wallpaper.set(path.join(wallDir + "/" + main + ".png"));
+  }
 }
 
 /**
@@ -301,8 +381,12 @@ async function createTray() {
     },
     {
       label: "New Wallpaper",
-      click() {
-        newRandomHexWall();
+      async click() {
+        await checkWallpaperFolder();
+        await cleanupFolder();
+        await generateColor();
+        await generateWall();
+        await setWallpaper();
       }
     },
     {
@@ -363,15 +447,23 @@ function createWindow() {
 /**
  *  signal management
  */
-app.on("ready", () => {
+app.on("ready", async () => {
   createTray();
-  newRandomHexWall();
+  await checkWallpaperFolder();
+  await cleanupFolder();
+  await generateColor();
+  await generateWall();
+  await setWallpaper();
 });
 
-app.on("activate", () => {
+app.on("activate", async () => {
   if (tray === null) {
     createTray();
-    newRandomHexWall();
+    await checkWallpaperFolder();
+    await cleanupFolder();
+    await generateColor();
+    await generateWall();
+    await setWallpaper();
   }
 });
 
@@ -386,9 +478,15 @@ ipcMain.on("openLink", (event: any, arg: any) => {
   event.returnValue = true;
 });
 
-/**
- * send last colors to frontend
- */
+// send colors to frontend
 ipcMain.handle("getLastColors", async (event: any, arg: any) => {
   return lastWalls;
+});
+
+ipcMain.on("setToSelectedColor", async (event: any, arg: any) => {
+  await checkWallpaperFolder();
+  await cleanupFolder();
+  await generateWall(arg.color, arg.ditherColor, arg.fontColor);
+  await setWallpaper(arg.color);
+  event.returnValue = true;
 });

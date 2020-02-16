@@ -5,6 +5,7 @@ let win = remote.getCurrentWindow();
 
 const pin = document.getElementsByClassName("fa-thumbtack")[0];
 let pinSet: Boolean = false;
+let colors = [];
 
 /**
  *  set defaults (close window on focus lost, hide main divs)
@@ -112,6 +113,8 @@ function getLastColors() {
       document.getElementById("grid_last").removeChild(document.getElementById("grid_last").firstChild);
     }
 
+    colors = colors;
+
     for (let i = 0; i < colors.length; i++) {
       let field = document.createElement("div");
       field.setAttribute("class", "field");
@@ -121,6 +124,11 @@ function getLastColors() {
       text.setAttribute("id", `text_${i}`);
       text.appendChild(document.createTextNode(colors[i].color));
       field.appendChild(text);
+
+      let check = document.createElement("i");
+      check.setAttribute("class", "fas fa-check");
+      field.appendChild(check);
+
       document.getElementById("grid_last").appendChild(field);
     }
 
@@ -129,37 +137,26 @@ function getLastColors() {
       field.style.backgroundColor = colors[i].color;
       field.style.borderRadius = "5px";
 
-      // let tooltip = document.getElementById(`text_${i}`);
-      // tooltip.style.visibility = "hidden";
-      // width: 120px;
-      // background - color: black;
-      // color: #fff;
-      // text - align: center;
-      // padding: 5px 0;
-      // border - radius: 6px;
-
-      // position: absolute;
-      // z - index: 1;
-
-      // document.getElementById(`${i}_color`).style.fontSize = "2rem";
-      // document.getElementById(`${i}_color`).style.textDecoration = "none";
-      // document.getElementById(`${i}_color`).style.listStyle = "none";
-      // document.getElementById(`${i}_color`).style.textAlign = "center";
-
-      // document.getElementById(`${i}_color`).style.padding = "0.5rem 0 0.5rem 0";
-      // document.getElementById(`${i}_color`).style.marginBottom = "2rem";
-
-      // document.getElementById(`${i}_color`).style.borderColor = "white";
-      // document.getElementById(`${i}_color`).style.borderStyle = "solid";
-      // document.getElementById(`${i}_color`).style.borderWidth = "2px";
-      // document.getElementById(`${i}_color`).style.borderRadius = "5px";
-      // document.getElementById(`${i}_color`).style.boxShadow = "2px 2px 10px 0px rgba(0, 0, 0, 1)";
-
-      // document.getElementById(`${i}_color`).style.backgroundColor = colors[i].color;
-      // document.getElementById(`${i}_color`).style.color = colors[i].fontColor;
-
-      // let field = document.getElementsByClassName("field")[i];
-      // field.style.flex = "1";
+      field.addEventListener("mousedown", (event: any) => {
+        handleColorClick(event.button, `field_${i}`, colors[i]);
+      });
     }
   });
+}
+
+// TODO: refactor code into more files / classes
+function handleColorClick(button: Number, field: string, color: String) {
+  switch (button) {
+    case 0: {
+      ipcRenderer.sendSync("setToSelectedColor", color);
+      let parent = document.getElementById(field);
+      let check = parent.getElementsByTagName("i");
+      check[0].style.opacity = "1";
+      break;
+    }
+
+    case 2: {
+      break;
+    }
+  }
 }

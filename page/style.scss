@@ -124,6 +124,13 @@ main {
           transition: 0.1s;
           cursor: pointer;
         }
+        .fa-check {
+          opacity: 0;
+          width: 100%;
+          height: 100%;
+          color: green;
+          background: black;
+        }
       }
     }
   }
