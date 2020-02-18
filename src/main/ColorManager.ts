@@ -7,19 +7,19 @@ export class ColorManager {
   private _cachePath: string = "./favorites";
 
   public addNewColor(color: Array<string>): void {
-    this._lastColors.push({
+    this._lastColors.unshift({
       mainColor: color[0],
       fontColor: color[1],
       ditherColor: color[2]
     });
   }
 
-  public get lastColors(): Array<Object> {
+  public getLastColors(): Array<Object> {
     return this._lastColors;
   }
 
   public addNewFavorite(color: Array<string>): void {
-    this._favoriteColors.push({
+    this._favoriteColors.unshift({
       mainColor: color[0],
       fontColor: color[1],
       ditherColor: color[2]
@@ -29,7 +29,7 @@ export class ColorManager {
     );
   }
 
-  public get favoriteColors(): Array<Object> {
+  public getFavoriteColors(): Array<Object> {
     return this._favoriteColors;
   }
 
@@ -37,7 +37,7 @@ export class ColorManager {
     this._favoriteColors.splice(index, 1);
   }
 
-  public generateColor(): void {
+  public generateColor(): Array<string> {
     let mainColor: string;
     let fontColor: string;
     let ditherColor: string;
@@ -73,7 +73,6 @@ export class ColorManager {
     ditherColor = "#" + converter.rgb.hex([r, g, b]);
 
     this.addNewColor([mainColor, fontColor, ditherColor]);
+    return [mainColor, fontColor, ditherColor];
   }
 }
-
-// TODO: comment this file

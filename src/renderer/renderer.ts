@@ -122,7 +122,7 @@ function getLastColors() {
 
       let text = document.createElement("span");
       text.setAttribute("id", `text_${i}`);
-      text.appendChild(document.createTextNode(colors[i].color));
+      text.appendChild(document.createTextNode(colors[i].mainColor));
       field.appendChild(text);
 
       let check = document.createElement("i");
@@ -134,7 +134,7 @@ function getLastColors() {
 
     for (let i = 0; i < colors.length; i++) {
       let field = document.getElementById(`field_${i}`);
-      field.style.backgroundColor = colors[i].color;
+      field.style.backgroundColor = colors[i].mainColor;
       field.style.borderRadius = "5px";
 
       field.addEventListener("mousedown", (event: any) => {

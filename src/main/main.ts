@@ -462,17 +462,6 @@ app.on("ready", async () => {
   await setWallpaper();
 });
 
-app.on("activate", async () => {
-  if (tray === null) {
-    createTray();
-    await checkWallpaperFolder();
-    await cleanupFolder();
-    await generateColor();
-    await generateWall();
-    await setWallpaper();
-  }
-});
-
 // on window close dont close app
 app.on("window-all-closed", (e: any) => {
   e.preventDefault()
