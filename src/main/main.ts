@@ -448,6 +448,12 @@ function createWindow() {
  *  signal management
  */
 app.on("ready", async () => {
+  app.setLoginItemSettings({
+    openAtLogin: true,
+    path: process.execPath,
+    args: []
+  });
+
   createTray();
   await checkWallpaperFolder();
   await cleanupFolder();
