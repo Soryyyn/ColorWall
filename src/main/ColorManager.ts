@@ -1,10 +1,11 @@
 import converter from 'color-convert';
 import fs from 'fs';
+import path from 'path';
 
 export class ColorManager {
   private _lastColors: Array<Object> = [];
   private _favoriteColors: Array<Object> = [];
-  private _cachePath: string = "./favorites";
+  private _cachePath: string = "./favorites.json";
 
   public addNewColor(color: Array<string>): void {
     this._lastColors.unshift({
@@ -18,14 +19,15 @@ export class ColorManager {
     return this._lastColors;
   }
 
-  public addNewFavorite(color: Array<string>): void {
+  public addNewFavorite(color: any): void {
+    // TODO: add checking if color already in array
     this._favoriteColors.unshift({
-      mainColor: color[0],
-      fontColor: color[1],
-      ditherColor: color[2]
+      mainColor: color.mainColor,
+      fontColor: color.fontColor,
+      ditherColor: color.ditherColor
     });
 
-    fs.writeFileSync(this._cachePath, `${this._favoriteColors}\n`
+    fs.writeFileSync(this._cachePath, `${JSON.stringify(this._favoriteColors)}`
     );
   }
 
@@ -35,6 +37,23 @@ export class ColorManager {
 
   public removeFavorite(index: number): void {
     this._favoriteColors.splice(index, 1);
+  }
+
+  public loadFavoritesFromFile() {
+    if (!fs.existsSync(this._cachePath)) {
+      fs.writeFileSync(this._cachePath, JSON.stringify(this._favoriteColors));
+    }
+
+    let favorites = require(path.join("../../", this._cachePath));
+    if (favorites !== null || favorites !== undefined || favorites.length <= 0) {
+      for (let i = 0; i < favorites.length; i++) {
+        this._favoriteColors.unshift({
+          mainColor: favorites[i].mainColor,
+          fontColor: favorites[i].fontColor,
+          ditherColor: favorites[i].ditherColor
+        })
+      }
+    }
   }
 
   public generateColor(): Array<string> {

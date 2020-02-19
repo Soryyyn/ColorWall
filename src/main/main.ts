@@ -87,6 +87,7 @@ function onReady() {
     args: []
   });
 
+  colorManager.loadFavoritesFromFile();
   let colors = colorManager.generateColor();
   wallpaperManager.generateWallpaper(colors[0], colors[1], colors[2]);
   wallpaperManager.setWallpaper(colors[0]);
@@ -110,8 +111,17 @@ ipcMain.handle(ipcChannel.requestLastColors, async (event: any, arg: any) => {
   return colorManager.getLastColors();
 });
 
+ipcMain.handle(ipcChannel.requestFavoriteColors, async (event: any, arg: any) => {
+  return colorManager.getFavoriteColors();
+});
+
 ipcMain.on(ipcChannel.setToSelectedColor, async (event: any, arg: any) => {
   wallpaperManager.generateWallpaper(arg.mainColor, arg.fontColor, arg.ditherColor);
   wallpaperManager.setWallpaper(arg.mainColor);
+  event.returnValue = true;
+});
+
+ipcMain.on(ipcChannel.addToFavorites, (event: any, arg: any) => {
+  colorManager.addNewFavorite(arg);
   event.returnValue = true;
 });
