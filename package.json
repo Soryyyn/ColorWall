@@ -46,7 +46,7 @@
     "@types/color-convert": "^1.9.0",
     "@types/node": "^13.7.1",
     "color-convert": "^2.0.1",
-    "electron": "^8.0.0",
+    "electron": "^8.0.1",
     "electron-builder": "^22.3.2",
     "electron-rebuild": "^1.10.0",
     "wallpaper": "^4.4.1"
