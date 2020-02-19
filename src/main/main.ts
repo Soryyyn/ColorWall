@@ -106,7 +106,6 @@ ipcMain.on(ipcChannel.linkPressed, (event: any, arg: any) => {
   event.returnValue = true;
 });
 
-// send colors to frontend
 ipcMain.handle(ipcChannel.requestLastColors, async (event: any, arg: any) => {
   return colorManager.getLastColors();
 });

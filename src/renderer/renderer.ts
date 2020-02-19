@@ -25,7 +25,6 @@ function pinWindow() {
   } else {
     pinSet = false;
     remoteWindow.on("blur", () => {
-
       remoteWindow.hide();
     });
     pin.setAttribute("style", "color: #9e9e9e");
@@ -102,11 +101,13 @@ function styleColorField(color: any, index: number) {
 
 function handleColorClick(button: Number, color: any) {
   switch (button) {
+    // left click / set color
     case 0: {
       ipcRenderer.sendSync(ipcChannel.setToSelectedColor, color);
       break;
     }
 
+    // right click / add to favorite
     case 2: {
       break;
     }
