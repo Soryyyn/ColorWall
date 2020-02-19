@@ -1,46 +1,36 @@
 const { ipcRenderer, remote } = require("electron");
+const { ipcChannel } = require("electron").remote.require("../common/IpcChannels");
 
-// @ts-ignore
-let win = remote.getCurrentWindow();
+let remoteWindow = remote.getCurrentWindow();
+let pinSet: Boolean = false;
 
 const pin = document.getElementsByClassName("fa-thumbtack")[0];
-let pinSet: Boolean = false;
-let colors = [];
+const aboutNav = document.getElementById("aboutNav");
+const lastColorsNav = document.getElementById("lastcolorsNav");
+const favoritesNav = document.getElementById("favoritesNav");
+const settingsNav = document.getElementById("settingsNav");
 
-/**
- *  set defaults (close window on focus lost, hide main divs)
- */
-win.on("blur", () => {
-  win.close();
-});
-
+// defaults
+document.getElementById("about").style.display = "block";
+aboutNav.style.color = "white";
 document.getElementById("lastcolors").style.display = "none";
 document.getElementById("favorites").style.display = "none";
 document.getElementById("settings").style.display = "none";
 
-document.getElementById("aboutNav").style.color = "white";
-
-/**
- * disable window from closing on focus lost
- */
 function pinWindow() {
   if (pinSet === false) {
     pinSet = true;
-    win.removeAllListeners("blur");
+    remoteWindow.removeAllListeners("blur");
     pin.setAttribute("style", "color: white");
   } else {
     pinSet = false;
-    win.on("blur", () => {
-      win.close();
+    remoteWindow.on("blur", () => {
+      remoteWindow.close();
     });
     pin.setAttribute("style", "color: #9e9e9e");
   }
 }
 
-/**
- * show / hide element on click
- * @param element
- */
 function showElement(element: String) {
   if (element === "about") {
     document.getElementById("about").style.display = "block";
@@ -96,62 +86,23 @@ function showElement(element: String) {
   }
 }
 
-/**
- * send link to main process to open in browser
- * @param link
- */
-function openLink(link: String) {
-  ipcRenderer.sendSync("openLink", link);
+function clearGrid(grid: string): void {
+  while (document.getElementById(grid).firstChild) {
+    document.getElementById(grid).removeChild(document.getElementById(grid).firstChild);
+  }
 }
 
-/**
- * clear frontend, get all colors from main process, and add to list
- */
-function getLastColors() {
-  ipcRenderer.invoke("getLastColors", "getting colors").then((colors: any) => {
-    while (document.getElementById("grid_last").firstChild) {
-      document.getElementById("grid_last").removeChild(document.getElementById("grid_last").firstChild);
-    }
-
-    colors = colors;
-
-    for (let i = 0; i < colors.length; i++) {
-      let field = document.createElement("div");
-      field.setAttribute("class", "field");
-      field.setAttribute("id", `field_${i}`);
-
-      let text = document.createElement("span");
-      text.setAttribute("id", `text_${i}`);
-      text.appendChild(document.createTextNode(colors[i].mainColor));
-      field.appendChild(text);
-
-      let check = document.createElement("i");
-      check.setAttribute("class", "fas fa-check");
-      field.appendChild(check);
-
-      document.getElementById("grid_last").appendChild(field);
-    }
-
-    for (let i = 0; i < colors.length; i++) {
-      let field = document.getElementById(`field_${i}`);
-      field.style.backgroundColor = colors[i].mainColor;
-      field.style.borderRadius = "5px";
-
-      field.addEventListener("mousedown", (event: any) => {
-        handleColorClick(event.button, `field_${i}`, colors[i]);
-      });
-    }
-  });
+function styleColorField(color: any, index: number) {
+  let colorField = document.getElementById(`field_${index}`);
+  colorField.style.backgroundColor = color.mainColor;
+  colorField.style.borderRadius = "5px";
 }
 
-// TODO: refactor code into more files / classes
-function handleColorClick(button: Number, field: string, color: String) {
+
+function handleColorClick(button: Number, color: any) {
   switch (button) {
     case 0: {
-      ipcRenderer.sendSync("setToSelectedColor", color);
-      let parent = document.getElementById(field);
-      let check = parent.getElementsByTagName("i");
-      check[0].style.opacity = "1";
+      ipcRenderer.sendSync(ipcChannel.setToSelectedColor, color);
       break;
     }
 
@@ -160,3 +111,47 @@ function handleColorClick(button: Number, field: string, color: String) {
     }
   }
 }
+
+function addColorToGrid(grid: string, color: any, index: number): void {
+  let colorField = document.createElement("div");
+  colorField.setAttribute("class", "field");
+  colorField.setAttribute("id", `field_${index}`);
+
+  let textOfField = document.createElement("span");
+  textOfField.appendChild(document.createTextNode(color.mainColor));
+  colorField.appendChild(textOfField);
+
+  document.getElementById(grid).appendChild(colorField);
+
+  styleColorField(color, index);
+  colorField.addEventListener("mousedown", (event: any) => {
+    handleColorClick(event.button, color);
+  });
+}
+
+function requestLastColors() {
+  ipcRenderer.invoke(ipcChannel.requestLastColors, "requesting all last colors").then((colors: any) => {
+    clearGrid("grid_last");
+    for (let i = 0; i < colors.length; i++) {
+      addColorToGrid("grid_last", colors[i], i);
+    }
+  });
+}
+
+function openLink(link: String) {
+  ipcRenderer.sendSync(ipcChannel.linkPressed, link);
+}
+
+// events
+remoteWindow.on("blur", () => {
+  remoteWindow.hide();
+});
+
+ipcRenderer.on(ipcChannel.refreshedLastColors, (event: any, arg: any) => {
+  clearGrid("grid_last");
+  for (let i = 0; i < arg.length; i++) {
+    addColorToGrid("grid_last", arg[i], i);
+  }
+});
+
+lastColorsNav.addEventListener("click", requestLastColors);

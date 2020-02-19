@@ -1,379 +1,27 @@
-#!/usr/bin/env node
-import canvas from 'canvas';
-import converter from 'color-convert';
-import { app, BrowserWindow, dialog, ipcMain, Menu, screen, Tray } from 'electron';
-import fs from 'fs';
+import { ipcChannel } from '../common/IpcChannels';
+import { ColorManager } from './ColorManager';
+import { WallpaperManager } from './WallpaperManager';
+import { Config } from '../common/Config';
+import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron';
 import open from 'open';
 import path from 'path';
 import url from 'url';
-import wallpaper from 'wallpaper';
 
-const wallDir = "./wall";
-let lastWalls: any = [];
-let favorites: any = [];
-
-let randomHexColor: any;
-let ditherColor: any;
-let ditherEnabled: Boolean = true;
-let fontColor: any;
-
-// @ts-ignore
 let win: any;
-app.allowRendererProcessReuse = true;
 let tray: any = null;
+const colorManager = new ColorManager();
+const wallpaperManager = new WallpaperManager();
+const config = new Config();
+app.allowRendererProcessReuse = true;
 
-/**
- *  checks wallpaper directory if it exists,
- *  if it doesn't, it creates it
- */
-async function checkWallpaperFolder() {
-  if (!fs.existsSync(wallDir)) {
-    fs.mkdirSync(wallDir);
-  }
-}
+function createTray() {
+  tray = new Tray(path.join(__dirname, "../../media/single_icon.png"));
 
-/**
- *  cleans up the wallpaper folder
- */
-async function cleanupFolder() {
-  const images = fs.readdirSync(wallDir);
-  if (images.length > 0) {
-    fs.unlinkSync(wallDir + "/" + images.pop());
-  }
-}
-
-/**
- *  generates a random color & decides
- *  if the font color should be white or black
- */
-async function generateColor() {
-  let r = Math.floor(Math.random() * 255 + 1);
-  let g = Math.floor(Math.random() * 255 + 1);
-  let b = Math.floor(Math.random() * 255 + 1);
-  const rgb = r + g + b;
-
-  if (rgb > 382) {
-    fontColor = "#000000";
-  } else {
-    fontColor = "#FFFFFF";
-  }
-  randomHexColor = "#" + converter.rgb.hex([r, g, b]);
-
-  // for dark dither color
-  if (r - 20 > 0) {
-    r -= 20;
-  } else {
-    r = 0;
-  }
-
-  if (g - 20 > 0) {
-    g -= 20;
-  } else {
-    g = 0;
-  }
-
-  if (b - 20 > 0) {
-    b -= 20;
-  } else {
-    b = 0;
-  }
-  ditherColor = "#" + converter.rgb.hex([r, g, b]);
-  trackLastColors(randomHexColor, ditherColor, fontColor);
-}
-
-/**
- * adds last generated colors to array
- * @param color the main color of the wallpaper/background
- * @param ditherColor color of the dithering on the bottom of the wallpaper
- */
-function trackLastColors(color: String, ditherColor: String, fontColor: String) {
-  lastWalls.unshift({
-    color: color,
-    ditherColor: ditherColor,
-    fontColor: fontColor
-  });
-}
-
-/**
- *  generates the wallpaper, and saves it
- *  to the wall folder
- */
-async function generateWall(main?: string, dither?: string, text?: string) {
-  const w = screen.getPrimaryDisplay().size.width;
-  const h = screen.getPrimaryDisplay().size.height;
-
-  const wall = canvas.createCanvas(w, h);
-  const wallctx = wall.getContext("2d");
-
-  if (main == null && dither == null && text == null) {
-    if (!ditherEnabled) {
-      // bg
-      wallctx.fillStyle = randomHexColor;
-      wallctx.fillRect(0, 0, w, h);
-    } else {
-      // bg
-      wallctx.fillStyle = randomHexColor;
-      wallctx.fillRect(0, 0, w, h);
-
-      // dither
-      wallctx.fillStyle = ditherColor;
-      wallctx.fillRect(0, h, w, -80);
-
-      for (let i = 0; i < w; i += 20) {
-        // pattern 1
-        wallctx.fillStyle = randomHexColor;
-        wallctx.fillRect(i, h - 90, 10, 10);
-        wallctx.fillStyle = ditherColor;
-        wallctx.fillRect(i + 10, h - 90, 10, 10);
-        wallctx.fillStyle = ditherColor;
-        wallctx.fillRect(0, h - 100, w, 10);
-
-        wallctx.fillStyle = randomHexColor;
-        wallctx.fillRect(i, h - 110, 10, 10);
-        wallctx.fillStyle = ditherColor;
-        wallctx.fillRect(i + 10, h - 110, 10, 10);
-        wallctx.fillStyle = ditherColor;
-        wallctx.fillRect(0, h - 120, w, 10);
-
-        // pattern 2
-        wallctx.fillStyle = randomHexColor;
-        wallctx.fillRect(i, h - 130, 10, 10);
-        wallctx.fillStyle = ditherColor;
-        wallctx.fillRect(i + 10, h - 130, 10, 10);
-        wallctx.fillStyle = randomHexColor;
-        wallctx.fillRect(i + 10, h - 140, 10, 10);
-        wallctx.fillStyle = ditherColor;
-        wallctx.fillRect(i, h - 140, 10, 10);
-
-        wallctx.fillStyle = randomHexColor;
-        wallctx.fillRect(i, h - 150, 10, 10);
-        wallctx.fillStyle = ditherColor;
-        wallctx.fillRect(i + 10, h - 150, 10, 10);
-        wallctx.fillStyle = randomHexColor;
-        wallctx.fillRect(i + 10, h - 160, 10, 10);
-        wallctx.fillStyle = ditherColor;
-        wallctx.fillRect(i, h - 160, 10, 10);
-
-        wallctx.fillStyle = randomHexColor;
-        wallctx.fillRect(i, h - 170, 10, 10);
-        wallctx.fillStyle = ditherColor;
-        wallctx.fillRect(i + 10, h - 170, 10, 10);
-        wallctx.fillStyle = randomHexColor;
-        wallctx.fillRect(i + 10, h - 180, 10, 10);
-        wallctx.fillStyle = ditherColor;
-        wallctx.fillRect(i, h - 180, 10, 10);
-
-        // pattern 3
-        wallctx.fillStyle = randomHexColor;
-        wallctx.fillRect(0, h - 190, w, 10);
-        wallctx.fillStyle = ditherColor;
-        wallctx.fillRect(i, h - 200, 10, 10);
-        wallctx.fillStyle = randomHexColor;
-        wallctx.fillRect(i + 10, h - 200, 10, 10);
-
-        wallctx.fillStyle = randomHexColor;
-        wallctx.fillRect(0, h - 210, w, 10);
-        wallctx.fillStyle = ditherColor;
-        wallctx.fillRect(i, h - 220, 10, 10);
-        wallctx.fillStyle = randomHexColor;
-        wallctx.fillRect(i + 10, h - 220, 10, 10);
-      }
-    }
-
-    // text
-    wallctx.fillStyle = fontColor;
-    wallctx.font = "128px Unifont";
-    wallctx.textAlign = "center";
-    wallctx.fillText(randomHexColor, w / 2, h / 2);
-
-    // write buffer to image
-    const buffer = wall.toBuffer("image/png");
-    fs.writeFileSync(path.join(wallDir + "/" + randomHexColor + ".png"), buffer);
-
-  } else {
-    if (!ditherEnabled) {
-      // bg
-      wallctx.fillStyle = main;
-      wallctx.fillRect(0, 0, w, h);
-    } else {
-      // bg
-      wallctx.fillStyle = main;
-      wallctx.fillRect(0, 0, w, h);
-
-      // dither
-      wallctx.fillStyle = dither;
-      wallctx.fillRect(0, h, w, -80);
-
-      for (let i = 0; i < w; i += 20) {
-        // pattern 1
-        wallctx.fillStyle = main;
-        wallctx.fillRect(i, h - 90, 10, 10);
-        wallctx.fillStyle = dither;
-        wallctx.fillRect(i + 10, h - 90, 10, 10);
-        wallctx.fillStyle = dither;
-        wallctx.fillRect(0, h - 100, w, 10);
-
-        wallctx.fillStyle = main;
-        wallctx.fillRect(i, h - 110, 10, 10);
-        wallctx.fillStyle = dither;
-        wallctx.fillRect(i + 10, h - 110, 10, 10);
-        wallctx.fillStyle = dither;
-        wallctx.fillRect(0, h - 120, w, 10);
-
-        // pattern 2
-        wallctx.fillStyle = main;
-        wallctx.fillRect(i, h - 130, 10, 10);
-        wallctx.fillStyle = dither;
-        wallctx.fillRect(i + 10, h - 130, 10, 10);
-        wallctx.fillStyle = main;
-        wallctx.fillRect(i + 10, h - 140, 10, 10);
-        wallctx.fillStyle = dither;
-        wallctx.fillRect(i, h - 140, 10, 10);
-
-        wallctx.fillStyle = main;
-        wallctx.fillRect(i, h - 150, 10, 10);
-        wallctx.fillStyle = dither;
-        wallctx.fillRect(i + 10, h - 150, 10, 10);
-        wallctx.fillStyle = main;
-        wallctx.fillRect(i + 10, h - 160, 10, 10);
-        wallctx.fillStyle = dither;
-        wallctx.fillRect(i, h - 160, 10, 10);
-
-        wallctx.fillStyle = main;
-        wallctx.fillRect(i, h - 170, 10, 10);
-        wallctx.fillStyle = dither;
-        wallctx.fillRect(i + 10, h - 170, 10, 10);
-        wallctx.fillStyle = main;
-        wallctx.fillRect(i + 10, h - 180, 10, 10);
-        wallctx.fillStyle = dither;
-        wallctx.fillRect(i, h - 180, 10, 10);
-
-        // pattern 3
-        wallctx.fillStyle = main;
-        wallctx.fillRect(0, h - 190, w, 10);
-        wallctx.fillStyle = dither;
-        wallctx.fillRect(i, h - 200, 10, 10);
-        wallctx.fillStyle = main;
-        wallctx.fillRect(i + 10, h - 200, 10, 10);
-
-        wallctx.fillStyle = main;
-        wallctx.fillRect(0, h - 210, w, 10);
-        wallctx.fillStyle = dither;
-        wallctx.fillRect(i, h - 220, 10, 10);
-        wallctx.fillStyle = main;
-        wallctx.fillRect(i + 10, h - 220, 10, 10);
-      }
-    }
-
-    // text
-    wallctx.fillStyle = text;
-    wallctx.font = "128px Unifont";
-    wallctx.textAlign = "center";
-    wallctx.fillText(main, w / 2, h / 2);
-
-    // write buffer to image
-    const buffer = wall.toBuffer("image/png");
-    fs.writeFileSync(path.join(wallDir + "/" + main + ".png"), buffer);
-  }
-}
-
-/**
- *  sets last generated picture
- *  as wallpaper
- */
-async function setWallpaper(main?: string) {
-  if (!main) {
-    await wallpaper.set(path.join(wallDir + "/" + randomHexColor + ".png"));
-  } else {
-    await wallpaper.set(path.join(wallDir + "/" + main + ".png"));
-  }
-}
-
-/**
- *  prompt if auto launch should be enabled or not
- */
-function askAutoLaunch() {
-  const whenDisabled = {
-    type: "question",
-    buttons: ["Cancel", "Yes, please", "No, thanks"],
-    defaultId: 2,
-    title: "Auto Launch",
-    message: "HexWall on System Startup currently disabled, want to enable?",
-  };
-
-  const whenEnabled = {
-    type: "question",
-    buttons: ["Cancel", "Yes, please", "No, thanks"],
-    defaultId: 2,
-    title: "Auto Launch",
-    message: "HexWall on System Startup currently enabled, want to disable?",
-  };
-
-  if (app.getLoginItemSettings().openAtLogin) {
-    const response = dialog.showMessageBoxSync(whenEnabled);
-    if (response === 1) {
-      app.setLoginItemSettings({
-        openAtLogin: false,
-        path: process.execPath,
-        args: []
-      });
-    }
-  } else {
-    const response = dialog.showMessageBoxSync(whenDisabled);
-    if (response === 1) {
-      app.setLoginItemSettings({
-        openAtLogin: true,
-        path: process.execPath,
-        args: []
-      });
-    }
-  }
-
-}
-
-/**
- *  prompt if dithering should be enabled or not
- */
-function askDithering() {
-  const whenDisabled = {
-    type: "question",
-    buttons: ["Cancel", "Yes, please", "No, thanks"],
-    defaultId: 2,
-    title: "Dithering",
-    message: "Dithering currently disabled, want to enable?",
-  };
-
-  const whenEnabled = {
-    type: "question",
-    buttons: ["Cancel", "Yes, please", "No, thanks"],
-    defaultId: 2,
-    title: "Dithering",
-    message: "Dithering currently currently enabled, want to disable?",
-  };
-
-  if (ditherEnabled) {
-    const response = dialog.showMessageBoxSync(whenEnabled);
-    if (response === 1) {
-      ditherEnabled = false;
-    }
-  } else {
-    const response = dialog.showMessageBoxSync(whenDisabled);
-    if (response === 1) {
-      ditherEnabled = true;
-    }
-  }
-}
-
-/**
- *  adds hexwall to systemtray
- */
-async function createTray() {
-  tray = new Tray(path.join(__dirname, "../media/single_icon.png"));
   const contextMenu = Menu.buildFromTemplate([
     {
       label: "HexWall",
       click() {
-        createWindow()
+        win.show();
       }
     },
     {
@@ -381,24 +29,11 @@ async function createTray() {
     },
     {
       label: "New Wallpaper",
-      async click() {
-        await checkWallpaperFolder();
-        await cleanupFolder();
-        await generateColor();
-        await generateWall();
-        await setWallpaper();
-      }
-    },
-    {
-      label: "Auto Launch",
       click() {
-        askAutoLaunch();
-      }
-    },
-    {
-      label: "Enable/Disable Dithering",
-      click() {
-        askDithering();
+        let colors = colorManager.generateColor();
+        wallpaperManager.generateWallpaper(colors[0], colors[1], colors[2]);
+        wallpaperManager.setWallpaper(colors[0]);
+        win.webContents.send(ipcChannel.refreshedLastColors, colorManager.getLastColors());
       }
     },
     {
@@ -417,9 +52,6 @@ async function createTray() {
   tray.setContextMenu(contextMenu);
 }
 
-/**
- *  create manager window
- */
 function createWindow() {
   win = new BrowserWindow({
     webPreferences: {
@@ -430,12 +62,12 @@ function createWindow() {
     height: 600,
     frame: false,
     transparent: true,
-    icon: path.join(__dirname, "../media/single_icon.png")
+    icon: path.join(__dirname, "../../media/single_icon.png")
   });
 
   win.loadURL(
     url.format({
-      pathname: path.join(__dirname, "../page/index.html"),
+      pathname: path.join(__dirname, "../../page/index.html"),
       protocol: "file:",
       slashes: true
     })
@@ -444,44 +76,42 @@ function createWindow() {
   win.center();
 }
 
-/**
- *  signal management
- */
-app.on("ready", async () => {
+function onReady() {
+  createWindow();
+  win.hide();
+  createTray();
+
   app.setLoginItemSettings({
-    openAtLogin: true,
+    openAtLogin: config.autoLaunch,
     path: process.execPath,
     args: []
   });
 
-  createTray();
-  await checkWallpaperFolder();
-  await cleanupFolder();
-  await generateColor();
-  await generateWall();
-  await setWallpaper();
-});
+  let colors = colorManager.generateColor();
+  wallpaperManager.generateWallpaper(colors[0], colors[1], colors[2]);
+  wallpaperManager.setWallpaper(colors[0]);
+}
 
-// on window close dont close app
+// electron events
+app.on("ready", onReady);
+
 app.on("window-all-closed", (e: any) => {
   e.preventDefault()
 });
 
-// open clicked link in front end
-ipcMain.on("openLink", (event: any, arg: any) => {
+// ipc events
+ipcMain.on(ipcChannel.linkPressed, (event: any, arg: any) => {
   open(arg);
   event.returnValue = true;
 });
 
 // send colors to frontend
-ipcMain.handle("getLastColors", async (event: any, arg: any) => {
-  return lastWalls;
+ipcMain.handle(ipcChannel.requestLastColors, async (event: any, arg: any) => {
+  return colorManager.getLastColors();
 });
 
-ipcMain.on("setToSelectedColor", async (event: any, arg: any) => {
-  await checkWallpaperFolder();
-  await cleanupFolder();
-  await generateWall(arg.color, arg.ditherColor, arg.fontColor);
-  await setWallpaper(arg.color);
+ipcMain.on(ipcChannel.setToSelectedColor, async (event: any, arg: any) => {
+  wallpaperManager.generateWallpaper(arg.mainColor, arg.fontColor, arg.ditherColor);
+  wallpaperManager.setWallpaper(arg.mainColor);
   event.returnValue = true;
 });

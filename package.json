@@ -2,10 +2,10 @@
   "name": "hexwall",
   "version": "1.0.2",
   "description": "generates a wallpaper & sets it everyday",
-  "main": "dist/main/newMain.js",
-  "types": "dist/main/newMain.d.ts",
+  "main": "dist/main/Main.js",
+  "types": "dist/main/Main.d.ts",
   "bin": {
-    "hexwall": "./dist/main/newMain.js"
+    "hexwall": "./dist/main/Main.js"
   },
   "scripts": {
     "start": "electron .",
