@@ -167,7 +167,7 @@ remoteWindow.on("blur", () => {
 ipcRenderer.on(ipcChannel.refreshedLastColors, (event: any, arg: any) => {
   clearGrid("grid_last");
   for (let i = 0; i < arg.length; i++) {
-    addColorToGrid("grid_last", arg[i], i, "fieldLast");
+    addColorToGrid("grid_last", arg[i], i, "fieldLast", "last");
   }
 });
 
