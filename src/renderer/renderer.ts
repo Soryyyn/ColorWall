@@ -92,14 +92,13 @@ function clearGrid(grid: string): void {
   }
 }
 
-function styleColorField(color: any, index: number) {
-  let colorField = document.getElementById(`field_${index}`);
+function styleColorField(color: any, index: number, type: string) {
+  let colorField = document.getElementById(`${type}_${index}`);
   colorField.style.backgroundColor = color.mainColor;
   colorField.style.borderRadius = "5px";
 }
 
-
-function handleColorClick(button: Number, color: any) {
+function handleColorClickOfLastColors(button: Number, color: any) {
   switch (button) {
     // left click / set color
     case 0: {
@@ -109,15 +108,16 @@ function handleColorClick(button: Number, color: any) {
 
     // right click / add to favorite
     case 2: {
+      ipcRenderer.sendSync(ipcChannel.addToFavorites, color);
       break;
     }
   }
 }
 
-function addColorToGrid(grid: string, color: any, index: number): void {
+function addColorToGrid(grid: string, color: any, index: number, type: string, page: string): void {
   let colorField = document.createElement("div");
   colorField.setAttribute("class", "field");
-  colorField.setAttribute("id", `field_${index}`);
+  colorField.setAttribute("id", `${type}_${index}`);
 
   let textOfField = document.createElement("span");
   textOfField.appendChild(document.createTextNode(color.mainColor));
@@ -125,17 +125,32 @@ function addColorToGrid(grid: string, color: any, index: number): void {
 
   document.getElementById(grid).appendChild(colorField);
 
-  styleColorField(color, index);
-  colorField.addEventListener("mousedown", (event: any) => {
-    handleColorClick(event.button, color);
-  });
+  styleColorField(color, index, type);
+
+  if (page == "last") {
+    colorField.addEventListener("mousedown", (event: any) => {
+      handleColorClickOfLastColors(event.button, color);
+    });
+  } else {
+    // nothing now
+  }
+
 }
 
 function requestLastColors() {
   ipcRenderer.invoke(ipcChannel.requestLastColors, "requesting all last colors").then((colors: any) => {
     clearGrid("grid_last");
     for (let i = 0; i < colors.length; i++) {
-      addColorToGrid("grid_last", colors[i], i);
+      addColorToGrid("grid_last", colors[i], i, "fieldLast", "last");
+    }
+  });
+}
+
+function requestFavoriteColors() {
+  ipcRenderer.invoke(ipcChannel.requestFavoriteColors, "requesting all favorite colors").then((colors: any) => {
+    clearGrid("grid_fav");
+    for (let i = 0; i < colors.length; i++) {
+      addColorToGrid("grid_fav", colors[i], i, "fieldFav", "fav");
     }
   });
 }
@@ -152,8 +167,9 @@ remoteWindow.on("blur", () => {
 ipcRenderer.on(ipcChannel.refreshedLastColors, (event: any, arg: any) => {
   clearGrid("grid_last");
   for (let i = 0; i < arg.length; i++) {
-    addColorToGrid("grid_last", arg[i], i);
+    addColorToGrid("grid_last", arg[i], i, "fieldLast");
   }
 });
 
 lastColorsNav.addEventListener("click", requestLastColors);
+favoritesNav.addEventListener("click", requestFavoriteColors);
