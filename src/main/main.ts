@@ -1,13 +1,13 @@
 import { ipcChannel } from '../common/IpcChannels';
+import { Config } from '../common/Config';
 import { ColorManager } from './ColorManager';
 import { WallpaperManager } from './WallpaperManager';
-import { Config } from '../common/Config';
 import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron';
 import open from 'open';
 import path from 'path';
 import url from 'url';
 
-let win: any;
+let win: any = null;
 let tray: any = null;
 const colorManager = new ColorManager();
 const wallpaperManager = new WallpaperManager();
@@ -25,9 +25,6 @@ function createTray() {
       }
     },
     {
-      type: "separator"
-    },
-    {
       label: "New Wallpaper",
       click() {
         let colors = colorManager.generateColor();
@@ -35,9 +32,6 @@ function createTray() {
         wallpaperManager.setWallpaper(colors[0]);
         win.webContents.send(ipcChannel.refreshedLastColors, colorManager.getLastColors());
       }
-    },
-    {
-      type: "separator"
     },
     {
       label: "Quit",
@@ -107,15 +101,15 @@ ipcMain.on(ipcChannel.linkPressed, (event: any, arg: any) => {
   event.returnValue = true;
 });
 
-ipcMain.handle(ipcChannel.requestLastColors, async (event: any, arg: any) => {
+ipcMain.handle(ipcChannel.requestLastColors, (event: any, arg: any) => {
   return colorManager.getLastColors();
 });
 
-ipcMain.handle(ipcChannel.requestFavoriteColors, async (event: any, arg: any) => {
+ipcMain.handle(ipcChannel.requestFavoriteColors, (event: any, arg: any) => {
   return colorManager.getFavoriteColors();
 });
 
-ipcMain.on(ipcChannel.setToSelectedColor, async (event: any, arg: any) => {
+ipcMain.on(ipcChannel.setToSelectedColor, (event: any, arg: any) => {
   wallpaperManager.generateWallpaper(arg.mainColor, arg.fontColor, arg.ditherColor);
   wallpaperManager.setWallpaper(arg.mainColor);
   event.returnValue = true;
