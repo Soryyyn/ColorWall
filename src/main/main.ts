@@ -62,6 +62,7 @@ function createWindow() {
     height: 600,
     frame: false,
     transparent: true,
+    show: false,
     icon: path.join(__dirname, "../../media/single_icon.png")
   });
 
@@ -78,7 +79,6 @@ function createWindow() {
 
 function onReady() {
   createWindow();
-  win.hide();
   createTray();
 
   app.setLoginItemSettings({
@@ -97,6 +97,7 @@ app.on("ready", onReady);
 
 app.on("window-all-closed", (e: any) => {
   e.preventDefault()
+  win.hide();
 });
 
 // ipc events

@@ -25,7 +25,8 @@ function pinWindow() {
   } else {
     pinSet = false;
     remoteWindow.on("blur", () => {
-      remoteWindow.close();
+
+      remoteWindow.hide();
     });
     pin.setAttribute("style", "color: #9e9e9e");
   }
