@@ -10,7 +10,8 @@
   "scripts": {
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w hexwall",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "watch": "tsc --watch"
   },
   "build": {
     "appId": "com.soryyyn.hexwall",
