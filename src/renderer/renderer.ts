@@ -2,9 +2,8 @@ const { ipcRenderer, remote } = require("electron");
 const { ipcChannel } = require("electron").remote.require("../common/IpcChannels");
 
 let remoteWindow = remote.getCurrentWindow();
-let pinSet: Boolean = false;
 
-const pin = document.getElementsByClassName("fa-thumbtack")[0];
+const closeButton = document.getElementsByClassName("fa-times")[0];
 const aboutNav = document.getElementById("aboutNav");
 const lastColorsNav = document.getElementById("lastcolorsNav");
 const favoritesNav = document.getElementById("favoritesNav");
@@ -17,18 +16,8 @@ document.getElementById("lastcolors").style.display = "none";
 document.getElementById("favorites").style.display = "none";
 document.getElementById("settings").style.display = "none";
 
-function pinWindow() {
-  if (pinSet === false) {
-    pinSet = true;
-    remoteWindow.removeAllListeners("blur");
-    pin.setAttribute("style", "color: white");
-  } else {
-    pinSet = false;
-    remoteWindow.on("blur", () => {
-      remoteWindow.hide();
-    });
-    pin.setAttribute("style", "color: #9e9e9e");
-  }
+function closeWindow() {
+  remoteWindow.hide();
 }
 
 function showElement(element: String) {
@@ -105,7 +94,6 @@ function handleColorClickOfLastColors(button: Number, color: any) {
       ipcRenderer.sendSync(ipcChannel.setToSelectedColor, color);
       break;
     }
-
     // right click / add to favorite
     case 2: {
       ipcRenderer.sendSync(ipcChannel.addToFavorites, color);
@@ -120,7 +108,8 @@ function addColorToGrid(grid: string, color: any, index: number, type: string, p
   colorField.setAttribute("id", `${type}_${index}`);
 
   let textOfField = document.createElement("span");
-  textOfField.appendChild(document.createTextNode(color.mainColor));
+  textOfField.appendChild(document.createTextNode("#"));
+  textOfField.setAttribute("style", "color: " + color.fontColor);
   colorField.appendChild(textOfField);
 
   document.getElementById(grid).appendChild(colorField);
@@ -160,10 +149,6 @@ function openLink(link: String) {
 }
 
 // events
-remoteWindow.on("blur", () => {
-  remoteWindow.hide();
-});
-
 ipcRenderer.on(ipcChannel.refreshedLastColors, (event: any, arg: any) => {
   clearGrid("grid_last");
   for (let i = 0; i < arg.length; i++) {
