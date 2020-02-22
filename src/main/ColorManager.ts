@@ -5,13 +5,13 @@ import path from 'path';
 export class ColorManager {
   private _lastColors: Array<Object> = [];
   private _favoriteColors: Array<Object> = [];
-  private _cachePath: string = "./favorites.json";
+  private _cachePath = "./favorites.json";
 
   public addNewColor(color: Array<string>): void {
     this._lastColors.unshift({
       mainColor: color[0],
       fontColor: color[1],
-      ditherColor: color[2]
+      ditherColor: color[2],
     });
   }
 
