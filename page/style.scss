@@ -157,26 +157,25 @@ main {
   #settings {
     #autoLaunchSetting, #ditherSetting {
 
-      #toggleDesc {
-        transform: rotate(-90deg);
-        float: left;
-      }
-
       #titleSetting {
-        float: left;
-        margin-left: 1rem;
-      }
-
-      input {
         clear: left;
+        margin-bottom: 0.5rem;
       }
 
-      #desc {
-        padding-right: 8rem;
-        color: #acacac;
-        float: left;
-        margin-bottom: 1.5rem;
+      #grid {
+        display: grid;
+        grid-template-columns: 9fr 1fr;
+        grid-template-rows: 1;
+        grid-gap: 1rem;
+
+        #desc {
+          color: #acacac;
+          float: left;
+          margin-bottom: 1.5rem;
+        }
+
       }
+
     }
   }
 

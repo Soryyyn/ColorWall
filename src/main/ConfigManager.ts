@@ -18,8 +18,11 @@ export class ConfigManager {
   }
 
   // add config bools here for more settings
-  public refreshConfig(_autoLaunch: boolean, _dithering: boolean) {
-    this._settings.autoLaunch = _autoLaunch;
-    this._settings.dithering = _dithering;
+  public refreshAutoLaunch(enabled: boolean) {
+    this._settings.autoLaunch = enabled;
+  }
+
+  public refreshDither(enabled: boolean) {
+    this._settings.dithering = enabled;
   }
 }
