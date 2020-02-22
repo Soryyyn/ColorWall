@@ -1,5 +1,5 @@
 import { ipcChannel } from '../common/IpcChannels';
-import { Config } from '../common/Config';
+import { ConfigManager } from './ConfigManager';
 import { ColorManager } from './ColorManager';
 import { WallpaperManager } from './WallpaperManager';
 import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron';
@@ -7,11 +7,12 @@ import open from 'open';
 import path from 'path';
 import url from 'url';
 
+
 let win: any = null;
 let tray: any = null;
 const colorManager = new ColorManager();
 const wallpaperManager = new WallpaperManager();
-const config = new Config();
+const configManager = new ConfigManager();
 app.allowRendererProcessReuse = true;
 
 function createTray() {
@@ -76,7 +77,7 @@ function onReady() {
   createTray();
 
   app.setLoginItemSettings({
-    openAtLogin: config.autoLaunch,
+    openAtLogin: configManager.loadconfig().autoLaunch,
     path: process.execPath,
     args: []
   });

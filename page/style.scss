@@ -151,5 +151,33 @@ main {
         }
       }
     }
+
   }
+
+  #settings {
+    #autoLaunchSetting, #ditherSetting {
+
+      #toggleDesc {
+        transform: rotate(-90deg);
+        float: left;
+      }
+
+      #titleSetting {
+        float: left;
+        margin-left: 1rem;
+      }
+
+      input {
+        clear: left;
+      }
+
+      #desc {
+        padding-right: 8rem;
+        color: #acacac;
+        float: left;
+        margin-bottom: 1.5rem;
+      }
+    }
+  }
+
 }
