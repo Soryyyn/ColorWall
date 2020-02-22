@@ -144,7 +144,7 @@ main {
         }
         &:active {
           transform: scale(1.1, 1.1);
-          box-shadow: inset 6px 6px 8px rgba(255, 255, 255, 0.15), 4px 4px 8px rgba(0, 0, 0, 0.5);
+          box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
           span {
             text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
           }
