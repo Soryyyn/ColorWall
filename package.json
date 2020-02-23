@@ -1,6 +1,6 @@
 {
   "name": "hexwall",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "generates a wallpaper & sets it everyday",
   "main": "dist/main/Main.js",
   "types": "dist/main/Main.d.ts",
