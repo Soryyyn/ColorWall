@@ -102,6 +102,21 @@ function handleColorClickOfLastColors(button: Number, color: any) {
   }
 }
 
+function handleColorClickOfFavoriteColors(button: Number, color: any) {
+  switch (button) {
+    // left click / set color
+    case 0: {
+      ipcRenderer.sendSync(ipcChannel.setToSelectedColor, color);
+      break;
+    }
+    // right click / remove from favorite
+    case 2: {
+      // ipcRenderer.sendSync(ipcChannel.addToFavorites, color);
+      break;
+    }
+  }
+}
+
 function addColorToGrid(grid: string, color: any, index: number, type: string, page: string): void {
   let colorField = document.createElement("div");
   colorField.setAttribute("class", "field");
@@ -121,9 +136,10 @@ function addColorToGrid(grid: string, color: any, index: number, type: string, p
       handleColorClickOfLastColors(event.button, color);
     });
   } else {
-    // nothing now
+    colorField.addEventListener("mousedown", (event: any) => {
+      handleColorClickOfFavoriteColors(event.button, color);
+    });
   }
-
 }
 
 function requestLastColors() {
@@ -148,6 +164,25 @@ function openLink(link: String) {
   ipcRenderer.sendSync(ipcChannel.linkPressed, link);
 }
 
+function requestConfig() {
+  let checkboxes = document.getElementsByTagName("input");
+  let autoLaunch = checkboxes[0];
+  let dithering = checkboxes[1];
+  ipcRenderer.invoke(ipcChannel.requestConfig, "requesting settings from config").then((config: any) => {
+    autoLaunch.checked = config.autoLaunch;
+    dithering.checked = config.dithering;
+  });
+}
+
+function changedSetting(nameOfSetting: string, status: boolean) {
+  console.log(nameOfSetting);
+  if (nameOfSetting === "autolaunch") {
+    ipcRenderer.sendSync(ipcChannel.changedAutoLaunch, status);
+  } else if (nameOfSetting === "dithering") {
+    ipcRenderer.sendSync(ipcChannel.changedDithering, status);
+  }
+}
+
 // events
 ipcRenderer.on(ipcChannel.refreshedLastColors, (event: any, arg: any) => {
   clearGrid("grid_last");
@@ -156,5 +191,7 @@ ipcRenderer.on(ipcChannel.refreshedLastColors, (event: any, arg: any) => {
   }
 });
 
+// nav eventlisteners
 lastColorsNav.addEventListener("click", requestLastColors);
 favoritesNav.addEventListener("click", requestFavoriteColors);
+settingsNav.addEventListener("click", requestConfig);

@@ -7,7 +7,6 @@ import open from 'open';
 import path from 'path';
 import url from 'url';
 
-
 let win: any = null;
 let tray: any = null;
 const colorManager = new ColorManager();
@@ -88,6 +87,14 @@ function onReady() {
   wallpaperManager.setWallpaper(colors[0]);
 }
 
+function updateAutoLaunch(status: boolean) {
+  app.setLoginItemSettings({
+    openAtLogin: status,
+    path: process.execPath,
+    args: []
+  });
+}
+
 // electron events
 app.on("ready", onReady);
 
@@ -118,5 +125,21 @@ ipcMain.on(ipcChannel.setToSelectedColor, (event: any, arg: any) => {
 
 ipcMain.on(ipcChannel.addToFavorites, (event: any, arg: any) => {
   colorManager.addNewFavorite(arg);
+  event.returnValue = true;
+});
+
+ipcMain.handle(ipcChannel.requestConfig, (event: any, arg: any) => {
+  return configManager.loadconfig();
+});
+
+ipcMain.on(ipcChannel.changedAutoLaunch, (event: any, arg: any) => {
+  configManager.refreshAutoLaunch(arg);
+  updateAutoLaunch(arg);
+  event.returnValue = true;
+});
+
+ipcMain.on(ipcChannel.changedDithering, (event: any, arg: any) => {
+  configManager.refreshDithering(arg);
+  wallpaperManager.setDitherEnabled(arg);
   event.returnValue = true;
 });

@@ -64,7 +64,7 @@
           <p id="desc">enables the auto-launching feature of HexWall, this means the app gets started on system-launch &
             sets a new wallpaper.</p>
           <label class="switch">
-            <input type="checkbox">
+            <input type="checkbox" name="autoLaunchCheckBox" onclick="changedSetting('autolaunch', this.checked)">
             <span></span>
           </label>
         </div>
@@ -77,7 +77,7 @@
             longer
             to set a wallpaper).</p>
           <label class="switch">
-            <input type="checkbox">
+            <input type="checkbox" name="ditheringCheckBox" onclick="changedSetting('dithering', this.checked)">
             <span></span>
           </label>
         </div>

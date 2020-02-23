@@ -11,10 +11,6 @@ export class WallpaperManager {
   private _ditherEnabled: boolean = false;
   private _fontSize: number = 128;
 
-  public getDitherEnabled(): boolean {
-    return this._ditherEnabled;
-  }
-
   public setDitherEnabled(value: boolean) {
     this._ditherEnabled = value;
   }

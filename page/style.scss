@@ -225,7 +225,7 @@ main {
         .switch {
           cursor: pointer;
           input {
-            display: none;
+            opacity: 0;
             & + span {
               width: 48px;
               height: 28px;

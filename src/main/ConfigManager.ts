@@ -22,9 +22,11 @@ export class ConfigManager {
   // add config bools here for more settings
   public refreshAutoLaunch(enabled: boolean) {
     this._settings.autoLaunch = enabled;
+    fs.writeFileSync(this._configPath, JSON.stringify(this._settings));
   }
 
-  public refreshDither(enabled: boolean) {
+  public refreshDithering(enabled: boolean) {
     this._settings.dithering = enabled;
+    fs.writeFileSync(this._configPath, JSON.stringify(this._settings));
   }
 }
