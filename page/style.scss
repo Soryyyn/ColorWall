@@ -199,7 +199,6 @@ main {
 
   #settings {
     #autoLaunchSetting, #ditherSetting {
-
       border-bottom: 2px rgba(107, 107, 107, 0.15) solid;
       margin-bottom: 1.5rem;
 
@@ -211,7 +210,7 @@ main {
 
       #grid {
         display: grid;
-        grid-template-columns: 9fr 1fr;
+        grid-template-columns: 7fr 3fr;
         grid-template-rows: 1;
         grid-gap: 1rem;
 
@@ -223,9 +222,13 @@ main {
 
         // switch styling start
         .switch {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 1.5rem;
           cursor: pointer;
           input {
-            opacity: 0;
+            display: none;
             & + span {
               width: 48px;
               height: 28px;

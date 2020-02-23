@@ -175,7 +175,6 @@ function requestConfig() {
 }
 
 function changedSetting(nameOfSetting: string, status: boolean) {
-  console.log(nameOfSetting);
   if (nameOfSetting === "autolaunch") {
     ipcRenderer.sendSync(ipcChannel.changedAutoLaunch, status);
   } else if (nameOfSetting === "dithering") {
