@@ -1,5 +1,5 @@
-import { ipcRenderer, remote } from "electron";
-import { ipcChannel } from "../common/IpcChannels";
+const { ipcRenderer, remote } = require("electron");
+const { ipcChannel } = require("electron").remote.require("../common/ipcChannels");
 
 let remoteWindow = remote.getCurrentWindow();
 
