@@ -10,6 +10,8 @@ export class ConfigManager {
   constructor() {
     if (!fs.existsSync(this._configPath)) {
       fs.writeFileSync(this._configPath, JSON.stringify(this._settings));
+    } else {
+      this._settings = require("../../config.json");
     }
   }
 
