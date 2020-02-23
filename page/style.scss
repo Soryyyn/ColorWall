@@ -126,7 +126,9 @@ main {
     h1 {
       font-size: 24px;
       margin-top: 0.5rem;
-      margin-bottom: 0.8rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px #6b6b6b solid;
+      padding-bottom: 0.5rem;
     }
     p {
       font-size: 16px;
@@ -198,9 +200,13 @@ main {
   #settings {
     #autoLaunchSetting, #ditherSetting {
 
+      border-bottom: 2px rgba(107, 107, 107, 0.15) solid;
+      margin-bottom: 1.5rem;
+
       #titleSetting {
         clear: left;
         margin-bottom: 0.5rem;
+        font-weight: bold;
       }
 
       #grid {
@@ -210,7 +216,7 @@ main {
         grid-gap: 1rem;
 
         #desc {
-          color: #acacac;
+          color: #8a8a8a;
           float: left;
           margin-bottom: 1.5rem;
         }
