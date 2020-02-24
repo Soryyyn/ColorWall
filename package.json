@@ -11,22 +11,9 @@
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w hexwall",
     "watch": "tsc --watch",
-    "build-all": "electron-packager . HexWall --platform all --icon ./media/single_icon.ico --prune --out ./builds --overwrite"
-  },
-  "build": {
-    "appId": "com.soryyyn.hexwall",
-    "win": {
-      "target": "nsis",
-      "icon": "media/single_icon.ico"
-    },
-    "nsis": {
-      "allowToChangeInstallationDirectory": "true",
-      "oneClick": false,
-      "perMachine": true
-    },
-    "directories": {
-      "output": "builds"
-    }
+    "build-win": "electron-packager . HexWall --platform win32 --icon ./media/single_icon.ico --prune --out ./builds --overwrite --ignore=\"(src*|wall*|.gitattributes|.gitignore|config.json|favorites.json|package.json|package-lock.json|README.md|tsconfig.json|media*)\"",
+    "build-linux": "electron-packager . HexWall --platform linux --icon ./media/single_icon.ico --prune --out ./builds --overwrite --ignore=\"(src*|wall*|.gitattributes|.gitignore|config.json|favorites.json|package.json|package-lock.json|README.md|tsconfig.json|media*)\"",
+    "build-macos": "electron-packager . HexWall --platform darwin --icon ./media/single_icon.ico --prune --out ./builds --overwrite --ignore=\"(src*|wall*|.gitattributes|.gitignore|config.json|favorites.json|package.json|package-lock.json|README.md|tsconfig.json|media*)\""
   },
   "repository": {
     "type": "git",
