@@ -19,16 +19,18 @@ export class ColorManager {
     return this._lastColors;
   }
 
+  // TODO: fix multiple same favorites
   public addNewFavorite(color: any): void {
-    // TODO: add checking if color already in array
-    this._favoriteColors.unshift({
-      mainColor: color.mainColor,
-      fontColor: color.fontColor,
-      ditherColor: color.ditherColor
-    });
+    if (!this._favoriteColors.includes(color)) {
+      this._favoriteColors.unshift({
+        mainColor: color.mainColor,
+        fontColor: color.fontColor,
+        ditherColor: color.ditherColor
+      });
 
-    fs.writeFileSync(this._cachePath, `${JSON.stringify(this._favoriteColors)}`
-    );
+      fs.writeFileSync(this._cachePath, `${JSON.stringify(this._favoriteColors)}`
+      );
+    }
   }
 
   public getFavoriteColors(): Array<Object> {
