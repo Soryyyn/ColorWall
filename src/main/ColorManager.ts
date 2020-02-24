@@ -19,17 +19,18 @@ export class ColorManager {
     return this._lastColors;
   }
 
-  // TODO: fix multiple same favorites
-  public addNewFavorite(newColor: any): void {
-    let equals: number;
-    if (this._favoriteColors.length > 0) {
-      for (let i = 0; i < this._favoriteColors.length; i++) {
-        let mainColor = Object.values(this._favoriteColors[i])[0];
-        if (mainColor == newColor.mainColor) {
-          equals++;
-        }
+  private checkIfFavoriteAlreadyInArray(color: string): boolean {
+    for (let i = 0; i < this._favoriteColors.length; i++) {
+      let temp = Object.values(this._favoriteColors[i])[0];
+      if (temp == color) {
+        return true;
       }
-    } else {
+    }
+    return false;
+  }
+
+  public addNewFavorite(newColor: any): void {
+    if (!this.checkIfFavoriteAlreadyInArray(newColor.mainColor)) {
       this._favoriteColors.unshift({
         mainColor: newColor.mainColor,
         fontColor: newColor.fontColor,
@@ -39,33 +40,7 @@ export class ColorManager {
       fs.writeFileSync(this._cachePath, `${JSON.stringify(this._favoriteColors)}`
       );
     }
-
-    if (equals === 0) {
-      this._favoriteColors.unshift({
-        mainColor: newColor.mainColor,
-        fontColor: newColor.fontColor,
-        ditherColor: newColor.ditherColor
-      });
-
-      fs.writeFileSync(this._cachePath, `${JSON.stringify(this._favoriteColors)}`
-      );
-    }
-
-
-    // if (mainColor == newColor.mainColor) {
-    //   break;
-    // } else {
-    //   this._favoriteColors.unshift({
-    //     mainColor: newColor.mainColor,
-    //     fontColor: newColor.fontColor,
-    //     ditherColor: newColor.ditherColor
-    //   });
-
-    //   fs.writeFileSync(this._cachePath, `${JSON.stringify(this._favoriteColors)}`
-    //   );
-    // }
-  };
-
+  }
 
   public getFavoriteColors(): Array<Object> {
     return this._favoriteColors;
