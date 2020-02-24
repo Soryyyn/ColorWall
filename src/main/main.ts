@@ -15,7 +15,7 @@ const configManager = new ConfigManager();
 app.allowRendererProcessReuse = true;
 
 function createTray() {
-  tray = new Tray(path.join(__dirname, "../../media/single_icon.png"));
+  tray = new Tray(path.join(__dirname, "..", "..", "media/single_icon.png"));
 
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -57,12 +57,12 @@ function createWindow() {
     frame: false,
     transparent: true,
     show: false,
-    icon: path.join(__dirname, "../../media/single_icon.png")
+    icon: path.join(__dirname, "..", "..", "media/single_icon.png")
   });
 
   win.loadURL(
     url.format({
-      pathname: path.join(__dirname, "../../page/index.html"),
+      pathname: path.join(__dirname, "..", "..", "/page/index.html"),
       protocol: "file:",
       slashes: true
     })

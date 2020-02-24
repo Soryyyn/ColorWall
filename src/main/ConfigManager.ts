@@ -12,7 +12,7 @@ export class ConfigManager {
     if (!fs.existsSync(path.join(process.cwd(), this._configPath))) {
       fs.writeFileSync(path.join(process.cwd(), this._configPath), JSON.stringify(this._settings));
     } else {
-      this._settings = require(path.join(process.cwd(), "..", "..", "config.json"));
+      this._settings = require(path.join(process.cwd(), "config.json"));
     }
   }
 
