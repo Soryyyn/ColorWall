@@ -45,7 +45,7 @@
   "homepage": "https://github.com/Soryyyn/HexWall#readme",
   "devDependencies": {
     "@types/color-convert": "^1.9.0",
-    "@types/node": "12.12.6",
+    "@types/node": "13.7.4",
     "@types/open": "^6.2.1",
     "@types/wallpaper": "^2.5.1",
     "electron": "^8.0.1",
