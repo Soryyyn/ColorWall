@@ -1,22 +1,23 @@
 import fs from 'fs';
+import path from 'path';
 
 export class SpaceManager {
-  private _wallDir: string = "./wall";
+  private _wallDir: string = "wall";
 
   constructor() {
-    if (!fs.existsSync(this._wallDir)) {
-      fs.mkdirSync(this._wallDir);
+    if (!fs.existsSync(path.join(process.cwd(), this._wallDir))) {
+      fs.mkdirSync(path.join(process.cwd(), this._wallDir));
     }
   }
 
   public getWallpaperDirectory(): string {
-    return this._wallDir;
+    return path.join(process.cwd(), this._wallDir);
   }
 
   public cleanupWallpaperDirectory() {
-    const images = fs.readdirSync(this._wallDir);
+    const images = fs.readdirSync(path.join(process.cwd(), this._wallDir));
     if (images.length > 0) {
-      fs.unlinkSync(this._wallDir + "/" + images.pop());
+      fs.unlinkSync(path.join(process.cwd(), this._wallDir, "/", images.pop()));
     }
   }
 }

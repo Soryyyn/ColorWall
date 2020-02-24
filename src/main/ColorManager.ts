@@ -5,7 +5,7 @@ import path from 'path';
 export class ColorManager {
   private _lastColors: Array<Object> = [];
   private _favoriteColors: Array<Object> = [];
-  private _cachePath = "./favorites.json";
+  private _cachePath = "favorites.json";
 
   public addNewColor(color: Array<string>): void {
     this._lastColors.unshift({
@@ -37,7 +37,7 @@ export class ColorManager {
         ditherColor: newColor.ditherColor
       });
 
-      fs.writeFileSync(this._cachePath, `${JSON.stringify(this._favoriteColors)}`
+      fs.writeFileSync(path.join(process.cwd(), this._cachePath), `${JSON.stringify(this._favoriteColors)}`
       );
     }
   }
@@ -51,8 +51,8 @@ export class ColorManager {
   }
 
   public loadFavoritesFromFile() {
-    if (!fs.existsSync(this._cachePath)) {
-      fs.writeFileSync(this._cachePath, JSON.stringify(this._favoriteColors));
+    if (!fs.existsSync(path.join(process.cwd(), this._cachePath))) {
+      fs.writeFileSync(path.join(process.cwd(), this._cachePath), JSON.stringify(this._favoriteColors));
     }
 
     let favorites = require(path.join("../../", this._cachePath));
