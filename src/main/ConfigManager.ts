@@ -1,3 +1,4 @@
+import { userDataPath } from '../common/GlobalPath';
 import fs from 'fs'
 import path from 'path';
 
@@ -9,10 +10,10 @@ export class ConfigManager {
   };
 
   constructor() {
-    if (!fs.existsSync(path.join(process.cwd(), this._configPath))) {
-      fs.writeFileSync(path.join(process.cwd(), this._configPath), JSON.stringify(this._settings));
+    if (!fs.existsSync(path.join(userDataPath, this._configPath))) {
+      fs.writeFileSync(path.join(userDataPath, this._configPath), JSON.stringify(this._settings));
     } else {
-      this._settings = require(path.join(process.cwd(), "config.json"));
+      this._settings = require(path.join(userDataPath, "config.json"));
     }
   }
 
@@ -23,11 +24,11 @@ export class ConfigManager {
   // add config bools here for more settings
   public refreshAutoLaunch(enabled: boolean) {
     this._settings.autoLaunch = enabled;
-    fs.writeFileSync(path.join(process.cwd(), this._configPath), JSON.stringify(this._settings));
+    fs.writeFileSync(path.join(userDataPath, this._configPath), JSON.stringify(this._settings));
   }
 
   public refreshDithering(enabled: boolean) {
     this._settings.dithering = enabled;
-    fs.writeFileSync(path.join(process.cwd(), this._configPath), JSON.stringify(this._settings));
+    fs.writeFileSync(path.join(userDataPath, this._configPath), JSON.stringify(this._settings));
   }
 }

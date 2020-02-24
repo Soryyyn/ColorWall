@@ -1,3 +1,4 @@
+import { userDataPath } from '../common/GlobalPath';
 import converter from 'color-convert';
 import fs from 'fs';
 import path from 'path';
@@ -37,7 +38,7 @@ export class ColorManager {
         ditherColor: newColor.ditherColor
       });
 
-      fs.writeFileSync(path.join(process.cwd(), this._cachePath), `${JSON.stringify(this._favoriteColors)}`
+      fs.writeFileSync(path.join(userDataPath, this._cachePath), `${JSON.stringify(this._favoriteColors)}`
       );
     }
   }
@@ -51,8 +52,8 @@ export class ColorManager {
   }
 
   public loadFavoritesFromFile() {
-    if (!fs.existsSync(path.join(process.cwd(), this._cachePath))) {
-      fs.writeFileSync(path.join(process.cwd(), this._cachePath), JSON.stringify(this._favoriteColors));
+    if (!fs.existsSync(path.join(userDataPath, this._cachePath))) {
+      fs.writeFileSync(path.join(userDataPath, this._cachePath), JSON.stringify(this._favoriteColors));
     }
 
     let favorites = require(path.join("../../", this._cachePath));
