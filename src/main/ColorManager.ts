@@ -20,18 +20,52 @@ export class ColorManager {
   }
 
   // TODO: fix multiple same favorites
-  public addNewFavorite(color: any): void {
-    if (!this._favoriteColors.includes(color)) {
+  public addNewFavorite(newColor: any): void {
+    let equals: number;
+    if (this._favoriteColors.length > 0) {
+      for (let i = 0; i < this._favoriteColors.length; i++) {
+        let mainColor = Object.values(this._favoriteColors[i])[0];
+        if (mainColor == newColor.mainColor) {
+          equals++;
+        }
+      }
+    } else {
       this._favoriteColors.unshift({
-        mainColor: color.mainColor,
-        fontColor: color.fontColor,
-        ditherColor: color.ditherColor
+        mainColor: newColor.mainColor,
+        fontColor: newColor.fontColor,
+        ditherColor: newColor.ditherColor
       });
 
       fs.writeFileSync(this._cachePath, `${JSON.stringify(this._favoriteColors)}`
       );
     }
-  }
+
+    if (equals === 0) {
+      this._favoriteColors.unshift({
+        mainColor: newColor.mainColor,
+        fontColor: newColor.fontColor,
+        ditherColor: newColor.ditherColor
+      });
+
+      fs.writeFileSync(this._cachePath, `${JSON.stringify(this._favoriteColors)}`
+      );
+    }
+
+
+    // if (mainColor == newColor.mainColor) {
+    //   break;
+    // } else {
+    //   this._favoriteColors.unshift({
+    //     mainColor: newColor.mainColor,
+    //     fontColor: newColor.fontColor,
+    //     ditherColor: newColor.ditherColor
+    //   });
+
+    //   fs.writeFileSync(this._cachePath, `${JSON.stringify(this._favoriteColors)}`
+    //   );
+    // }
+  };
+
 
   public getFavoriteColors(): Array<Object> {
     return this._favoriteColors;
