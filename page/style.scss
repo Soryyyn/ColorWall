@@ -194,103 +194,171 @@ main {
   }
 
   #settings {
-    #autoLaunchSetting, #ditherSetting {
+    #settingsWrapper {
+      // border: 2px red solid;
+      margin-top: -1rem;
+      margin-left: -1rem;
+      padding: 1rem;
+      overflow-y: scroll;
+      overflow-x: show;
+      width: auto + 1rem;
+      height: 475px;
+      overflow-x: hidden;
+
+      &::-webkit-scrollbar-track {
+        border-radius: 5px;
+	      background-color: rgba(0, 0, 0, 0.0);
+      }
+      &::-webkit-scrollbar
+      {
+        width: 6px;
+        background-color: rgba(0, 0, 0, 0.0);
+      }
+      &::-webkit-scrollbar-thumb
+      {
+        border-radius: 5px;
+        background-color: rgba(85, 85, 85, 0.5);
+      }
+
+      #autoLaunchSetting, #ditherSetting, #fontSizeSetting {
       border-bottom: 2px rgba(107, 107, 107, 0.15) solid;
       margin-bottom: 1.5rem;
-
-      #titleSetting {
-        clear: left;
-        margin-bottom: 0.5rem;
-        font-weight: bold;
-      }
+      width: 105%;
 
       #grid {
         display: grid;
         grid-template-columns: 7fr 3fr;
         grid-template-rows: 1;
         grid-gap: 1rem;
+        width: 100%;
 
-        #desc {
-          color: #8a8a8a;
-          float: left;
-          margin-bottom: 1.5rem;
+        #left {
+          #titleSetting {
+            clear: left;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+          }
+
+          #desc {
+            color: #8a8a8a;
+            float: left;
+            margin-bottom: 1.5rem;
+          }
         }
 
-        // switch styling start
-        .switch {
+        #right {
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-bottom: 1.5rem;
-          cursor: pointer;
+          margin-bottom: 1.5rem;        }
+
+        #right #inputDiv {
+          #default {
+            color: #8a8a8a;
+            text-align: center;
+            font-size: 12px;
+            margin-bottom: 5px;
+          }
+
+          // to hide arrows & spinners
+          input::-webkit-outer-spin-button,
+          input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            -moz-appearance:textfield;
+            appearance: none;
+            margin: 0;
+          }
+
           input {
-            display: none;
-            & + span {
-              width: 48px;
-              height: 28px;
-              border-radius: 14px;
-              transition: all .3s ease;
-              display: block;
-              position: relative;
-              background: $red;
-              &:before,
-              &:after {
-                content: '';
-                display: block;
-                position: absolute;
-                transition: all .3s ease;
-              }
-              &:before {
-                top: 5px;
-                left: 5px;
-                width: 18px;
-                height: 18px;
-                border-radius: 9px;
-                border: 5px solid #fff;
-              }
-              &:after {
-                top: 5px;
-                left: 32px;
-                width: 6px;
-                height: 18px;
-                border-radius: 40%;
-                transform-origin: 50% 50%;
-                background: #fff;
-                opacity: 0;
-              }
-              &:active {
-                transform: scale(.92);
-              }
-            }
-            &:checked {
-              & + span {
-                background: $green;
-                &:before {
-                  width: 0px;
-                  border-radius: 3px;
-                  margin-left: 27px;
-                  border-width: 3px;
-                  background: #fff;
-                }
-                &:after {
-                  animation: blobChecked .35s linear forwards .2s;
-                }
-              }
-            }
-            &:not(:checked) {
-              & + span {
-                &:before {
-                  animation: blob .85s linear forwards .2s;
-                }
-              }
-            }
+            text-align: center;
+            font-size: 14px;
+            width: 75%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid #8a8a8a;
+            border-radius: 5px;
+            padding: 0.25rem;
+            display: block;
+            margin : 0 auto;
           }
         }
-        // switch styling end
+
+        #right .switch {
+          // switch styling start
+            cursor: pointer;
+            input {
+              display: none;
+              & + span {
+                width: 48px;
+                height: 28px;
+                border-radius: 14px;
+                transition: all .3s ease;
+                display: block;
+                position: relative;
+                background: $red;
+                &:before,
+                &:after {
+                  content: '';
+                  display: block;
+                  position: absolute;
+                  transition: all .3s ease;
+                }
+                &:before {
+                  top: 5px;
+                  left: 5px;
+                  width: 18px;
+                  height: 18px;
+                  border-radius: 9px;
+                  border: 5px solid #fff;
+                }
+                &:after {
+                  top: 5px;
+                  left: 32px;
+                  width: 6px;
+                  height: 18px;
+                  border-radius: 40%;
+                  transform-origin: 50% 50%;
+                  background: #fff;
+                  opacity: 0;
+                }
+                &:active {
+                  transform: scale(.92);
+                }
+              }
+              &:checked {
+                & + span {
+                  background: $green;
+                  &:before {
+                    width: 0px;
+                    border-radius: 3px;
+                    margin-left: 27px;
+                    border-width: 3px;
+                    background: #fff;
+                  }
+                  &:after {
+                    animation: blobChecked .35s linear forwards .2s;
+                  }
+                }
+              }
+              &:not(:checked) {
+                & + span {
+                  &:before {
+                    animation: blob .85s linear forwards .2s;
+                  }
+                }
+              }
+            }
+            // switch styling end
+          }
+
+          // #right
+
+        }
 
       }
 
     }
+
   }
 
 }

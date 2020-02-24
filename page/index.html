@@ -58,29 +58,68 @@
     <div id="settings">
       <h1>settings</h1>
 
-      <div id="autoLaunchSetting">
-        <p id="titleSetting">Auto Launch</p>
-        <div id="grid">
-          <p id="desc">enables the auto-launching feature of HexWall, this means the app gets started on system-launch &
-            sets a new wallpaper.</p>
-          <label class="switch">
-            <input type="checkbox" name="autoLaunchCheckBox" onclick="changedSetting('autolaunch', this.checked)">
-            <span></span>
-          </label>
-        </div>
-      </div>
+      <div id="settingsWrapper">
+        <div id="autoLaunchSetting">
+          <div id="grid">
 
-      <div id="ditherSetting">
-        <p id="titleSetting">Dithering</p>
-        <div id="grid">
-          <p id="desc">enables the dithering on the bottom of the wallpaper <br>(depending on pc-specs it may take
-            longer
-            to set a wallpaper).</p>
-          <label class="switch">
-            <input type="checkbox" name="ditheringCheckBox" onclick="changedSetting('dithering', this.checked)">
-            <span></span>
-          </label>
+            <div id="left">
+              <p id="titleSetting">auto Launch</p>
+              <p id="desc">enables the auto-launching feature of HexWall, this means the app gets started on
+                system-launch
+                &
+                sets a new wallpaper.</p>
+            </div>
+
+            <div id="right">
+              <label class="switch">
+                <input type="checkbox" name="autoLaunchCheckBox"
+                  onclick="changedCheckboxSetting('autolaunch', this.checked)">
+                <span></span>
+              </label>
+            </div>
+
+          </div>
         </div>
+
+        <div id="ditherSetting">
+          <div id="grid">
+
+            <div id="left">
+              <p id="titleSetting">dithering</p>
+              <p id="desc">enables the dithering on the bottom of the wallpaper <br>(depending on pc-specs it may take
+                longer
+                to set a wallpaper).</p>
+            </div>
+
+            <div id="right">
+              <label class="switch">
+                <input type="checkbox" name="ditheringCheckBox"
+                  onclick="changedCheckboxSetting('dithering', this.checked)">
+                <span></span>
+              </label>
+            </div>
+
+          </div>
+        </div>
+
+        <div id="fontSizeSetting">
+          <div id="grid">
+
+            <div id="left">
+              <p id="titleSetting">font-size</p>
+              <p id="desc">sets the font size of the wallpapers</p>
+            </div>
+
+            <div id="right">
+              <div id="inputDiv">
+                <p id="default">default: 128</p>
+                <input type="number" name="fontSizeInput" min="0">
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
 
     </div>

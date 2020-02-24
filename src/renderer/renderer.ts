@@ -174,7 +174,7 @@ function requestConfig() {
   });
 }
 
-function changedSetting(nameOfSetting: string, status: boolean) {
+function changedCheckboxSetting(nameOfSetting: string, status: boolean) {
   if (nameOfSetting === "autolaunch") {
     ipcRenderer.sendSync(ipcChannel.changedAutoLaunch, status);
   } else if (nameOfSetting === "dithering") {
