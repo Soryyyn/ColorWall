@@ -8,8 +8,6 @@ import open from 'open';
 import path from 'path';
 import url from 'url';
 
-console.log(configurationFilesDir);
-
 let win: any = null;
 let tray: any = null;
 const colorManager = new ColorManager();
