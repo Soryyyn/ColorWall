@@ -2,10 +2,13 @@ import { ipcChannel } from '../common/IpcChannels';
 import { ConfigManager } from './ConfigManager';
 import { ColorManager } from './ColorManager';
 import { WallpaperManager } from './WallpaperManager';
+import { configurationFilesDir } from '../common/GlobalPath';
 import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron';
 import open from 'open';
 import path from 'path';
 import url from 'url';
+
+console.log(configurationFilesDir);
 
 let win: any = null;
 let tray: any = null;
