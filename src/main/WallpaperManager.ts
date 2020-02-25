@@ -16,8 +16,6 @@ export class WallpaperManager {
   }
 
   public generateWallpaper(mainColor: string, fontColor: string, ditherColor: string) {
-    spaceManager.cleanupWallpaperDirectory();
-
     const w = screen.getPrimaryDisplay().size.width;
     const h = screen.getPrimaryDisplay().size.height;
     const wall = canvas.createCanvas(w, h);
@@ -101,7 +99,7 @@ export class WallpaperManager {
 
   public setWallpaper(mainColor: string) {
     wallpaper.set(path.join(spaceManager.getWallpaperDirectory() + "/" + mainColor + ".png")).then((resolved: any) => {
-      // set wallpaper
+      // spaceManager.cleanupWallpaperDirectory();
     });
   }
 }

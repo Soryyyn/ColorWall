@@ -2,6 +2,7 @@ import { ipcChannel } from '../common/IpcChannels';
 import { ConfigManager } from './ConfigManager';
 import { ColorManager } from './ColorManager';
 import { WallpaperManager } from './WallpaperManager';
+import { SpaceManager } from './SpaceManager';
 import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron';
 import open from 'open';
 import path from 'path';
@@ -12,6 +13,7 @@ let tray: any = null;
 const colorManager = new ColorManager();
 const wallpaperManager = new WallpaperManager();
 const configManager = new ConfigManager();
+const spaceManager = new SpaceManager();
 app.allowRendererProcessReuse = true;
 
 function createTray() {
@@ -37,6 +39,7 @@ function createTray() {
       label: "Quit",
       click() {
         tray.destroy();
+        spaceManager.cleanupWallpaperDirectory();
         app.quit();
       }
     }

@@ -40,6 +40,14 @@ $green: #48EA8B;
   }
 }
 
+@keyframes loadingRotation {
+  from {
+    transform: rotate(0deg);
+  } to {
+    transform: rotate(360deg);
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -140,6 +148,7 @@ main {
       cursor: pointer;
     }
     #grid_last, #grid_fav {
+      z-index: 0;
       margin-top: -1rem;
       margin-left: -1rem;
       padding: 1rem;
