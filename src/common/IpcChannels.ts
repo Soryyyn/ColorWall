@@ -8,4 +8,5 @@ export enum ipcChannel {
   requestConfig = "request-config",
   changedAutoLaunch = "changed-autolaunch",
   changedDithering = "changed-dithering",
+  changedWallpaperFontSize = "changed-wallpaper-fontsize",
 }

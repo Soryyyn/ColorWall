@@ -18,7 +18,7 @@ export class SpaceManager {
   public cleanupWallpaperDirectory() {
     const images = fs.readdirSync(path.join(configurationFilesDir, this._wallDir));
 
-    if (images.length > 0) {
+    if (images.length > 1) {
       for (let i = 0; i < images.length + 1; i++) {
         fs.unlinkSync(path.join(configurationFilesDir, this._wallDir, images.pop()));
       }

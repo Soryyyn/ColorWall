@@ -146,3 +146,9 @@ ipcMain.on(ipcChannel.changedDithering, (event: any, arg: any) => {
   wallpaperManager.setDitherEnabled(arg);
   event.returnValue = true;
 });
+
+ipcMain.on(ipcChannel.changedWallpaperFontSize, (event: any, arg: any) => {
+  configManager.refreshWallpaperFontSize(arg);
+  wallpaperManager.setFontSize(arg);
+  event.returnValue = true;
+});

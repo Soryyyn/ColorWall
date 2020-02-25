@@ -15,6 +15,10 @@ export class WallpaperManager {
     this._ditherEnabled = value;
   }
 
+  public setFontSize(value: number) {
+    this._fontSize = value;
+  }
+
   public generateWallpaper(mainColor: string, fontColor: string, ditherColor: string) {
     const w = screen.getPrimaryDisplay().size.width;
     const h = screen.getPrimaryDisplay().size.height;

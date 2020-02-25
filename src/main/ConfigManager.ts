@@ -6,7 +6,8 @@ export class ConfigManager {
   private _configPath: string = "config.json";
   private _settings = {
     autoLaunch: false,
-    dithering: false
+    dithering: false,
+    wallpaperFontSize: 128,
   };
 
   constructor() {
@@ -29,6 +30,11 @@ export class ConfigManager {
 
   public refreshDithering(enabled: boolean) {
     this._settings.dithering = enabled;
+    fs.writeFileSync(path.join(configurationFilesDir, this._configPath), JSON.stringify(this._settings));
+  }
+
+  public refreshWallpaperFontSize(size: number) {
+    this._settings.wallpaperFontSize = size;
     fs.writeFileSync(path.join(configurationFilesDir, this._configPath), JSON.stringify(this._settings));
   }
 }

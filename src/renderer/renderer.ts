@@ -182,6 +182,16 @@ function changedCheckboxSetting(nameOfSetting: string, status: boolean) {
   }
 }
 
+function changedValue(nameOfSetting: string, value: any) {
+  if (nameOfSetting === "fontSize") {
+    if (value == null || value == undefined || value == "") {
+      ipcRenderer.sendSync(ipcChannel.changedWallpaperFontSize, 128);
+    } else {
+      ipcRenderer.sendSync(ipcChannel.changedWallpaperFontSize, value);
+    }
+  }
+}
+
 // events
 ipcRenderer.on(ipcChannel.refreshedLastColors, (event: any, arg: any) => {
   clearGrid("grid_last");
