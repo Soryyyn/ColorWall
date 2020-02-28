@@ -165,32 +165,16 @@ function openLink(link: String) {
 }
 
 function requestConfig() {
-  let checkboxes = document.getElementsByTagName("input");
-  let autoLaunch = checkboxes[0];
-  let dithering = checkboxes[1];
+  let options = document.getElementsByTagName("input");
+  let autoLaunch = options[0];
+  let dithering = options[1];
+  let fontSize = options[2];
   ipcRenderer.invoke(ipcChannel.requestConfig, "requesting settings from config").then((config: any) => {
     autoLaunch.checked = config.autoLaunch;
     dithering.checked = config.dithering;
+    fontSize.value = config.wallpaperFontSize;
   });
 }
-
-// function changedCheckboxSetting(nameOfSetting: string, status: boolean) {
-//   if (nameOfSetting === "autolaunch") {
-//     ipcRenderer.sendSync(ipcChannel.changedAutoLaunch, status);
-//   } else if (nameOfSetting === "dithering") {
-//     ipcRenderer.sendSync(ipcChannel.changedDithering, status);
-//   }
-// }
-
-// function changedValue(nameOfSetting: string, value: any) {
-//   if (nameOfSetting === "fontSize") {
-//     if (value == null || value == undefined || value == "") {
-//       ipcRenderer.sendSync(ipcChannel.changedWallpaperFontSize, 128);
-//     } else {
-//       ipcRenderer.sendSync(ipcChannel.changedWallpaperFontSize, value);
-//     }
-//   }
-// }
 
 // events
 ipcRenderer.on(ipcChannel.refreshedLastColors, (event: any, arg: any) => {
@@ -206,23 +190,21 @@ favoritesNav.addEventListener("click", requestFavoriteColors);
 settingsNav.addEventListener("click", requestConfig);
 
 // settings form
-function validateSettings() {
-  const options = {
-    autoLaunch: (<HTMLInputElement>document.getElementById("autoLaunchCheckBox")).checked,
-    dithering: (<HTMLInputElement>document.getElementById("ditheringCheckBox")).checked,
-    fontSize: parseInt((<HTMLInputElement>document.getElementById("fontSizeInput")).value)
+function validateSettings(): any {
+  let options = document.getElementsByTagName("input");
+
+  const newOptions = {
+    autoLaunch: options[0].checked,
+    dithering: options[1].checked,
+    fontSize: parseInt(options[2].value)
   };
 
-  if (options.fontSize.toString().trim().length == null) {
-    options.fontSize = parseInt("0");
-  } else {
-    console.log("font size not acctepted")
-  }
-  console.log(options)
-
+  return newOptions;
 }
 
 (<HTMLFormElement>document.getElementById("settingsForm")).addEventListener("submit", (event: Event) => {
   event.preventDefault();
-  validateSettings();
+  const newOptions = validateSettings();
+
+  ipcRenderer.sendSync(ipcChannel.refreshedConfig, JSON.stringify(newOptions));
 });

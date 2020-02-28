@@ -6,7 +6,5 @@ export enum ipcChannel {
   addToFavorites = "add-to-favorites",
   requestFavoriteColors = "request-favorite-colors",
   requestConfig = "request-config",
-  changedAutoLaunch = "changed-autolaunch",
-  changedDithering = "changed-dithering",
-  changedWallpaperFontSize = "changed-wallpaper-fontsize",
+  refreshedConfig = "refreshed-config",
 }

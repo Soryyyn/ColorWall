@@ -22,19 +22,13 @@ export class ConfigManager {
     return this._settings;
   }
 
-  // add config bools here for more settings
-  public refreshAutoLaunch(enabled: boolean) {
-    this._settings.autoLaunch = enabled;
-    fs.writeFileSync(path.join(configurationFilesDir, this._configPath), JSON.stringify(this._settings));
-  }
+  public refreshConfig(newConfig: any) {
+    newConfig = JSON.parse(newConfig); // ignore / makes it work
 
-  public refreshDithering(enabled: boolean) {
-    this._settings.dithering = enabled;
-    fs.writeFileSync(path.join(configurationFilesDir, this._configPath), JSON.stringify(this._settings));
-  }
+    this._settings.autoLaunch = newConfig.autoLaunch;
+    this._settings.dithering = newConfig.dithering;
+    this._settings.wallpaperFontSize = newConfig.fontSize;
 
-  public refreshWallpaperFontSize(size: number) {
-    this._settings.wallpaperFontSize = size;
     fs.writeFileSync(path.join(configurationFilesDir, this._configPath), JSON.stringify(this._settings));
   }
 }
