@@ -206,30 +206,23 @@ favoritesNav.addEventListener("click", requestFavoriteColors);
 settingsNav.addEventListener("click", requestConfig);
 
 // settings form
-function validateSettings(form: HTMLFormElement) {
-  console.log("yeet");
+function validateSettings() {
+  const options = {
+    autoLaunch: (<HTMLInputElement>document.getElementById("autoLaunchCheckBox")).checked,
+    dithering: (<HTMLInputElement>document.getElementById("ditheringCheckBox")).checked,
+    fontSize: parseInt((<HTMLInputElement>document.getElementById("fontSizeInput")).value)
+  };
+
+  if (options.fontSize.toString().trim().length == null) {
+    options.fontSize = parseInt("0");
+  } else {
+    console.log("font size not acctepted")
+  }
+  console.log(options)
 
 }
 
-const settingsForm = (<HTMLFormElement>document.getElementById("settingsForm"));
-// settingsForm.on("submit", (event: Event) => {
-//   event.preventDefault();
-
-//   const options = {
-//     autoLaunch: (<HTMLInputElement>document.getElementById("autoLaunchCheckBox")).value,
-//     dithering: (<HTMLInputElement>document.getElementById("ditheringCheckBox")).value,
-//     fontSize: (<HTMLInputElement>document.getElementById("fontSizeInput")).value
-//   };
-
-//   if (options.fontSize.toString().trim().length > 0) {
-//     console.log(options);
-//   } else {
-//     console.log("font size not acctepted")
-//   }
-
-// });
-
-settingsForm.addEventListener("submit", (event: Event) => {
+(<HTMLFormElement>document.getElementById("settingsForm")).addEventListener("submit", (event: Event) => {
   event.preventDefault();
-  validateSettings(settingsForm);
+  validateSettings();
 });
