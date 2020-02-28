@@ -59,66 +59,71 @@
       <h1>settings</h1>
 
       <div id="settingsWrapper">
-        <div id="autoLaunchSetting">
-          <div id="grid">
 
-            <div id="left">
-              <p id="titleSetting">auto Launch</p>
-              <p id="desc">enables the auto-launching feature of HexWall, this means the app gets started on
-                system-launch
-                &
-                sets a new wallpaper.</p>
-            </div>
+        <form id="settingsForm">
 
-            <div id="right">
-              <label class="switch">
-                <input type="checkbox" name="autoLaunchCheckBox"
-                  onclick="changedCheckboxSetting('autolaunch', this.checked)">
-                <span></span>
-              </label>
-            </div>
+          <div id="autoLaunchSetting">
+            <div id="grid">
 
-          </div>
-        </div>
-
-        <div id="ditherSetting">
-          <div id="grid">
-
-            <div id="left">
-              <p id="titleSetting">dithering</p>
-              <p id="desc">enables the dithering on the bottom of the wallpaper <br>(depending on pc-specs it may take
-                longer
-                to set a wallpaper).</p>
-            </div>
-
-            <div id="right">
-              <label class="switch">
-                <input type="checkbox" name="ditheringCheckBox"
-                  onclick="changedCheckboxSetting('dithering', this.checked)">
-                <span></span>
-              </label>
-            </div>
-
-          </div>
-        </div>
-
-        <div id="fontSizeSetting">
-          <div id="grid">
-
-            <div id="left">
-              <p id="titleSetting">font-size</p>
-              <p id="desc">sets the font size of the wallpapers</p>
-            </div>
-
-            <div id="right">
-              <div id="inputDiv">
-                <p id="default">default: 128</p>
-                <input type="number" name="fontSizeInput" min="1" oninput="changedValue('fontSize', this.value)">
+              <div id="left">
+                <p id="titleSetting">auto Launch</p>
+                <p id="desc">enables the auto-launching feature of HexWall, this means the app gets started on
+                  system-launch
+                  &
+                  sets a new wallpaper.</p>
               </div>
-            </div>
 
+              <div id="right">
+                <label class="switch">
+                  <input type="checkbox" name="autoLaunchCheckBox"
+                    onclick="changedCheckboxSetting('autolaunch', this.checked)">
+                  <span></span>
+                </label>
+              </div>
+
+            </div>
           </div>
-        </div>
+
+          <div id="ditherSetting">
+            <div id="grid">
+
+              <div id="left">
+                <p id="titleSetting">dithering</p>
+                <p id="desc">enables the dithering on the bottom of the wallpaper <br>(depending on pc-specs it may take
+                  longer
+                  to set a wallpaper).</p>
+              </div>
+
+              <div id="right">
+                <label class="switch">
+                  <input type="checkbox" name="ditheringCheckBox"
+                    onclick="changedCheckboxSetting('dithering', this.checked)">
+                  <span></span>
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+          <div id="fontSizeSetting">
+            <div id="grid">
+
+              <div id="left">
+                <p id="titleSetting">font-size</p>
+                <p id="desc">sets the font size of the wallpapers</p>
+              </div>
+
+              <div id="right">
+                <div id="inputDiv">
+                  <p id="default">default: 128</p>
+                  <input type="number" name="fontSizeInput" min="1" oninput="changedValue('fontSize', this.value)">
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </form>
 
       </div>
 
