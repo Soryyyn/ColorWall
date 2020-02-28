@@ -1,31 +1,17 @@
 {
   "name": "hexwall",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "generates a wallpaper & sets it everyday",
-  "main": "dist/main.js",
-  "types": "dist/main.d.ts",
+  "main": "./dist/main/Main.js",
+  "types": "./dist/main/Main.d.ts",
   "bin": {
-    "hexwall": "./dist/main.js"
+    "hexwall": "./dist/main/Main.js"
   },
   "scripts": {
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w hexwall",
-    "dist": "electron-builder"
-  },
-  "build": {
-    "appId": "com.soryyyn.hexwall",
-    "win": {
-      "target": "nsis",
-      "icon": "media/single_icon.ico"
-    },
-    "nsis": {
-      "allowToChangeInstallationDirectory": "true",
-      "oneClick": false,
-      "perMachine": true
-    },
-    "directories": {
-      "output": "builds"
-    }
+    "watch": "tsc --watch",
+    "build-win": "electron-packager . HexWall --platform win32 --icon ./single_icon.ico --prune --out ./builds --overwrite"
   },
   "repository": {
     "type": "git",
@@ -44,14 +30,17 @@
   "homepage": "https://github.com/Soryyyn/HexWall#readme",
   "devDependencies": {
     "@types/color-convert": "^1.9.0",
-    "@types/node": "^13.7.1",
-    "color-convert": "^2.0.1",
+    "@types/node": "12.12.6",
+    "@types/open": "^6.2.1",
+    "@types/wallpaper": "^2.5.1",
     "electron": "^8.0.1",
-    "electron-builder": "^22.3.2",
-    "electron-rebuild": "^1.10.0",
-    "wallpaper": "^4.4.1"
+    "electron-packager": "^14.2.1",
+    "electron-rebuild": "^1.10.0"
   },
   "dependencies": {
-    "canvas": "^2.6.1"
+    "canvas": "^2.6.1",
+    "color-convert": "^2.0.1",
+    "open": "^7.0.2",
+    "wallpaper": "^4.4.1"
   }
 }

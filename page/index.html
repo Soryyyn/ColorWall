@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>HexWall</title>
+  <link rel="stylesheet" href="style.min.css">
+  <script src="https://kit.fontawesome.com/0556ca0ed6.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="close" onclick="closeWindow()">
+    <i class="fas fa-times"></i>
+  </div>
+
+  <nav>
+    <ul>
+      <li id="aboutNav" onclick="showElement('about')">about</li>
+      <li id="lastcolorsNav" onclick="showElement('lastcolors');">last colors</li>
+      <li id="favoritesNav" onclick="showElement('favorites')">favorites</li>
+      <li id="settingsNav" onclick="showElement('settings')">settings</li>
+    </ul>
+  </nav>
+
+  <main>
+    <div id="about">
+      <h1>about</h1>
+      <p>
+        Hi! Welcome to HexWall, created by <a id="linkInText" onclick="openLink('https://github.com/Soryyyn')">Soryn
+          Bächli</a>.<br><br>
+
+        HexWall is an app that I started to code because
+        I've seen a reddit post that had a black wallpaper
+        with the hex value (#000000) as a text in the middle.<br><br>
+
+        I thought that I could code an app that could do the same,
+        but generate random colors, and it would be a great exercise
+        for electron development.<br><br>
+
+        On the left side (navigation) are different sections.
+        You're currently in the "about" section.<br><br>
+
+        Look around! You'll find what you're searching for.<br><br>
+
+        If you have any suggestions, or find a bug, please open a issue on <a id="linkInText"
+          onclick="openLink('https://github.com/Soryyyn/HexWall/issues')">Github</a>.
+      </p>
+    </div>
+    <div id="lastcolors">
+      <h1>last colors</h1>
+      <div id="grid_last"></div>
+    </div>
+
+    <div id="favorites">
+      <h1>favorites</h1>
+      <div id="grid_fav"></div>
+    </div>
+
+    <div id="settings">
+      <h1>settings</h1>
+
+      <div id="settingsWrapper">
+
+        <form id="settingsForm">
+
+          <div id="autoLaunchSetting">
+            <div id="grid">
+
+              <div id="left">
+                <p id="titleSetting">auto Launch</p>
+                <p id="desc">enables the auto-launching feature of HexWall, this means the app gets started on
+                  system-launch
+                  &
+                  sets a new wallpaper.</p>
+              </div>
+
+              <div id="right">
+                <label class="switch">
+                  <input type="checkbox" name="autoLaunchCheckBox" id="autoLaunchCheckBox">
+                  <span></span>
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+          <div id="ditherSetting">
+            <div id="grid">
+
+              <div id="left">
+                <p id="titleSetting">dithering</p>
+                <p id="desc">enables the dithering on the bottom of the wallpaper <br>(depending on pc-specs it may take
+                  longer
+                  to set a wallpaper).</p>
+              </div>
+
+              <div id="right">
+                <label class="switch">
+                  <input type="checkbox" name="ditheringCheckBox" id="ditheringCheckBox">
+                  <span></span>
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+          <div id="fontSizeSetting">
+            <div id="grid">
+
+              <div id="left">
+                <p id="titleSetting">font-size</p>
+                <p id="desc">sets the font size of the wallpapers</p>
+              </div>
+
+              <div id="right">
+                <div id="inputDiv">
+                  <p id="default">default: 128</p>
+                  <input type="number" name="fontSizeInput" id="fontSizeInputs">
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <button type="submit" id="submitSettings">save</button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+
+<script type="text/javascript" src="../dist/Renderer/Renderer.js"></script>
+
+</html>
