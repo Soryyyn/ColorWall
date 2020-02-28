@@ -174,23 +174,23 @@ function requestConfig() {
   });
 }
 
-function changedCheckboxSetting(nameOfSetting: string, status: boolean) {
-  if (nameOfSetting === "autolaunch") {
-    ipcRenderer.sendSync(ipcChannel.changedAutoLaunch, status);
-  } else if (nameOfSetting === "dithering") {
-    ipcRenderer.sendSync(ipcChannel.changedDithering, status);
-  }
-}
+// function changedCheckboxSetting(nameOfSetting: string, status: boolean) {
+//   if (nameOfSetting === "autolaunch") {
+//     ipcRenderer.sendSync(ipcChannel.changedAutoLaunch, status);
+//   } else if (nameOfSetting === "dithering") {
+//     ipcRenderer.sendSync(ipcChannel.changedDithering, status);
+//   }
+// }
 
-function changedValue(nameOfSetting: string, value: any) {
-  if (nameOfSetting === "fontSize") {
-    if (value == null || value == undefined || value == "") {
-      ipcRenderer.sendSync(ipcChannel.changedWallpaperFontSize, 128);
-    } else {
-      ipcRenderer.sendSync(ipcChannel.changedWallpaperFontSize, value);
-    }
-  }
-}
+// function changedValue(nameOfSetting: string, value: any) {
+//   if (nameOfSetting === "fontSize") {
+//     if (value == null || value == undefined || value == "") {
+//       ipcRenderer.sendSync(ipcChannel.changedWallpaperFontSize, 128);
+//     } else {
+//       ipcRenderer.sendSync(ipcChannel.changedWallpaperFontSize, value);
+//     }
+//   }
+// }
 
 // events
 ipcRenderer.on(ipcChannel.refreshedLastColors, (event: any, arg: any) => {
@@ -204,3 +204,9 @@ ipcRenderer.on(ipcChannel.refreshedLastColors, (event: any, arg: any) => {
 lastColorsNav.addEventListener("click", requestLastColors);
 favoritesNav.addEventListener("click", requestFavoriteColors);
 settingsNav.addEventListener("click", requestConfig);
+
+// settings form
+const settingsForm = (<HTMLFormElement>document.getElementById("settingsForm"));
+settingsForm.on("submit", (event: Event) => {
+  event.preventDefault();
+});
