@@ -206,7 +206,30 @@ favoritesNav.addEventListener("click", requestFavoriteColors);
 settingsNav.addEventListener("click", requestConfig);
 
 // settings form
+function validateSettings(form: HTMLFormElement) {
+  console.log("yeet");
+
+}
+
 const settingsForm = (<HTMLFormElement>document.getElementById("settingsForm"));
-settingsForm.on("submit", (event: Event) => {
+// settingsForm.on("submit", (event: Event) => {
+//   event.preventDefault();
+
+//   const options = {
+//     autoLaunch: (<HTMLInputElement>document.getElementById("autoLaunchCheckBox")).value,
+//     dithering: (<HTMLInputElement>document.getElementById("ditheringCheckBox")).value,
+//     fontSize: (<HTMLInputElement>document.getElementById("fontSizeInput")).value
+//   };
+
+//   if (options.fontSize.toString().trim().length > 0) {
+//     console.log(options);
+//   } else {
+//     console.log("font size not acctepted")
+//   }
+
+// });
+
+settingsForm.addEventListener("submit", (event: Event) => {
   event.preventDefault();
+  validateSettings(settingsForm);
 });
