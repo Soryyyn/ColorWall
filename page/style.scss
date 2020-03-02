@@ -40,14 +40,6 @@ $green: #48EA8B;
   }
 }
 
-@keyframes loadingRotation {
-  from {
-    transform: rotate(0deg);
-  } to {
-    transform: rotate(360deg);
-  }
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -106,21 +98,33 @@ nav {
   z-index: 1;
   background: $bgFront;
   position: fixed;
-  top: 0;
+  top: 2rem;
   left: 0;
   overflow-x: hidden;
   height: 100%;
   width: 8rem;
-  li {
-    display: block;
-    padding: 1rem;
-    font-size: 18px;
-    color: $fontNormal;
-    &:hover {
-      color: $fontHovered;
-      cursor: pointer;
+  #navbarContainer {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    li {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      font-size: 18px;
+      color: $fontNormal;
+      &:hover {
+        color: $fontHovered;
+        cursor: pointer;
+        background: lighten($bgFront, 8%);
+      }
     }
   }
+
 }
 
 main {
@@ -135,11 +139,18 @@ main {
       font-size: 24px;
       margin-top: 0.5rem;
       margin-bottom: 1.5rem;
-      border-bottom: 2px #6b6b6b solid;
+      border-bottom: 2px lighten($bgFront, 8%) solid;
       padding-bottom: 0.5rem;
     }
     p {
       font-size: 16px;
+    }
+    #info {
+      font-size: 14px;
+      color: lighten($bgFront, 35%);
+      b {
+        color: lighten($bgFront, 45%);
+      }
     }
     #linkInText {
       color: #33CCff;
@@ -234,137 +245,154 @@ main {
       margin-bottom: 1.5rem;
       width: 105%;
 
-      #grid {
-        display: grid;
-        grid-template-columns: 7fr 3fr;
-        grid-template-rows: 1;
-        grid-gap: 1rem;
-        width: 100%;
+        #grid {
+          display: grid;
+          grid-template-columns: 7fr 3fr;
+          grid-template-rows: 1;
+          grid-gap: 1rem;
+          width: 100%;
 
-        #left {
-          #titleSetting {
-            clear: left;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
+          #left {
+            #titleSetting {
+              clear: left;
+              margin-bottom: 0.5rem;
+              font-weight: bold;
+            }
+
+            #desc {
+              color: #8a8a8a;
+              float: left;
+              margin-bottom: 1.5rem;
+            }
           }
 
-          #desc {
-            color: #8a8a8a;
-            float: left;
+          #right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 1.5rem;
           }
-        }
 
-        #right {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 1.5rem;
-        }
+          #right #inputDiv {
+            #default {
+              color: #8a8a8a;
+              text-align: center;
+              font-size: 12px;
+              margin-bottom: 5px;
+            }
 
-        #right #inputDiv {
-          #default {
-            color: #8a8a8a;
-            text-align: center;
-            font-size: 12px;
-            margin-bottom: 5px;
-          }
+            // to hide arrows & spinners
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              -moz-appearance:textfield;
+              appearance: none;
+              margin: 0;
+            }
 
-          // to hide arrows & spinners
-          input::-webkit-outer-spin-button,
-          input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            -moz-appearance:textfield;
-            appearance: none;
-            margin: 0;
-          }
-
-          input {
-            text-align: center;
-            font-size: 14px;
-            width: 75%;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 2px solid #8a8a8a;
-            border-radius: 5px;
-            padding: 0.25rem;
-            display: block;
-            margin : 0 auto;
-          }
-        }
-
-        #right .switch {
-          // switch styling start
-            cursor: pointer;
             input {
-              display: none;
-              & + span {
-                width: 48px;
-                height: 28px;
-                border-radius: 14px;
-                transition: all .3s ease;
-                display: block;
-                position: relative;
-                background: $red;
-                &:before,
-                &:after {
-                  content: '';
-                  display: block;
-                  position: absolute;
-                  transition: all .3s ease;
-                }
-                &:before {
-                  top: 5px;
-                  left: 5px;
-                  width: 18px;
-                  height: 18px;
-                  border-radius: 9px;
-                  border: 5px solid #fff;
-                }
-                &:after {
-                  top: 5px;
-                  left: 32px;
-                  width: 6px;
-                  height: 18px;
-                  border-radius: 40%;
-                  transform-origin: 50% 50%;
-                  background: #fff;
-                  opacity: 0;
-                }
-                &:active {
-                  transform: scale(.92);
-                }
-              }
-              &:checked {
+              text-align: center;
+              font-size: 14px;
+              width: 75%;
+              background: rgba(255, 255, 255, 0.1);
+              color: white;
+              border: 2px solid #8a8a8a;
+              border-radius: 5px;
+              padding: 0.25rem;
+              display: block;
+              margin : 0 auto;
+            }
+          }
+
+          #right .switch {
+            // switch styling start
+              cursor: pointer;
+              transform: scale(1.2, 1.2);
+              input {
+                display: none;
                 & + span {
-                  background: $green;
+                  width: 48px;
+                  height: 28px;
+                  border-radius: 14px;
+                  transition: all .3s ease;
+                  display: block;
+                  position: relative;
+                  background: $red;
+                  &:before,
+                  &:after {
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    transition: all .3s ease;
+                  }
                   &:before {
-                    width: 0px;
-                    border-radius: 3px;
-                    margin-left: 27px;
-                    border-width: 3px;
-                    background: #fff;
+                    top: 5px;
+                    left: 5px;
+                    width: 18px;
+                    height: 18px;
+                    border-radius: 9px;
+                    border: 5px solid #fff;
                   }
                   &:after {
-                    animation: blobChecked .35s linear forwards .2s;
+                    top: 5px;
+                    left: 32px;
+                    width: 6px;
+                    height: 18px;
+                    border-radius: 40%;
+                    transform-origin: 50% 50%;
+                    background: #fff;
+                    opacity: 0;
+                  }
+                  &:active {
+                    transform: scale(.92);
+                  }
+                }
+                &:checked {
+                  & + span {
+                    background: $green;
+                    &:before {
+                      width: 0px;
+                      border-radius: 3px;
+                      margin-left: 27px;
+                      border-width: 3px;
+                      background: #fff;
+                    }
+                    &:after {
+                      animation: blobChecked .35s linear forwards .2s;
+                    }
+                  }
+                }
+                &:not(:checked) {
+                  & + span {
+                    &:before {
+                      animation: blob .85s linear forwards .2s;
+                    }
                   }
                 }
               }
-              &:not(:checked) {
-                & + span {
-                  &:before {
-                    animation: blob .85s linear forwards .2s;
-                  }
-                }
-              }
-            }
-            // switch styling end
+              // switch styling end
           }
-
           // #right
-
         }
 
+      }
+
+      #submitSettings {
+        display: block;
+        margin : 0 auto;
+        padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+        font-size: 18px;
+        color: white;
+        border: none;
+        background: $bgFront;
+        border-radius: 5px;
+        cursor: pointer;
+        &:hover {
+          background: lighten($bgFront, 8%);
+        }
+        &:active {
+          transform: scale(1.1, 1.1);
+        }
       }
 
     }

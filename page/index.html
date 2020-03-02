@@ -13,7 +13,7 @@
   </div>
 
   <nav>
-    <ul>
+    <ul id="navbarContainer">
       <li id="aboutNav" onclick="showElement('about')">about</li>
       <li id="lastcolorsNav" onclick="showElement('lastcolors');">last colors</li>
       <li id="favoritesNav" onclick="showElement('favorites')">favorites</li>
@@ -42,7 +42,19 @@
         Look around! You'll find what you're searching for.<br><br>
 
         If you have any suggestions, or find a bug, please open a issue on <a id="linkInText"
-          onclick="openLink('https://github.com/Soryyyn/HexWall/issues')">Github</a>.
+          onclick="openLink('https://github.com/Soryyyn/HexWall/issues')">Github</a>.<br><br><br>
+
+        <p id="info">
+          <b>node:</b>
+          <script>document.write(process.versions.node)</script>
+          <br>
+          <b>chrome:</b>
+          <script>document.write(process.versions.chrome)</script>
+          <br>
+          <b>electron:</b>
+          <script>document.write(process.versions.electron)</script>
+          <br>
+        </p>
       </p>
     </div>
     <div id="lastcolors">
@@ -121,7 +133,7 @@
             </div>
           </div>
 
-          <button type="submit" id="submitSettings">save</button>
+          <button type="submit" id="submitSettings">save config</button>
 
         </form>
 
