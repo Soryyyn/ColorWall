@@ -135,29 +135,8 @@ ipcMain.handle(ipcChannel.requestConfig, (event: any, arg: any) => {
   return configManager.loadconfig();
 });
 
-// ipcMain.on(ipcChannel.changedAutoLaunch, (event: any, arg: any) => {
-//   configManager.refreshAutoLaunch(arg);
-//   updateAutoLaunch(arg);
-//   event.returnValue = true;
-// });
-
-// ipcMain.on(ipcChannel.changedDithering, (event: any, arg: any) => {
-//   configManager.refreshDithering(arg);
-//   wallpaperManager.setDitherEnabled(arg);
-//   event.returnValue = true;
-// });
-
-// ipcMain.on(ipcChannel.changedWallpaperFontSize, (event: any, arg: any) => {
-//   configManager.refreshWallpaperFontSize(arg);
-//   wallpaperManager.setFontSize(arg);
-//   event.returnValue = true;
-// });
-
 ipcMain.on(ipcChannel.refreshedConfig, (event: any, arg: any) => {
   configManager.refreshConfig(arg)
   updateAutoLaunch(arg.autoLaunch);
-
-  // console.log(arg);
-
   event.returnValue = true;
 });

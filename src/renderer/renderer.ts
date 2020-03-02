@@ -168,10 +168,12 @@ function requestConfig() {
   let options = document.getElementsByTagName("input");
   let autoLaunch = options[0];
   let dithering = options[1];
-  let fontSize = options[2];
+  let fontEnabled = options[2];
+  let fontSize = options[3];
   ipcRenderer.invoke(ipcChannel.requestConfig, "requesting settings from config").then((config: any) => {
     autoLaunch.checked = config.autoLaunch;
     dithering.checked = config.dithering;
+    fontEnabled.checked = config.fontEnabled;
     fontSize.value = config.wallpaperFontSize;
   });
 }
@@ -196,7 +198,8 @@ function validateSettings(): any {
   const newOptions = {
     autoLaunch: options[0].checked,
     dithering: options[1].checked,
-    fontSize: parseInt(options[2].value)
+    fontEnabled: options[2].checked,
+    fontSize: parseInt(options[3].value)
   };
 
   return newOptions;

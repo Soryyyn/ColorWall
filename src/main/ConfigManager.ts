@@ -7,6 +7,7 @@ export class ConfigManager {
   private _settings = {
     autoLaunch: false,
     dithering: false,
+    fontEnabled: true,
     wallpaperFontSize: 128,
   };
 
@@ -27,6 +28,7 @@ export class ConfigManager {
 
     this._settings.autoLaunch = newConfig.autoLaunch;
     this._settings.dithering = newConfig.dithering;
+    this._settings.fontEnabled = newConfig.fontEnabled;
     this._settings.wallpaperFontSize = newConfig.fontSize;
 
     fs.writeFileSync(path.join(configurationFilesDir, this._configPath), JSON.stringify(this._settings));
