@@ -122,10 +122,10 @@ function addColorToGrid(grid: string, color: any, index: number, type: string, p
   colorField.setAttribute("class", "field");
   colorField.setAttribute("id", `${type}_${index}`);
 
-  let textOfField = document.createElement("span");
-  textOfField.appendChild(document.createTextNode("#"));
-  textOfField.setAttribute("style", "color: " + color.fontColor);
-  colorField.appendChild(textOfField);
+  let hash = document.createElement("i");
+  hash.setAttribute("class", "fab fa-slack-hash");
+  hash.setAttribute("style", "color: " + color.fontColor);
+  colorField.appendChild(hash);
 
   document.getElementById(grid).appendChild(colorField);
 
