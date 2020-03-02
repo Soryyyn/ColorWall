@@ -127,16 +127,15 @@ nav {
 }
 
 main {
-  margin: 1rem;
   position: fixed;
   top: 2rem;
-  left: 9rem;
-  right: 1rem;
+  left: 10rem;
+  right: 2rem;
   div {
     display: block;
     h1 {
       font-size: 24px;
-      margin-top: 0.5rem;
+      margin-top: 1.25rem;
       margin-bottom: 1.5rem;
       border-bottom: 2px lighten($bgFront, 8%) solid;
       padding-bottom: 0.5rem;
@@ -216,15 +215,16 @@ main {
   }
 
   #settings {
-    #settingsWrapper {
-      margin-top: -1rem;
-      margin-left: -1rem;
-      padding: 1rem;
-      overflow-y: scroll;
-      overflow-x: show;
-      width: auto + 1rem;
-      height: 475px;
-      overflow-x: hidden;
+    // #settingsWrapper {
+    //   margin-top: -1rem;
+    //   margin-left: -1rem;
+    //   padding: 1rem;
+    //   overflow-y: scroll;
+    //   overflow-x: show;
+    //   width: auto + 1rem;
+    //   height: 475px;
+    //   overflow-x: hidden;
+    overflow: scroll;
 
       &::-webkit-scrollbar-track {
         border-radius: 5px;
@@ -232,6 +232,9 @@ main {
       }
       &::-webkit-scrollbar
       {
+        position: absolute;
+        top: 2rem;
+        right: -5rem;
         width: 6px;
         background-color: rgba(0, 0, 0, 0.0);
       }
@@ -394,7 +397,7 @@ main {
         }
       }
 
-    }
+    // }
 
   }
 

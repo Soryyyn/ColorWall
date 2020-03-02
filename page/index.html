@@ -70,90 +70,86 @@
     <div id="settings">
       <h1>settings</h1>
 
-      <div id="settingsWrapper">
+      <form id="settingsForm">
 
-        <form id="settingsForm">
+        <div id="autoLaunchSetting">
+          <div id="grid">
 
-          <div id="autoLaunchSetting">
-            <div id="grid">
-
-              <div id="left">
-                <p id="titleSetting">auto Launch</p>
-                <p id="desc">enables/disables the auto-launching feature of HexWall, this means the app gets started on
-                  system-launch & sets a new wallpaper</p>
-              </div>
-
-              <div id="right">
-                <label class="switch">
-                  <input type="checkbox" name="autoLaunchCheckBox" id="autoLaunchCheckBox">
-                  <span></span>
-                </label>
-              </div>
-
+            <div id="left">
+              <p id="titleSetting">auto Launch</p>
+              <p id="desc">enables/disables the auto-launching feature of HexWall, this means the app gets started on
+                system-launch & sets a new wallpaper</p>
             </div>
-          </div>
 
-          <div id="ditherSetting">
-            <div id="grid">
-
-              <div id="left">
-                <p id="titleSetting">dithering</p>
-                <p id="desc">enables/disables the dithering on the bottom of the wallpaper (depending on pc-specs it may
-                  take
-                  longer to set a wallpaper)</p>
-              </div>
-
-              <div id="right">
-                <label class="switch">
-                  <input type="checkbox" name="ditheringCheckBox" id="ditheringCheckBox">
-                  <span></span>
-                </label>
-              </div>
-
+            <div id="right">
+              <label class="switch">
+                <input type="checkbox" name="autoLaunchCheckBox" id="autoLaunchCheckBox">
+                <span></span>
+              </label>
             </div>
+
           </div>
+        </div>
 
-          <div id="fontEnabledSetting">
-            <div id="grid">
+        <div id="ditherSetting">
+          <div id="grid">
 
-              <div id="left">
-                <p id="titleSetting">hexcode text</p>
-                <p id="desc">enables/disables the hexadecimal text which displays the color on the wallpaper</p>
-              </div>
-
-              <div id="right">
-                <label class="switch">
-                  <input type="checkbox" name="fontEnabledCheckBox" id="fontEnabledCheckBox">
-                  <span></span>
-                </label>
-              </div>
-
+            <div id="left">
+              <p id="titleSetting">dithering</p>
+              <p id="desc">enables/disables the dithering on the bottom of the wallpaper (depending on pc-specs it may
+                take
+                longer to set a wallpaper)</p>
             </div>
-          </div>
 
-          <div id="fontSizeSetting">
-            <div id="grid">
-
-              <div id="left">
-                <p id="titleSetting">font-size</p>
-                <p id="desc">sets the font size of the wallpapers</p>
-              </div>
-
-              <div id="right">
-                <div id="inputDiv">
-                  <p id="default">default: 128</p>
-                  <input type="number" name="fontSizeInput" id="fontSizeInputs">
-                </div>
-              </div>
-
+            <div id="right">
+              <label class="switch">
+                <input type="checkbox" name="ditheringCheckBox" id="ditheringCheckBox">
+                <span></span>
+              </label>
             </div>
+
           </div>
+        </div>
 
-          <button type="submit" id="submitSettings">save config</button>
+        <div id="fontEnabledSetting">
+          <div id="grid">
 
-        </form>
+            <div id="left">
+              <p id="titleSetting">hexcode text</p>
+              <p id="desc">enables/disables the hexadecimal text which displays the color on the wallpaper</p>
+            </div>
 
-      </div>
+            <div id="right">
+              <label class="switch">
+                <input type="checkbox" name="fontEnabledCheckBox" id="fontEnabledCheckBox">
+                <span></span>
+              </label>
+            </div>
+
+          </div>
+        </div>
+
+        <div id="fontSizeSetting">
+          <div id="grid">
+
+            <div id="left">
+              <p id="titleSetting">font-size</p>
+              <p id="desc">sets the font size of the wallpapers</p>
+            </div>
+
+            <div id="right">
+              <div id="inputDiv">
+                <p id="default">default: 128</p>
+                <input type="number" name="fontSizeInput" id="fontSizeInputs">
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <button type="submit" id="submitSettings">save config</button>
+
+      </form>
 
     </div>
 
