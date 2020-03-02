@@ -35,7 +35,8 @@
     "@types/wallpaper": "^2.5.1",
     "electron": "^8.0.1",
     "electron-packager": "^14.2.1",
-    "electron-rebuild": "^1.10.0"
+    "electron-rebuild": "^1.10.0",
+    "@fortawesome/fontawesome-free": "^5.12.1"
   },
   "dependencies": {
     "canvas": "^2.6.1",
