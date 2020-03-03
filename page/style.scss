@@ -46,9 +46,11 @@ $green: #48EA8B;
   font-family: 'Consolas', sans-serif;
   color: white;
   -webkit-font-smoothing: antialiased;
+
+  // include margin & padding to size of element
   box-sizing: border-box;
-  &:before, &:after {
-      box-sizing: border-box;
+  &:after, &:before {
+    box-sizing: border-box;
   }
 }
 
@@ -56,8 +58,6 @@ body {
   background: $bgBack;
   width: 100%;
   height: 100%;
-  border-radius: 5px;
-  overflow-x: hidden;
 }
 
 #close {
@@ -99,7 +99,6 @@ nav {
   position: fixed;
   top: 2rem;
   left: 0;
-  overflow-x: hidden;
   height: 100%;
   width: 8rem;
   #navbarContainer {
@@ -129,20 +128,56 @@ nav {
 main {
   position: fixed;
   top: 2rem;
-  left: 10rem;
-  right: 2rem;
-  div {
-    display: block;
-    h1 {
-      font-size: 24px;
-      margin-top: 1.25rem;
-      margin-bottom: 1.5rem;
-      border-bottom: 2px lighten($bgFront, 8%) solid;
-      padding-bottom: 0.5rem;
+  left: 8rem;
+  height: 94.5%;
+  width: 84%;
+  // border: red solid 2px;
+  overflow-y: scroll;
+
+  // scrollbar
+  &::-webkit-scrollbar-track {
+    border-radius: 5px;
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    background-color: rgba(0, 0, 0, 0.0);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    width: 8px;
+    background-color: lighten($bgFront, 8%);
+    &:hover {
+      background-color: lighten($bgFront, 15%);
     }
+  }
+
+  // page title
+  #title {
+    font-size: 24px;
+    margin-top: 1.25rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px lighten($bgFront, 8%) solid;
+    padding-bottom: 0.5rem;
+  }
+
+  #about, #lastcolors, #favorites, #settings {
+    // border: solid blue 2px;
+
+    margin: 1rem 1rem 1rem 1.5rem;
+  }
+
+
+  // about page
+  #about {
+    // default text
     p {
       font-size: 16px;
     }
+
+    // small info on bottom about
     #info {
       font-size: 14px;
       color: lighten($bgFront, 35%);
@@ -150,59 +185,58 @@ main {
         color: lighten($bgFront, 45%);
       }
     }
+
+    // links in about
     #linkInText {
       color: #33CCff;
       font-weight: bold;
       text-decoration: underline;
       cursor: pointer;
     }
+  }
+
+  // last colors & favorite colors page
+  #lastcolors, #favorites {
+
+    // both grids
     #grid_last, #grid_fav {
-      z-index: 0;
-      margin-top: -1rem;
-      margin-left: -1rem;
-      padding: 1rem;
-      overflow-x: show;
-      overflow-y: scroll;
+      // border: solid 2px green;
+
       width: 100%;
-      height: 475px;
+      height: 100%;
       display: grid;
-      grid-template-columns: repeat(8, 3.85rem);
-      grid-template-rows: repeat(50, 3.85rem);
+      grid-template-columns: repeat(8, 1fr);
+      grid-auto-flow: row dense;
       grid-gap: 1rem;
-      &::-webkit-scrollbar-track {
-        border-radius: 5px;
-	      background-color: rgba(0, 0, 0, 0.0);
-      }
-      &::-webkit-scrollbar
-      {
-        position: absolute;
-        top: 2rem;
-        right: -3rem;
-        width: 6px;
-        background-color: rgba(0, 0, 0, 0.0);
-      }
-      &::-webkit-scrollbar-thumb
-      {
-        border-radius: 5px;
-        background-color: rgba(85, 85, 85, 0.5);
-      }
+
       .field {
         position: relative;
-        overflow: hidden;
-        .fa-slack-hash {
-          font-size: 28px;
+        &:before {
+          content: "";
+          display: block;
+          padding-top: 100%;
+        }
+
+        span {
+          font-size: 30px;
           font-weight: bold;
           opacity: 0;
+          display: block;
           width: 100%;
           height: 100%;
-          text-align: center;
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          line-height:100%;
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 1;
           user-select: none;
         }
-        &:hover .fa-slack-hash {
+        &:hover span {
           opacity: 1;
           cursor: pointer;
         }
@@ -211,43 +245,44 @@ main {
         }
       }
     }
-
   }
 
-  #settings {
+
+}
+
+  #settingsForm {
     // #settingsWrapper {
     //   margin-top: -1rem;
     //   margin-left: -1rem;
     //   padding: 1rem;
-    //   overflow-y: scroll;
+      // overflow-y: !important scroll;
     //   overflow-x: show;
     //   width: auto + 1rem;
-    //   height: 475px;
-    //   overflow-x: hidden;
-    overflow: scroll;
+      // width: 100%;
+      // height: 50%;
+      // overflow-x: hidden;
 
-      &::-webkit-scrollbar-track {
-        border-radius: 5px;
-	      background-color: rgba(0, 0, 0, 0.0);
-      }
-      &::-webkit-scrollbar
-      {
-        position: absolute;
-        top: 2rem;
-        right: -5rem;
-        width: 6px;
-        background-color: rgba(0, 0, 0, 0.0);
-      }
-      &::-webkit-scrollbar-thumb
-      {
-        border-radius: 5px;
-        background-color: rgba(85, 85, 85, 0.5);
-      }
+      // &::-webkit-scrollbar-track {
+      //   border-radius: 5px;
+	    //   background-color: rgba(0, 0, 0, 0.0);
+      // }
+      // &::-webkit-scrollbar
+      // {
+      //   // position: absolute;
+      //   // top: 2rem;
+      //   // right: -5rem;
+      //   width: 6px;
+      //   background-color: rgba(0, 0, 0, 0.0);
+      // }
+      // &::-webkit-scrollbar-thumb
+      // {
+      //   border-radius: 5px;
+      //   background-color: rgba(255, 0, 0, 0.5);
+      // }
 
       #autoLaunchSetting, #ditherSetting, #fontSizeSetting, #fontEnabledSetting {
-      border-bottom: 2px rgba(107, 107, 107, 0.15) solid;
-      margin-bottom: 1.5rem;
-      width: 105%;
+        border-bottom: 2px rgba(107, 107, 107, 0.15) solid;
+        margin-bottom: 1.5rem;
 
         #grid {
           display: grid;
@@ -401,4 +436,4 @@ main {
 
   }
 
-}
+// }
