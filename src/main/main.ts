@@ -136,6 +136,11 @@ ipcMain.on(ipcChannel.addToFavorites, (event: any, arg: any) => {
   event.returnValue = true;
 });
 
+ipcMain.on(ipcChannel.removeFromFavorites, (event: any, arg: any) => {
+  colorManager.removeFavorite(arg);
+  event.returnValue = true;
+});
+
 ipcMain.handle(ipcChannel.requestConfig, (event: any, arg: any) => {
   return configManager.loadconfig();
 });

@@ -38,8 +38,7 @@ export class ColorManager {
         ditherColor: newColor.ditherColor
       });
 
-      fs.writeFileSync(path.join(configurationFilesDir, this._cachePath), `${JSON.stringify(this._favoriteColors)}`
-      );
+      fs.writeFileSync(path.join(configurationFilesDir, this._cachePath), `${JSON.stringify(this._favoriteColors)}`);
     }
   }
 
@@ -47,8 +46,15 @@ export class ColorManager {
     return this._favoriteColors;
   }
 
-  public removeFavorite(index: number): void {
-    this._favoriteColors.splice(index, 1);
+  public removeFavorite(color: any): void {
+    for (let i = 0; i < this._favoriteColors.length; i++) {
+      // @ts-ignore
+      if (this._favoriteColors[i].mainColor === color.mainColor) {
+        this._favoriteColors.splice(i, 1);
+      }
+    }
+
+    fs.writeFileSync(path.join(configurationFilesDir, this._cachePath), `${JSON.stringify(this._favoriteColors)}`);
   }
 
   public loadFavoritesFromFile() {

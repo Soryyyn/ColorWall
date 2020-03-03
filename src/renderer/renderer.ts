@@ -111,7 +111,8 @@ function handleColorClickOfFavoriteColors(button: Number, color: any, element: a
     }
     // right click / remove from favorite
     case 2: {
-      // ipcRenderer.sendSync(ipcChannel.addToFavorites, color);
+      ipcRenderer.sendSync(ipcChannel.removeFromFavorites, color);
+      requestFavoriteColors();
       break;
     }
   }
