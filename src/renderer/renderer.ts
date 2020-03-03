@@ -87,7 +87,7 @@ function styleColorField(color: any, index: number, type: string) {
   colorField.style.borderRadius = "5px";
 }
 
-function handleColorClickOfLastColors(button: Number, color: any) {
+function handleColorClickOfLastColors(button: Number, color: any, element: any) {
   switch (button) {
     // left click / set color
     case 0: {
@@ -102,7 +102,7 @@ function handleColorClickOfLastColors(button: Number, color: any) {
   }
 }
 
-function handleColorClickOfFavoriteColors(button: Number, color: any) {
+function handleColorClickOfFavoriteColors(button: Number, color: any, element: any) {
   switch (button) {
     // left click / set color
     case 0: {
@@ -125,6 +125,7 @@ function addColorToGrid(grid: string, color: any, index: number, type: string, p
   let hash = document.createElement("span");
   hash.appendChild(document.createTextNode("#"));
   hash.setAttribute("style", "color: " + color.fontColor);
+  hash.setAttribute("id", "hash");
   colorField.appendChild(hash);
 
   document.getElementById(grid).appendChild(colorField);
@@ -133,11 +134,11 @@ function addColorToGrid(grid: string, color: any, index: number, type: string, p
 
   if (page == "last") {
     colorField.addEventListener("mousedown", (event: any) => {
-      handleColorClickOfLastColors(event.button, color);
+      handleColorClickOfLastColors(event.button, color, colorField);
     });
   } else {
     colorField.addEventListener("mousedown", (event: any) => {
-      handleColorClickOfFavoriteColors(event.button, color);
+      handleColorClickOfFavoriteColors(event.button, color, colorField);
     });
   }
 }

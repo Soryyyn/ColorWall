@@ -121,8 +121,13 @@ ipcMain.handle(ipcChannel.requestFavoriteColors, (event: any, arg: any) => {
 });
 
 ipcMain.on(ipcChannel.setToSelectedColor, (event: any, arg: any) => {
-  wallpaperManager.generateWallpaper(arg.mainColor, arg.fontColor, arg.ditherColor);
-  wallpaperManager.setWallpaper(arg.mainColor);
+  if (wallpaperManager.getCurrentWallpaper() !== arg.mainColor) {
+    // console.log("new wallpaper");
+    wallpaperManager.generateWallpaper(arg.mainColor, arg.fontColor, arg.ditherColor);
+    wallpaperManager.setWallpaper(arg.mainColor);
+  } else {
+    // console.log("is already current wallpaper");
+  }
   event.returnValue = true;
 });
 

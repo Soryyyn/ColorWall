@@ -211,13 +211,14 @@ main {
 
       .field {
         position: relative;
+
         &:before {
           content: "";
           display: block;
           padding-top: 100%;
         }
 
-        span {
+        #hash {
           font-size: 30px;
           font-weight: bold;
           opacity: 0;
@@ -236,7 +237,7 @@ main {
           z-index: 1;
           user-select: none;
         }
-        &:hover span {
+        &:hover #hash {
           opacity: 1;
           cursor: pointer;
         }

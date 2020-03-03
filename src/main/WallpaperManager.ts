@@ -10,6 +10,7 @@ const spaceManager = new SpaceManager();
 export class WallpaperManager {
   private _ditherEnabled: boolean = false;
   private _fontSize: number = 128;
+  private _currentWallpaper: string;
 
   public setDitherEnabled(value: boolean) {
     this._ditherEnabled = value;
@@ -17,6 +18,10 @@ export class WallpaperManager {
 
   public setFontSize(value: number) {
     this._fontSize = value;
+  }
+
+  public getCurrentWallpaper(): string {
+    return this._currentWallpaper;
   }
 
   public generateWallpaper(mainColor: string, fontColor: string, ditherColor: string) {
@@ -105,5 +110,6 @@ export class WallpaperManager {
     wallpaper.set(path.join(spaceManager.getWallpaperDirectory() + "/" + mainColor + ".png")).then((resolved: any) => {
       // spaceManager.cleanupWallpaperDirectory();
     });
+    this._currentWallpaper = mainColor;
   }
 }
