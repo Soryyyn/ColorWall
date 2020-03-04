@@ -148,9 +148,9 @@ ipcMain.handle(ipcChannel.requestConfig, (event: any, arg: any) => {
 ipcMain.on(ipcChannel.refreshedConfig, (event: any, arg: any) => {
   configManager.refreshConfig(arg)
 
-  updateAutoLaunch(arg.autoLaunch);
-  wallpaperManager.setFontEnabled(arg.fontEnabled);
-  wallpaperManager.setFontSize(arg.fontSize);
-  wallpaperManager.setDitherEnabled(arg.dithering);
+  updateAutoLaunch(configManager.loadconfig().autoLaunch);
+  wallpaperManager.setFontEnabled(configManager.loadconfig().fontEnabled);
+  wallpaperManager.setFontSize(parseInt(configManager.loadconfig().fontSize));
+  wallpaperManager.setDitherEnabled(configManager.loadconfig().dithering);
   event.returnValue = true;
 });
