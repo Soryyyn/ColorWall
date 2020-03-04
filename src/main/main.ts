@@ -55,6 +55,8 @@ function createWindow() {
       nodeIntegration: true
     },
     resizable: false,
+    fullscreenable: false,
+    maximizable: false,
     width: 800,
     height: 600,
     frame: false,
