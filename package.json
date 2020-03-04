@@ -54,9 +54,16 @@
     "@types/node": "12.12.6",
     "@types/open": "^6.2.1",
     "@types/wallpaper": "^2.5.1",
+<<<<<<< HEAD
     "electron": "^8.0.1",
     "electron-builder": "^22.3.6",
     "electron-rebuild": "^1.10.0"
+=======
+    "electron": "^8.0.3",
+    "electron-packager": "^14.2.1",
+    "electron-rebuild": "^1.10.0",
+    "@fortawesome/fontawesome-free": "^5.12.1"
+>>>>>>> 765f5fac1ae08291039b7011eb8fdbfbf37696e1
   },
   "dependencies": {
     "canvas": "^2.6.1",
