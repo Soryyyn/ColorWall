@@ -49,7 +49,6 @@
   },
   "homepage": "https://github.com/Soryyyn/HexWall#readme",
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.12.1",
     "@types/color-convert": "^1.9.0",
     "@types/node": "12.12.6",
     "@types/open": "^6.2.1",
@@ -63,6 +62,7 @@
     "canvas": "^2.6.1",
     "color-convert": "^2.0.1",
     "open": "^7.0.2",
-    "wallpaper": "^4.4.1"
+    "wallpaper": "^4.4.1",
+    "@fortawesome/fontawesome-free": "^5.12.1"
   }
 }
