@@ -11,7 +11,27 @@
     "start": "electron .",
     "rebuild": "electron-rebuild -f -w hexwall",
     "watch": "tsc --watch",
-    "build-win": "electron-packager . HexWall --platform win32 --icon ./single_icon.ico --prune --out ./builds --overwrite"
+    "build-win": "electron-builder ."
+  },
+  "build": {
+    "appId": "com.soryyyn.hexwall",
+    "remoteBuild": true,
+    "files": [
+      "page/**",
+      "dist/**/*.js",
+      "media/**"
+    ],
+    "asar": false,
+    "target": "nsis",
+    "icon": "media/single_icon.ico",
+    "directories": {
+      "output": "builds"
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false,
+      "perMachine": true
+    }
   },
   "repository": {
     "type": "git",
@@ -29,14 +49,14 @@
   },
   "homepage": "https://github.com/Soryyyn/HexWall#readme",
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.1",
     "@types/color-convert": "^1.9.0",
     "@types/node": "12.12.6",
     "@types/open": "^6.2.1",
     "@types/wallpaper": "^2.5.1",
     "electron": "^8.0.1",
-    "electron-packager": "^14.2.1",
-    "electron-rebuild": "^1.10.0",
-    "@fortawesome/fontawesome-free": "^5.12.1"
+    "electron-builder": "^22.3.6",
+    "electron-rebuild": "^1.10.0"
   },
   "dependencies": {
     "canvas": "^2.6.1",
