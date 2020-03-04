@@ -10,6 +10,7 @@ const spaceManager = new SpaceManager();
 export class WallpaperManager {
   private _ditherEnabled: boolean = false;
   private _fontSize: number = 128;
+  private _fontEnabled: boolean = true;
   private _currentWallpaper: string;
 
   public setDitherEnabled(value: boolean) {
@@ -18,6 +19,10 @@ export class WallpaperManager {
 
   public setFontSize(value: number) {
     this._fontSize = value;
+  }
+
+  public setFontEnabled(value: boolean) {
+    this._fontEnabled = value;
   }
 
   public getCurrentWallpaper(): string {
@@ -97,10 +102,12 @@ export class WallpaperManager {
       }
     }
 
-    wallctx.fillStyle = fontColor;
-    wallctx.font = `${this._fontSize}px Unifont`;
-    wallctx.textAlign = "center";
-    wallctx.fillText(mainColor, w / 2, h / 2);
+    if (this._fontEnabled) {
+      wallctx.fillStyle = fontColor;
+      wallctx.font = `${this._fontSize}px Unifont`;
+      wallctx.textAlign = "center";
+      wallctx.fillText(mainColor, w / 2, h / 2);
+    }
 
     const buffer = wall.toBuffer("image/png");
     fs.writeFileSync(path.join(spaceManager.getWallpaperDirectory() + "/" + mainColor + ".png"), buffer);
