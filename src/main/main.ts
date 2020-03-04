@@ -150,7 +150,7 @@ ipcMain.on(ipcChannel.refreshedConfig, (event: any, arg: any) => {
 
   updateAutoLaunch(configManager.loadconfig().autoLaunch);
   wallpaperManager.setFontEnabled(configManager.loadconfig().fontEnabled);
-  wallpaperManager.setFontSize(parseInt(configManager.loadconfig().fontSize));
+  wallpaperManager.setFontSize(configManager.loadconfig().wallpaperFontSize);
   wallpaperManager.setDitherEnabled(configManager.loadconfig().dithering);
   event.returnValue = true;
 });

@@ -9,7 +9,7 @@ const spaceManager = new SpaceManager();
 
 export class WallpaperManager {
   private _ditherEnabled: boolean = false;
-  private _fontSize: number = 128;
+  private _fontSize: number;
   private _fontEnabled: boolean = true;
   private _currentWallpaper: string;
 

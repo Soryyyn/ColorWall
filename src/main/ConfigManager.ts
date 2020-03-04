@@ -29,7 +29,7 @@ export class ConfigManager {
     this._settings.autoLaunch = newConfig.autoLaunch;
     this._settings.dithering = newConfig.dithering;
     this._settings.fontEnabled = newConfig.fontEnabled;
-    this._settings.wallpaperFontSize = newConfig.fontSize;
+    this._settings.wallpaperFontSize = parseInt(newConfig.fontSize);
 
     fs.writeFileSync(path.join(configurationFilesDir, this._configPath), JSON.stringify(this._settings));
   }
