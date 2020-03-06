@@ -201,7 +201,8 @@ function validateSettings(): any {
     autoLaunch: options[0].checked,
     dithering: options[1].checked,
     fontEnabled: options[2].checked,
-    fontSize: options[3].value.toString().trim()
+    fontSize: options[3].value.toString().trim(),
+    chooseFromFavorites: options[2].checked,
   };
 
   return newOptions;

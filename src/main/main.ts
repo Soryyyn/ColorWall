@@ -76,28 +76,28 @@ function createWindow() {
   win.center();
 }
 
-function onReady() {
-  createWindow();
-  createTray();
-
-  app.setLoginItemSettings({
-    openAtLogin: configManager.loadconfig().autoLaunch,
-    path: process.execPath,
-    args: []
-  });
-
-  colorManager.loadFavoritesFromFile();
-  let colors = colorManager.generateColor();
-  wallpaperManager.generateWallpaper(colors[0], colors[1], colors[2]);
-  wallpaperManager.setWallpaper(colors[0]);
-}
-
 function updateAutoLaunch(status: boolean) {
   app.setLoginItemSettings({
     openAtLogin: status,
     path: process.execPath,
     args: []
   });
+}
+
+function onReady() {
+  createWindow();
+  createTray();
+
+  // update settings
+  updateAutoLaunch(configManager.loadconfig().autoLaunch);
+  wallpaperManager.setFontEnabled(configManager.loadconfig().fontEnabled);
+  wallpaperManager.setFontSize(configManager.loadconfig().wallpaperFontSize);
+  wallpaperManager.setDitherEnabled(configManager.loadconfig().dithering);
+
+  colorManager.loadFavoritesFromFile();
+  let colors = colorManager.generateColor();
+  wallpaperManager.generateWallpaper(colors[0], colors[1], colors[2]);
+  wallpaperManager.setWallpaper(colors[0]);
 }
 
 // electron events
@@ -147,12 +147,26 @@ ipcMain.handle(ipcChannel.requestConfig, (event: any, arg: any) => {
   return configManager.loadconfig();
 });
 
+// TODO: refactor config changing
 ipcMain.on(ipcChannel.refreshedConfig, (event: any, arg: any) => {
-  configManager.refreshConfig(arg)
+  if (colorManager.getFavoriteColors().length > 0) {
+    configManager.refreshConfig(arg)
 
-  updateAutoLaunch(configManager.loadconfig().autoLaunch);
-  wallpaperManager.setFontEnabled(configManager.loadconfig().fontEnabled);
-  wallpaperManager.setFontSize(configManager.loadconfig().wallpaperFontSize);
-  wallpaperManager.setDitherEnabled(configManager.loadconfig().dithering);
+    updateAutoLaunch(configManager.loadconfig().autoLaunch);
+    wallpaperManager.setFontEnabled(configManager.loadconfig().fontEnabled);
+    wallpaperManager.setFontSize(configManager.loadconfig().wallpaperFontSize);
+    wallpaperManager.setDitherEnabled(configManager.loadconfig().dithering);
+  } else {
+    arg = JSON.parse(arg);
+    arg.chooseFromFavorites = false;
+    arg = JSON.stringify(arg);
+    configManager.refreshConfig(arg)
+
+    updateAutoLaunch(configManager.loadconfig().autoLaunch);
+    wallpaperManager.setFontEnabled(configManager.loadconfig().fontEnabled);
+    wallpaperManager.setFontSize(configManager.loadconfig().wallpaperFontSize);
+    wallpaperManager.setDitherEnabled(configManager.loadconfig().dithering);
+  }
+
   event.returnValue = true;
 });

@@ -9,6 +9,7 @@ export class ConfigManager {
     dithering: false,
     fontEnabled: true,
     wallpaperFontSize: 128,
+    chooseFromFavorites: false,
   };
 
   constructor() {
@@ -30,6 +31,7 @@ export class ConfigManager {
     this._settings.dithering = newConfig.dithering;
     this._settings.fontEnabled = newConfig.fontEnabled;
     this._settings.wallpaperFontSize = parseInt(newConfig.fontSize);
+    this._settings.chooseFromFavorites = newConfig.chooseFromFavorites;
 
     fs.writeFileSync(path.join(configurationFilesDir, this._configPath), JSON.stringify(this._settings));
   }
