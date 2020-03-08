@@ -6,7 +6,7 @@ import path from 'path';
 import { SpaceManager } from './SpaceManager';
 
 const spaceManager = new SpaceManager();
-canvas.registerFont("unifont.ttf", { family: "Unifont" });
+canvas.registerFont(path.join(__dirname, "..", "..", "media/unifont.ttf"), { family: "Unifont" });
 
 export class WallpaperManager {
   private _ditherEnabled: boolean = false;

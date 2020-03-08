@@ -55,11 +55,11 @@
     "@types/open": "^6.2.1",
     "@types/wallpaper": "^2.5.1",
     "electron-builder": "^22.4.0",
-    "electron": "^8.0.3",
     "electron-packager": "^14.2.1",
     "electron-rebuild": "^1.10.0"
   },
   "dependencies": {
+    "electron": "^8.0.3",
     "canvas": "^2.6.1",
     "color-convert": "^2.0.1",
     "open": "^7.0.2",

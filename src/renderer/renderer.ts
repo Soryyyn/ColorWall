@@ -23,48 +23,48 @@ function showElement(element: String) {
 		elementLib.aboutNavigationLink.setAttribute("style", "color: white");
 
 		elementLib.lastcolorsContentDiv.setAttribute("style", "display: none");
-		elementLib.lastColorsNavigationLink.setAttribute("style", "color: white");
+		elementLib.lastColorsNavigationLink.setAttribute("style", "color: #9e9e9e");
 
 		elementLib.favoritesContentDiv.setAttribute("style", "display: none");
-		elementLib.favoritesNavigationLink.setAttribute("style", "color: white");
+		elementLib.favoritesNavigationLink.setAttribute("style", "color: #9e9e9e");
 
 		elementLib.settingsContentDiv.setAttribute("style", "display: none");
-		elementLib.settingsNavigationLink.setAttribute("style", "color: white");
+		elementLib.settingsNavigationLink.setAttribute("style", "color: #9e9e9e");
 
 	} else if (element === "lastcolors") {
 		elementLib.aboutContentDiv.setAttribute("style", "display: none");
-		elementLib.aboutNavigationLink.setAttribute("style", "color: white");
+		elementLib.aboutNavigationLink.setAttribute("style", "color: #9e9e9e");
 
 		elementLib.lastcolorsContentDiv.setAttribute("style", "display: block");
 		elementLib.lastColorsNavigationLink.setAttribute("style", "color: white");
 
 		elementLib.favoritesContentDiv.setAttribute("style", "display: none");
-		elementLib.favoritesNavigationLink.setAttribute("style", "color: white");
+		elementLib.favoritesNavigationLink.setAttribute("style", "color: #9e9e9e");
 
 		elementLib.settingsContentDiv.setAttribute("style", "display: none");
-		elementLib.settingsNavigationLink.setAttribute("style", "color: white");
+		elementLib.settingsNavigationLink.setAttribute("style", "color: #9e9e9e");
 
 	} else if (element === "favorites") {
 		elementLib.aboutContentDiv.setAttribute("style", "display: none");
-		elementLib.aboutNavigationLink.setAttribute("style", "color: white");
+		elementLib.aboutNavigationLink.setAttribute("style", "color: #9e9e9e");
 
 		elementLib.lastcolorsContentDiv.setAttribute("style", "display: none");
-		elementLib.lastColorsNavigationLink.setAttribute("style", "color: white");
+		elementLib.lastColorsNavigationLink.setAttribute("style", "color: #9e9e9e");
 
 		elementLib.favoritesContentDiv.setAttribute("style", "display: block");
 		elementLib.favoritesNavigationLink.setAttribute("style", "color: white");
 
 		elementLib.settingsContentDiv.setAttribute("style", "display: none");
-		elementLib.settingsNavigationLink.setAttribute("style", "color: white");
+		elementLib.settingsNavigationLink.setAttribute("style", "color: #9e9e9e");
 	} else if (element === "settings") {
 		elementLib.aboutContentDiv.setAttribute("style", "display: none");
-		elementLib.aboutNavigationLink.setAttribute("style", "color: white");
+		elementLib.aboutNavigationLink.setAttribute("style", "color: #9e9e9e");
 
 		elementLib.lastcolorsContentDiv.setAttribute("style", "display: none");
-		elementLib.lastColorsNavigationLink.setAttribute("style", "color: white");
+		elementLib.lastColorsNavigationLink.setAttribute("style", "color: #9e9e9e");
 
 		elementLib.favoritesContentDiv.setAttribute("style", "display: none");
-		elementLib.favoritesNavigationLink.setAttribute("style", "color: white");
+		elementLib.favoritesNavigationLink.setAttribute("style", "color: 9e9e9e");
 
 		elementLib.settingsContentDiv.setAttribute("style", "display: block");
 		elementLib.settingsNavigationLink.setAttribute("style", "color: white");
@@ -87,14 +87,12 @@ function styleColorField(color: any, index: number, type: string) {
 
 function handleColorClickOfLastColors(button: Number, color: any): void {
 	switch (button) {
-		// left click / set color
 		case 0: {
-			ipcRenderer.sendSync(ipcChannel.setToSelectedColor, color);
+			ipcRenderer.sendSync(ipcChannel.setToSelectedColor, color); // left
 			break;
 		}
-		// right click / add to favorite
 		case 2: {
-			ipcRenderer.sendSync(ipcChannel.addToFavorites, color);
+			ipcRenderer.sendSync(ipcChannel.addToFavorites, color); // right
 			break;
 		}
 	}
@@ -102,14 +100,12 @@ function handleColorClickOfLastColors(button: Number, color: any): void {
 
 function handleColorClickOfFavoriteColors(button: Number, color: any): void {
 	switch (button) {
-		// left click / set color
 		case 0: {
-			ipcRenderer.sendSync(ipcChannel.setToSelectedColor, color);
+			ipcRenderer.sendSync(ipcChannel.setToSelectedColor, color); // left
 			break;
 		}
-		// right click / remove from favorite
 		case 2: {
-			ipcRenderer.sendSync(ipcChannel.removeFromFavorites, color);
+			ipcRenderer.sendSync(ipcChannel.removeFromFavorites, color); // right
 			requestFavoriteColors();
 			break;
 		}
@@ -174,6 +170,8 @@ function requestConfig() {
 	let dithering = options[1];
 	let fontEnabled = options[2];
 	let fontSize = options[3];
+	let chooseFromFavorites = options[4];
+
 	ipcRenderer
 		.invoke(ipcChannel.requestConfig, "requesting settings from config")
 		.then((config: any) => {
@@ -181,6 +179,7 @@ function requestConfig() {
 			dithering.checked = config.dithering;
 			fontEnabled.checked = config.fontEnabled;
 			fontSize.value = config.wallpaperFontSize;
+			chooseFromFavorites.checked = config.chooseFromFavorites;
 		});
 }
 
@@ -211,6 +210,9 @@ function validateSettings(): any {
 
 	return newOptions;
 }
+
+// no functions
+defaultsIfShown();
 
 (<HTMLFormElement>document.getElementById("settingsForm")).addEventListener("submit", (event: Event) => {
 	event.preventDefault();

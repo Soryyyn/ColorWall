@@ -149,24 +149,24 @@ ipcMain.handle(ipcChannel.requestConfig, (event: any, arg: any) => {
 
 // TODO: refactor config changing
 ipcMain.on(ipcChannel.refreshedConfig, (event: any, arg: any) => {
-  if (colorManager.getFavoriteColors().length > 0) {
-    configManager.refreshConfig(arg)
+  // if (colorManager.getFavoriteColors().length > 0) {
+  configManager.refreshConfig(arg)
 
-    updateAutoLaunch(configManager.loadconfig().autoLaunch);
-    wallpaperManager.setFontEnabled(configManager.loadconfig().fontEnabled);
-    wallpaperManager.setFontSize(configManager.loadconfig().wallpaperFontSize);
-    wallpaperManager.setDitherEnabled(configManager.loadconfig().dithering);
-  } else {
-    arg = JSON.parse(arg);
-    arg.chooseFromFavorites = false;
-    arg = JSON.stringify(arg);
-    configManager.refreshConfig(arg)
+  updateAutoLaunch(configManager.loadconfig().autoLaunch);
+  wallpaperManager.setFontEnabled(configManager.loadconfig().fontEnabled);
+  wallpaperManager.setFontSize(configManager.loadconfig().wallpaperFontSize);
+  wallpaperManager.setDitherEnabled(configManager.loadconfig().dithering);
+  // } else {
+  //   arg = JSON.parse(arg);
+  //   arg.chooseFromFavorites = false;
+  //   arg = JSON.stringify(arg);
+  //   configManager.refreshConfig(arg)
 
-    updateAutoLaunch(configManager.loadconfig().autoLaunch);
-    wallpaperManager.setFontEnabled(configManager.loadconfig().fontEnabled);
-    wallpaperManager.setFontSize(configManager.loadconfig().wallpaperFontSize);
-    wallpaperManager.setDitherEnabled(configManager.loadconfig().dithering);
-  }
+  //   updateAutoLaunch(configManager.loadconfig().autoLaunch);
+  //   wallpaperManager.setFontEnabled(configManager.loadconfig().fontEnabled);
+  //   wallpaperManager.setFontSize(configManager.loadconfig().wallpaperFontSize);
+  //   wallpaperManager.setDitherEnabled(configManager.loadconfig().dithering);
+  // }
 
   event.returnValue = true;
 });
