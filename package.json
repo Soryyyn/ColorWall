@@ -19,7 +19,8 @@
     "files": [
       "page/**",
       "dist/**/*.js",
-      "media/**"
+      "media/**",
+      "node_modules/**"
     ],
     "asar": false,
     "target": "nsis",

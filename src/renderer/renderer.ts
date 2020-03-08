@@ -19,53 +19,55 @@ function closeWindow() {
 
 function showElement(element: String) {
 	if (element === "about") {
-		document.getElementById("about").style.display = "block";
-		document.getElementById("aboutNav").style.color = "white";
+		elementLib.aboutContentDiv.setAttribute("style", "display: block");
+		elementLib.aboutNavigationLink.setAttribute("style", "color: white");
 
-		document.getElementById("lastcolors").style.display = "none";
-		document.getElementById("lastcolorsNav").style.color = "#9e9e9e";
+		elementLib.lastcolorsContentDiv.setAttribute("style", "display: none");
+		elementLib.lastColorsNavigationLink.setAttribute("style", "color: white");
 
-		document.getElementById("favorites").style.display = "none";
-		document.getElementById("favoritesNav").style.color = "#9e9e9e";
+		elementLib.favoritesContentDiv.setAttribute("style", "display: none");
+		elementLib.favoritesNavigationLink.setAttribute("style", "color: white");
 
-		document.getElementById("settings").style.display = "none";
-		document.getElementById("settingsNav").style.color = "#9e9e9e";
+		elementLib.settingsContentDiv.setAttribute("style", "display: none");
+		elementLib.settingsNavigationLink.setAttribute("style", "color: white");
+
 	} else if (element === "lastcolors") {
-		document.getElementById("about").style.display = "none";
-		document.getElementById("aboutNav").style.color = "#9e9e9e";
+		elementLib.aboutContentDiv.setAttribute("style", "display: none");
+		elementLib.aboutNavigationLink.setAttribute("style", "color: white");
 
-		document.getElementById("lastcolors").style.display = "block";
-		document.getElementById("lastcolorsNav").style.color = "white";
+		elementLib.lastcolorsContentDiv.setAttribute("style", "display: block");
+		elementLib.lastColorsNavigationLink.setAttribute("style", "color: white");
 
-		document.getElementById("favorites").style.display = "none";
-		document.getElementById("favoritesNav").style.color = "#9e9e9e";
+		elementLib.favoritesContentDiv.setAttribute("style", "display: none");
+		elementLib.favoritesNavigationLink.setAttribute("style", "color: white");
 
-		document.getElementById("settings").style.display = "none";
-		document.getElementById("settingsNav").style.color = "#9e9e9e";
+		elementLib.settingsContentDiv.setAttribute("style", "display: none");
+		elementLib.settingsNavigationLink.setAttribute("style", "color: white");
+
 	} else if (element === "favorites") {
-		document.getElementById("about").style.display = "none";
-		document.getElementById("aboutNav").style.color = "#9e9e9e";
+		elementLib.aboutContentDiv.setAttribute("style", "display: none");
+		elementLib.aboutNavigationLink.setAttribute("style", "color: white");
 
-		document.getElementById("lastcolors").style.display = "none";
-		document.getElementById("lastcolorsNav").style.color = "#9e9e9e";
+		elementLib.lastcolorsContentDiv.setAttribute("style", "display: none");
+		elementLib.lastColorsNavigationLink.setAttribute("style", "color: white");
 
-		document.getElementById("favorites").style.display = "block";
-		document.getElementById("favoritesNav").style.color = "white";
+		elementLib.favoritesContentDiv.setAttribute("style", "display: block");
+		elementLib.favoritesNavigationLink.setAttribute("style", "color: white");
 
-		document.getElementById("settings").style.display = "none";
-		document.getElementById("settingsNav").style.color = "#9e9e9e";
+		elementLib.settingsContentDiv.setAttribute("style", "display: none");
+		elementLib.settingsNavigationLink.setAttribute("style", "color: white");
 	} else if (element === "settings") {
-		document.getElementById("about").style.display = "none";
-		document.getElementById("aboutNav").style.color = "#9e9e9e";
+		elementLib.aboutContentDiv.setAttribute("style", "display: none");
+		elementLib.aboutNavigationLink.setAttribute("style", "color: white");
 
-		document.getElementById("lastcolors").style.display = "none";
-		document.getElementById("lastcolorsNav").style.color = "#9e9e9e";
+		elementLib.lastcolorsContentDiv.setAttribute("style", "display: none");
+		elementLib.lastColorsNavigationLink.setAttribute("style", "color: white");
 
-		document.getElementById("favorites").style.display = "none";
-		document.getElementById("favoritesNav").style.color = "#9e9e9e";
+		elementLib.favoritesContentDiv.setAttribute("style", "display: none");
+		elementLib.favoritesNavigationLink.setAttribute("style", "color: white");
 
-		document.getElementById("settings").style.display = "block";
-		document.getElementById("settingsNav").style.color = "white";
+		elementLib.settingsContentDiv.setAttribute("style", "display: block");
+		elementLib.settingsNavigationLink.setAttribute("style", "color: white");
 	}
 }
 

@@ -6,6 +6,7 @@ import path from 'path';
 import { SpaceManager } from './SpaceManager';
 
 const spaceManager = new SpaceManager();
+canvas.registerFont("unifont.ttf", { family: "Unifont" });
 
 export class WallpaperManager {
   private _ditherEnabled: boolean = false;
@@ -114,9 +115,9 @@ export class WallpaperManager {
   }
 
   public setWallpaper(mainColor: string) {
+    this._currentWallpaper = mainColor;
     wallpaper.set(path.join(spaceManager.getWallpaperDirectory() + "/" + mainColor + ".png")).then((resolved: any) => {
       // spaceManager.cleanupWallpaperDirectory();
     });
-    this._currentWallpaper = mainColor;
   }
 }
