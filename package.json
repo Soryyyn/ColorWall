@@ -59,7 +59,7 @@
     "electron-rebuild": "^1.10.0"
   },
   "dependencies": {
-    "electron": "^8.0.3",
+    "electron": "^8.1.0",
     "canvas": "^2.6.1",
     "color-convert": "^2.0.1",
     "open": "^7.0.2",
