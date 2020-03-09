@@ -41,7 +41,7 @@ export class ConfigManager {
    * @returns {Settings}
    * @memberof ConfigManager
    */
-  public initCurrentConfiguration(): Settings {
+  public getCurrentConfiguration(): Settings {
     return this._settings;
   }
 

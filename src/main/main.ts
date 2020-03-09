@@ -3,6 +3,8 @@ import { ConfigManager } from './ConfigManager';
 import { ColorManager } from './ColorManager';
 import { WallpaperManager } from './WallpaperManager';
 import { SpaceManager } from './SpaceManager';
+import { WallpaperColor } from '../common/models/WallpaperColor';
+import { WallpaperColors } from '../common/models/WallpaperColors';
 import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron';
 import open from 'open';
 import path from 'path';
@@ -85,11 +87,11 @@ function updateAutoLaunch(status: boolean) {
 }
 
 function initSettings() {
-  updateAutoLaunch(configManager.initCurrentConfiguration().autoLaunch);
+  updateAutoLaunch(configManager.getCurrentConfiguration().autoLaunch);
   wallpaperManager.updateWallpaperSettings(
-    configManager.initCurrentConfiguration().ditherEnabled,
-    configManager.initCurrentConfiguration().wallpaperFontSize,
-    configManager.initCurrentConfiguration().fontEnabled,
+    configManager.getCurrentConfiguration().ditherEnabled,
+    configManager.getCurrentConfiguration().wallpaperFontSize,
+    configManager.getCurrentConfiguration().fontEnabled,
   );
 }
 
