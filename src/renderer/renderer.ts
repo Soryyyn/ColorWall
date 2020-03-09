@@ -1,5 +1,6 @@
 const { ipcRenderer, remote } = require("electron");
 const { ipcChannel } = remote.require("../common/ipcChannels");
+const { Settings } = remote.require("../common/models/Settings");
 
 const elementLib = new ElementLibrary();
 let remoteWindow = remote.getCurrentWindow();
@@ -204,7 +205,7 @@ function validateSettings(): any {
 		autoLaunch: options[0].checked,
 		dithering: options[1].checked,
 		fontEnabled: options[2].checked,
-		fontSize: options[3].value.toString().trim(),
+		wallpaperFontSize: parseInt(options[3].value.toString().trim()),
 		chooseFromFavorites: options[2].checked,
 	};
 

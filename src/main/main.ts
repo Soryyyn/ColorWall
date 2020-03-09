@@ -84,20 +84,23 @@ function updateAutoLaunch(status: boolean) {
   });
 }
 
+function initSettings() {
+  updateAutoLaunch(configManager.initCurrentConfiguration().autoLaunch);
+  wallpaperManager.updateWallpaperSettings(
+    configManager.initCurrentConfiguration().ditherEnabled,
+    configManager.initCurrentConfiguration().wallpaperFontSize,
+    configManager.initCurrentConfiguration().fontEnabled,
+  );
+}
+
 function onReady() {
   createWindow();
   createTray();
+  initSettings();
 
-  // update settings
-  updateAutoLaunch(configManager.loadconfig().autoLaunch);
-  wallpaperManager.setFontEnabled(configManager.loadconfig().fontEnabled);
-  wallpaperManager.setFontSize(configManager.loadconfig().wallpaperFontSize);
-  wallpaperManager.setDitherEnabled(configManager.loadconfig().dithering);
-
-  colorManager.loadFavoritesFromFile();
   let colors = colorManager.generateColor();
-  wallpaperManager.generateWallpaper(colors[0], colors[1], colors[2]);
-  wallpaperManager.setWallpaper(colors[0]);
+  wallpaperManager.generateWallpaper(colors);
+  wallpaperManager.setWallpaper(colors);
 }
 
 // electron events
@@ -124,11 +127,8 @@ ipcMain.handle(ipcChannel.requestFavoriteColors, (event: any, arg: any) => {
 
 ipcMain.on(ipcChannel.setToSelectedColor, (event: any, arg: any) => {
   if (wallpaperManager.getCurrentWallpaper() !== arg.mainColor) {
-    // console.log("new wallpaper");
     wallpaperManager.generateWallpaper(arg.mainColor, arg.fontColor, arg.ditherColor);
     wallpaperManager.setWallpaper(arg.mainColor);
-  } else {
-    // console.log("is already current wallpaper");
   }
   event.returnValue = true;
 });
@@ -144,28 +144,26 @@ ipcMain.on(ipcChannel.removeFromFavorites, (event: any, arg: any) => {
 });
 
 ipcMain.handle(ipcChannel.requestConfig, (event: any, arg: any) => {
-  return configManager.loadconfig();
+  return configManager.getCurrentConfiguration();
 });
 
 // TODO: refactor config changing
 ipcMain.on(ipcChannel.refreshedConfig, (event: any, arg: any) => {
+  arg = JSON.parse(arg);
+
   // if (colorManager.getFavoriteColors().length > 0) {
   configManager.refreshConfig(arg)
-
-  updateAutoLaunch(configManager.loadconfig().autoLaunch);
-  wallpaperManager.setFontEnabled(configManager.loadconfig().fontEnabled);
-  wallpaperManager.setFontSize(configManager.loadconfig().wallpaperFontSize);
-  wallpaperManager.setDitherEnabled(configManager.loadconfig().dithering);
+  updateAllSettings();
   // } else {
   //   arg = JSON.parse(arg);
   //   arg.chooseFromFavorites = false;
   //   arg = JSON.stringify(arg);
   //   configManager.refreshConfig(arg)
 
-  //   updateAutoLaunch(configManager.loadconfig().autoLaunch);
-  //   wallpaperManager.setFontEnabled(configManager.loadconfig().fontEnabled);
-  //   wallpaperManager.setFontSize(configManager.loadconfig().wallpaperFontSize);
-  //   wallpaperManager.setDitherEnabled(configManager.loadconfig().dithering);
+  //   updateAutoLaunch(configManager.getCurrentConfiguration().autoLaunch);
+  //   wallpaperManager.setFontEnabled(configManager.getCurrentConfiguration().fontEnabled);
+  //   wallpaperManager.setFontSize(configManager.getCurrentConfiguration().wallpaperFontSize);
+  //   wallpaperManager.setDitherEnabled(configManager.getCurrentConfiguration().dithering);
   // }
 
   event.returnValue = true;

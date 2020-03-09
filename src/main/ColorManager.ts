@@ -1,25 +1,79 @@
-import { configurationFilesDir } from '../common/GlobalPath';
+// npm modules
 import converter from 'color-convert';
 import fs from 'fs';
 import path from 'path';
 
+// classes / self made modules
+import { configurationFilesDir } from '../common/GlobalPath';
+import { WallpaperColor } from '../common/models/WallpaperColor';
+import { WallpaperColors } from '../common/models/WallpaperColors';
+
+
+/**
+ * used for managing all colors
+ *
+ * @export
+ * @class ColorManager
+ */
 export class ColorManager {
-  private _lastColors: Array<Object> = [];
-  private _favoriteColors: Array<Object> = [];
+  private _lastColors: WallpaperColors;
+  private _favoriteColors: WallpaperColors;
   private _favoritesFilePath = "favorites.json";
 
-  public addNewColor(color: Array<string>): void {
+  /**
+   * creates instance of colormanager, and loads favorites from file
+   * @memberof ColorManager
+   */
+  constructor() {
+    if (!fs.existsSync(path.join(configurationFilesDir, this._favoritesFilePath))) {
+      this.saveChanges();
+    }
+
+    let favorites = require(path.join(configurationFilesDir, this._favoritesFilePath));
+    if (favorites !== null || favorites !== undefined || favorites.length <= 0) {
+      for (let i = 0; i < favorites.length; i++) {
+        this._favoriteColors.unshift({
+          mainColor: favorites[i].mainColor,
+          fontColor: favorites[i].fontColor,
+          ditherColor: favorites[i].ditherColor
+        });
+      }
+    }
+  }
+
+  /**
+   * adds a new color to last colors
+   *
+   * @param {WallpaperColor} color
+   * @memberof ColorManager
+   */
+  public addNewColor(color: WallpaperColor): void {
     this._lastColors.unshift({
-      mainColor: color[0],
-      fontColor: color[1],
-      ditherColor: color[2],
+      mainColor: color.mainColor,
+      fontColor: color.fontColor,
+      ditherColor: color.ditherColor,
     });
   }
 
-  public getLastColors(): Array<Object> {
+
+  /**
+   * returns array of last colors
+   *
+   * @returns {WallpaperColors}
+   * @memberof ColorManager
+   */
+  public getLastColors(): WallpaperColors {
     return this._lastColors;
   }
 
+  /**
+   * checks if the color is already in the list (avoids duplicate)
+   *
+   * @private
+   * @param {string} color
+   * @returns {boolean}
+   * @memberof ColorManager
+   */
   private checkIfFavoriteAlreadyInArray(color: string): boolean {
     for (let i = 0; i < this._favoriteColors.length; i++) {
       let temp = Object.values(this._favoriteColors[i])[0];
@@ -30,7 +84,23 @@ export class ColorManager {
     return false;
   }
 
-  public addNewFavorite(newColor: any): void {
+  /**
+   * writes favorite colors to file
+   *
+   * @private
+   * @memberof ColorManager
+   */
+  private saveChanges(): void {
+    fs.writeFileSync(path.join(configurationFilesDir, this._favoritesFilePath), `${JSON.stringify(this._favoriteColors)}`);
+  }
+
+  /**
+   * adds a new color to favorite colors & favorites file
+   *
+   * @param {WallpaperColor} newColor
+   * @memberof ColorManager
+   */
+  public addNewFavorite(newColor: WallpaperColor): void {
     if (!this.checkIfFavoriteAlreadyInArray(newColor.mainColor)) {
       this._favoriteColors.unshift({
         mainColor: newColor.mainColor,
@@ -42,39 +112,40 @@ export class ColorManager {
     }
   }
 
-  public getFavoriteColors(): Array<Object> {
+
+  /**
+   * returns list of all favorite colors
+   *
+   * @returns {WallpaperColors}
+   * @memberof ColorManager
+   */
+  public getFavoriteColors(): WallpaperColors {
     return this._favoriteColors;
   }
 
-  public removeFavorite(color: any): void {
+  /**
+   * removes color from favorites colors list & file
+   *
+   * @param {WallpaperColor} color
+   * @memberof ColorManager
+   */
+  public removeFavorite(color: WallpaperColor): void {
     for (let i = 0; i < this._favoriteColors.length; i++) {
-      // @ts-ignore
       if (this._favoriteColors[i].mainColor === color.mainColor) {
         this._favoriteColors.splice(i, 1);
       }
     }
 
-    fs.writeFileSync(path.join(configurationFilesDir, this._favoritesFilePath), `${JSON.stringify(this._favoriteColors)}`);
+    this.saveChanges();
   }
 
-  public loadFavoritesFromFile() {
-    if (!fs.existsSync(path.join(configurationFilesDir, this._favoritesFilePath))) {
-      fs.writeFileSync(path.join(configurationFilesDir, this._favoritesFilePath), JSON.stringify(this._favoriteColors));
-    }
-
-    let favorites = require(path.join(configurationFilesDir, this._favoritesFilePath));
-    if (favorites !== null || favorites !== undefined || favorites.length <= 0) {
-      for (let i = 0; i < favorites.length; i++) {
-        this._favoriteColors.unshift({
-          mainColor: favorites[i].mainColor,
-          fontColor: favorites[i].fontColor,
-          ditherColor: favorites[i].ditherColor
-        })
-      }
-    }
-  }
-
-  public generateColor(): Array<string> {
+  /**
+   * generates a new wallpaper color & adds it to the last colors list
+   *
+   * @returns {WallpaperColor}
+   * @memberof ColorManager
+   */
+  public generateColor(): WallpaperColor {
     let mainColor: string;
     let fontColor: string;
     let ditherColor: string;
@@ -109,7 +180,13 @@ export class ColorManager {
     }
     ditherColor = "#" + converter.rgb.hex([r, g, b]);
 
-    this.addNewColor([mainColor, fontColor, ditherColor]);
-    return [mainColor, fontColor, ditherColor];
+    let color = {
+      mainColor: mainColor,
+      fontColor: fontColor,
+      ditherColor: ditherColor
+    };
+
+    this.addNewColor(color);
+    return color;
   }
 }
