@@ -11,7 +11,11 @@
     "strict": true,
     "esModuleInterop": true,
     "watch": true,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "noUnusedParameters": true,
   },
   "exclude": [
     "node_modules",

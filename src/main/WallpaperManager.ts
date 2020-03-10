@@ -136,7 +136,7 @@ export class WallpaperManager {
    */
   public setWallpaper(color: WallpaperColor) {
     this._currentWallpaper = color.mainColor;
-    wallpaper.set(path.join(spaceManager.getWallpaperDirectory() + "/" + color.mainColor + ".png")).then((resolved: any) => { });
+    wallpaper.set(path.join(spaceManager.getWallpaperDirectory() + "/" + color.mainColor + ".png")).then();
   }
 
   /**

@@ -276,7 +276,7 @@ elementLib.lastColorsNavigationLink.addEventListener("click", requestLastColors)
 elementLib.favoritesNavigationLink.addEventListener("click", requestFavoriteColors);
 elementLib.settingsNavigationLink.addEventListener("click", requestConfig);
 
-ipcRenderer.on(IpcChannelLibrary.refreshedLastColors, (event: any, arg: any) => {
+ipcRenderer.on(IpcChannelLibrary.refreshedLastColors, (arg: any) => {
 	clearGrid("grid_last");
 	for (let i = 0; i < arg.length; i++) {
 		addColorToGrid("grid_last", arg[i], i, "fieldLast", "last");
