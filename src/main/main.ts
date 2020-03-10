@@ -42,9 +42,12 @@ function createTray() {
     {
       label: "New Wallpaper",
       click() {
-        let colors = colorManager.generateColor();
-        wallpaperManager.generateWallpaper(colors);
-        wallpaperManager.setWallpaper(colors);
+        if (configManager.getCurrentConfiguration().chooseFromFavorites === true) {
+          newFavoriteColor();
+        } else {
+          newRandomColor();
+        }
+
         win.webContents.send(IpcChannelLibrary.refreshedLastColors, colorManager.getLastColors());
       }
     },
@@ -117,6 +120,29 @@ function updateSettings() {
     configManager.getCurrentConfiguration().wallpaperFontSize,
     configManager.getCurrentConfiguration().fontEnabled,
   );
+
+  // color settings
+  colorManager.updateSettings(
+    configManager.getCurrentConfiguration().chooseFromFavorites
+  );
+}
+
+/**
+ * sets the wallpaper to a new random color
+ */
+function newRandomColor(): void {
+  let colors = colorManager.generateColor();
+  wallpaperManager.generateWallpaper(colors);
+  wallpaperManager.setWallpaper(colors);
+}
+
+/**
+ * sets the wallpaper to a favorite color
+ */
+function newFavoriteColor(): void {
+  let colors = colorManager.generateColorFromFavorites();
+  wallpaperManager.generateWallpaper(colors);
+  wallpaperManager.setWallpaper(colors);
 }
 
 /**
@@ -129,9 +155,11 @@ function onReady() {
   createTray();
   updateSettings();
 
-  let colors = colorManager.generateColor();
-  wallpaperManager.generateWallpaper(colors);
-  wallpaperManager.setWallpaper(colors);
+  if (configManager.getCurrentConfiguration().chooseFromFavorites === true) {
+    newFavoriteColor();
+  } else {
+    newRandomColor();
+  }
 }
 
 

@@ -19,6 +19,7 @@ export class ColorManager {
   private _lastColors: WallpaperColors = [];
   private _favoriteColors: WallpaperColors = [];
   private _favoritesFilePath = "favorites.json";
+  private _chooseFromFavorites: boolean = false;
 
   /**
    * creates instance of colormanager, and loads favorites from file
@@ -51,7 +52,6 @@ export class ColorManager {
       ditherColor: color.ditherColor,
     });
   }
-
 
   /**
    * returns array of last colors
@@ -108,7 +108,6 @@ export class ColorManager {
       fs.writeFileSync(path.join(configurationFilesDir, this._favoritesFilePath), `${JSON.stringify(this._favoriteColors)}`);
     }
   }
-
 
   /**
    * returns list of all favorite colors
@@ -185,5 +184,26 @@ export class ColorManager {
 
     this.addNewColor(color);
     return color;
+  }
+
+  /**
+   * update the settings of color
+   *
+   * @param {boolean} chooseFromFavorites
+   * @memberof ColorManager
+   */
+  public updateSettings(chooseFromFavorites: boolean) {
+    this._chooseFromFavorites = chooseFromFavorites;
+  }
+
+  /**
+   * chooses a favorite color from the list and returns it
+   *
+   * @returns {WallpaperColor}
+   * @memberof ColorManager
+   */
+  public generateColorFromFavorites(): WallpaperColor {
+    let index = Math.floor(Math.random() * this._favoriteColors.length);
+    return this._favoriteColors[index];
   }
 }
