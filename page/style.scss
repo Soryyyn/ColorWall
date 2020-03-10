@@ -115,6 +115,7 @@ nav {
       padding: 1rem;
       font-size: 18px;
       color: $fontNormal;
+      user-select: none;
       &:hover {
         color: $fontHovered;
         cursor: pointer;
@@ -122,7 +123,6 @@ nav {
       }
     }
   }
-
 }
 
 main {

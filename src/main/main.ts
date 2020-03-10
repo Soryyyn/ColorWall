@@ -1,5 +1,5 @@
 // npm modules
-import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron';
+import { app, BrowserWindow, Menu, Tray, ipcMain } from 'electron';
 import open from 'open';
 import path from 'path';
 import url from 'url';
@@ -139,8 +139,8 @@ function onReady() {
 // electron events
 app.on("ready", onReady);
 
-app.on("window-all-closed", (e: any) => {
-  e.preventDefault()
+app.on("window-all-closed", (event: Event) => {
+  event.preventDefault()
   win.hide();
 });
 
@@ -182,7 +182,6 @@ ipcMain.handle(IpcChannelLibrary.requestConfig, () => {
   return configManager.getCurrentConfiguration();
 });
 
-// TODO: refactor config changing
 ipcMain.on(IpcChannelLibrary.refreshedConfig, (event: Event, arg: any) => {
   arg = JSON.parse(arg);
 

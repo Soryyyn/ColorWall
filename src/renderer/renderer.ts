@@ -1,10 +1,17 @@
+// npm modules
 const { ipcRenderer, remote } = require("electron");
+
+// classes / self made modules
 const { IpcChannelLibrary } = remote.require("../common/IpcChannels");
 const { Settings } = remote.require("../common/models/Settings");
 
-const elementLib = new ElementLibrary();
 let remoteWindow = remote.getCurrentWindow();
+const elementLib = new ElementLibrary();
 
+
+/**
+ * defaults that are being set on app start
+ */
 function defaultsIfShown() {
 	elementLib.aboutContentDiv.setAttribute("style", "display: block")
 	elementLib.lastcolorsContentDiv.setAttribute("style", "display: none")
@@ -14,10 +21,17 @@ function defaultsIfShown() {
 	elementLib.aboutNavigationLink.setAttribute("style", "color: white")
 }
 
+/**
+ * getting used when pressing close button
+ */
 function closeWindow() {
 	remoteWindow.hide();
 }
 
+/**
+ * shows the differnt content & styles nav text
+ * @param {String} element
+ */
 function showElement(element: String) {
 	if (element === "about") {
 		elementLib.aboutContentDiv.setAttribute("style", "display: block");
@@ -72,6 +86,10 @@ function showElement(element: String) {
 	}
 }
 
+/**
+ * clears the specified grid
+ * @param {string} grid
+ */
 function clearGrid(grid: string): void {
 	while (document.getElementById(grid).firstChild) {
 		document
@@ -80,12 +98,23 @@ function clearGrid(grid: string): void {
 	}
 }
 
+/**
+ * styles the specified color field
+ * @param {*} color
+ * @param {number} index
+ * @param {string} type
+ */
 function styleColorField(color: any, index: number, type: string) {
 	let colorField = document.getElementById(`${type}_${index}`);
 	colorField.style.backgroundColor = color.mainColor;
 	colorField.style.borderRadius = "5px";
 }
 
+/**
+ * handle the click of the last colors field
+ * @param {Number} button
+ * @param {*} color
+ */
 function handleColorClickOfLastColors(button: Number, color: any): void {
 	switch (button) {
 		case 0: {
@@ -99,6 +128,11 @@ function handleColorClickOfLastColors(button: Number, color: any): void {
 	}
 }
 
+/**
+ * handle the click of the favorite colors field
+ * @param {Number} button
+ * @param {*} color
+ */
 function handleColorClickOfFavoriteColors(button: Number, color: any): void {
 	switch (button) {
 		case 0: {
@@ -113,6 +147,14 @@ function handleColorClickOfFavoriteColors(button: Number, color: any): void {
 	}
 }
 
+/**
+ * add a color to the specified grid
+ * @param {string} grid
+ * @param {*} color
+ * @param {number} index
+ * @param {string} type
+ * @param {string} page
+ */
 function addColorToGrid(grid: string, color: any, index: number, type: string, page: string): void {
 	let colorField = document.createElement("div");
 	colorField.setAttribute("class", "field");
@@ -139,6 +181,9 @@ function addColorToGrid(grid: string, color: any, index: number, type: string, p
 	}
 }
 
+/**
+ * request the last colors from the main process
+ */
 function requestLastColors() {
 	ipcRenderer
 		.invoke(IpcChannelLibrary.requestLastColors, "requesting all last colors")
@@ -150,6 +195,10 @@ function requestLastColors() {
 		});
 }
 
+
+/**
+ * request favorite colors from main process
+ */
 function requestFavoriteColors(): void {
 	ipcRenderer
 		.invoke(IpcChannelLibrary.requestFavoriteColors, "requesting all favorite colors")
@@ -161,10 +210,17 @@ function requestFavoriteColors(): void {
 		});
 }
 
+/**
+ * open the link which is pressed by the user
+ * @param {String} link
+ */
 function openLink(link: String): void {
 	ipcRenderer.sendSync(IpcChannelLibrary.linkPressed, link);
 }
 
+/**
+ * request the config from the main process
+ */
 function requestConfig() {
 	let options = document.getElementsByTagName("input");
 	let autoLaunch = options[0];
@@ -184,18 +240,9 @@ function requestConfig() {
 		});
 }
 
-// events
-ipcRenderer.on(IpcChannelLibrary.refreshedLastColors, (event: any, arg: any) => {
-	clearGrid("grid_last");
-	for (let i = 0; i < arg.length; i++) {
-		addColorToGrid("grid_last", arg[i], i, "fieldLast", "last");
-	}
-});
 
-// nav eventlisteners
-elementLib.lastColorsNavigationLink.addEventListener("click", requestLastColors);
-elementLib.favoritesNavigationLink.addEventListener("click", requestFavoriteColors);
-elementLib.settingsNavigationLink.addEventListener("click", requestConfig);
+defaultsIfShown();
+
 
 // settings form
 function validateSettings(): any {
@@ -212,9 +259,6 @@ function validateSettings(): any {
 	return newOptions;
 }
 
-// no functions
-defaultsIfShown();
-
 (<HTMLFormElement>document.getElementById("settingsForm")).addEventListener("submit", (event: Event) => {
 	event.preventDefault();
 	const newOptions = validateSettings();
@@ -223,4 +267,18 @@ defaultsIfShown();
 		IpcChannelLibrary.refreshedConfig,
 		JSON.stringify(newOptions)
 	);
+});
+
+
+
+// events
+elementLib.lastColorsNavigationLink.addEventListener("click", requestLastColors);
+elementLib.favoritesNavigationLink.addEventListener("click", requestFavoriteColors);
+elementLib.settingsNavigationLink.addEventListener("click", requestConfig);
+
+ipcRenderer.on(IpcChannelLibrary.refreshedLastColors, (event: any, arg: any) => {
+	clearGrid("grid_last");
+	for (let i = 0; i < arg.length; i++) {
+		addColorToGrid("grid_last", arg[i], i, "fieldLast", "last");
+	}
 });
