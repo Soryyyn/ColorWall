@@ -1,23 +1,34 @@
-import { ipcChannel } from '../common/IpcChannels';
-import { ConfigManager } from './ConfigManager';
-import { ColorManager } from './ColorManager';
-import { WallpaperManager } from './WallpaperManager';
-import { SpaceManager } from './SpaceManager';
-import { WallpaperColor } from '../common/models/WallpaperColor';
-import { WallpaperColors } from '../common/models/WallpaperColors';
+// npm modules
 import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron';
 import open from 'open';
 import path from 'path';
 import url from 'url';
 
-let win: any = null;
-let tray: any = null;
-const colorManager = new ColorManager();
-const wallpaperManager = new WallpaperManager();
+// classes / self made modules
+import { ConfigManager } from './ConfigManager';
 const configManager = new ConfigManager();
-const spaceManager = new SpaceManager();
-app.allowRendererProcessReuse = true;
 
+import { ColorManager } from './ColorManager';
+const colorManager = new ColorManager();
+
+import { WallpaperManager } from './WallpaperManager';
+const wallpaperManager = new WallpaperManager();
+
+import { SpaceManager } from './SpaceManager';
+const spaceManager = new SpaceManager();
+
+import { IpcChannelLibrary } from '../common/IpcChannels';
+import { WallpaperColor } from '../common/models/WallpaperColor';
+import { WallpaperColors } from '../common/models/WallpaperColors';
+import { Settings } from '../common/models/Settings';
+
+let win: BrowserWindow = null;
+let tray: Tray = null;
+
+
+/**
+ * adds app to tray with icon
+ */
 function createTray() {
   tray = new Tray(path.join(__dirname, "..", "..", "media/single_icon.png"));
 
@@ -32,9 +43,9 @@ function createTray() {
       label: "New Wallpaper",
       click() {
         let colors = colorManager.generateColor();
-        wallpaperManager.generateWallpaper(colors[0], colors[1], colors[2]);
-        wallpaperManager.setWallpaper(colors[0]);
-        win.webContents.send(ipcChannel.refreshedLastColors, colorManager.getLastColors());
+        wallpaperManager.generateWallpaper(colors);
+        wallpaperManager.setWallpaper(colors);
+        win.webContents.send(IpcChannelLibrary.refreshedLastColors, colorManager.getLastColors());
       }
     },
     {
@@ -51,6 +62,9 @@ function createTray() {
   tray.setContextMenu(contextMenu);
 }
 
+/**
+ * creates the BrowserWindow, loads the index.html and hides it
+ */
 function createWindow() {
   win = new BrowserWindow({
     webPreferences: {
@@ -78,6 +92,10 @@ function createWindow() {
   win.center();
 }
 
+/**
+ * updates the auto launch setting (system startup)
+ * @param {boolean} status
+ */
 function updateAutoLaunch(status: boolean) {
   app.setLoginItemSettings({
     openAtLogin: status,
@@ -86,24 +104,37 @@ function updateAutoLaunch(status: boolean) {
   });
 }
 
-function initSettings() {
+/**
+ * updates the settings of all classes
+ */
+function updateSettings() {
+  // main settings
   updateAutoLaunch(configManager.getCurrentConfiguration().autoLaunch);
-  wallpaperManager.updateWallpaperSettings(
+
+  // wallpaper settings
+  wallpaperManager.updateSettings(
     configManager.getCurrentConfiguration().ditherEnabled,
     configManager.getCurrentConfiguration().wallpaperFontSize,
     configManager.getCurrentConfiguration().fontEnabled,
   );
 }
 
+/**
+ * all things that get executed on app start
+ */
 function onReady() {
+  app.allowRendererProcessReuse = true;
+
   createWindow();
   createTray();
-  initSettings();
+  updateSettings();
 
   let colors = colorManager.generateColor();
   wallpaperManager.generateWallpaper(colors);
   wallpaperManager.setWallpaper(colors);
 }
+
+
 
 // electron events
 app.on("ready", onReady);
@@ -113,60 +144,50 @@ app.on("window-all-closed", (e: any) => {
   win.hide();
 });
 
-// ipc events
-ipcMain.on(ipcChannel.linkPressed, (event: any, arg: any) => {
+
+
+// ipc event handling
+ipcMain.on(IpcChannelLibrary.linkPressed, (event: any, arg: any) => {
   open(arg);
   event.returnValue = true;
 });
 
-ipcMain.handle(ipcChannel.requestLastColors, (event: any, arg: any) => {
+ipcMain.handle(IpcChannelLibrary.requestLastColors, () => {
   return colorManager.getLastColors();
 });
 
-ipcMain.handle(ipcChannel.requestFavoriteColors, (event: any, arg: any) => {
+ipcMain.handle(IpcChannelLibrary.requestFavoriteColors, () => {
   return colorManager.getFavoriteColors();
 });
 
-ipcMain.on(ipcChannel.setToSelectedColor, (event: any, arg: any) => {
+ipcMain.on(IpcChannelLibrary.setToSelectedColor, (event: Event, arg: WallpaperColor) => {
   if (wallpaperManager.getCurrentWallpaper() !== arg.mainColor) {
-    wallpaperManager.generateWallpaper(arg.mainColor, arg.fontColor, arg.ditherColor);
-    wallpaperManager.setWallpaper(arg.mainColor);
+    wallpaperManager.generateWallpaper(arg);
+    wallpaperManager.setWallpaper(arg);
   }
   event.returnValue = true;
 });
 
-ipcMain.on(ipcChannel.addToFavorites, (event: any, arg: any) => {
+ipcMain.on(IpcChannelLibrary.addToFavorites, (event: Event, arg: WallpaperColor) => {
   colorManager.addNewFavorite(arg);
   event.returnValue = true;
 });
 
-ipcMain.on(ipcChannel.removeFromFavorites, (event: any, arg: any) => {
+ipcMain.on(IpcChannelLibrary.removeFromFavorites, (event: Event, arg: WallpaperColor) => {
   colorManager.removeFavorite(arg);
   event.returnValue = true;
 });
 
-ipcMain.handle(ipcChannel.requestConfig, (event: any, arg: any) => {
+ipcMain.handle(IpcChannelLibrary.requestConfig, () => {
   return configManager.getCurrentConfiguration();
 });
 
 // TODO: refactor config changing
-ipcMain.on(ipcChannel.refreshedConfig, (event: any, arg: any) => {
+ipcMain.on(IpcChannelLibrary.refreshedConfig, (event: Event, arg: any) => {
   arg = JSON.parse(arg);
 
-  // if (colorManager.getFavoriteColors().length > 0) {
   configManager.refreshConfig(arg)
-  updateAllSettings();
-  // } else {
-  //   arg = JSON.parse(arg);
-  //   arg.chooseFromFavorites = false;
-  //   arg = JSON.stringify(arg);
-  //   configManager.refreshConfig(arg)
-
-  //   updateAutoLaunch(configManager.getCurrentConfiguration().autoLaunch);
-  //   wallpaperManager.setFontEnabled(configManager.getCurrentConfiguration().fontEnabled);
-  //   wallpaperManager.setFontSize(configManager.getCurrentConfiguration().wallpaperFontSize);
-  //   wallpaperManager.setDitherEnabled(configManager.getCurrentConfiguration().dithering);
-  // }
+  updateSettings();
 
   event.returnValue = true;
 });

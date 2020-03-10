@@ -303,6 +303,10 @@ main {
             }
 
             input {
+              &:focus {
+                outline: none;
+              }
+
               text-align: center;
               font-size: 14px;
               width: 75%;
@@ -387,6 +391,10 @@ main {
       }
 
       #submitSettings {
+        &:focus {
+          outline: none;
+        }
+
         display: block;
         margin : 0 auto;
         margin-bottom: 2rem;

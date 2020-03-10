@@ -1,5 +1,5 @@
 const { ipcRenderer, remote } = require("electron");
-const { ipcChannel } = remote.require("../common/ipcChannels");
+const { IpcChannelLibrary } = remote.require("../common/IpcChannels");
 const { Settings } = remote.require("../common/models/Settings");
 
 const elementLib = new ElementLibrary();
@@ -89,11 +89,11 @@ function styleColorField(color: any, index: number, type: string) {
 function handleColorClickOfLastColors(button: Number, color: any): void {
 	switch (button) {
 		case 0: {
-			ipcRenderer.sendSync(ipcChannel.setToSelectedColor, color); // left
+			ipcRenderer.sendSync(IpcChannelLibrary.setToSelectedColor, color); // left
 			break;
 		}
 		case 2: {
-			ipcRenderer.sendSync(ipcChannel.addToFavorites, color); // right
+			ipcRenderer.sendSync(IpcChannelLibrary.addToFavorites, color); // right
 			break;
 		}
 	}
@@ -102,11 +102,11 @@ function handleColorClickOfLastColors(button: Number, color: any): void {
 function handleColorClickOfFavoriteColors(button: Number, color: any): void {
 	switch (button) {
 		case 0: {
-			ipcRenderer.sendSync(ipcChannel.setToSelectedColor, color); // left
+			ipcRenderer.sendSync(IpcChannelLibrary.setToSelectedColor, color); // left
 			break;
 		}
 		case 2: {
-			ipcRenderer.sendSync(ipcChannel.removeFromFavorites, color); // right
+			ipcRenderer.sendSync(IpcChannelLibrary.removeFromFavorites, color); // right
 			requestFavoriteColors();
 			break;
 		}
@@ -141,7 +141,7 @@ function addColorToGrid(grid: string, color: any, index: number, type: string, p
 
 function requestLastColors() {
 	ipcRenderer
-		.invoke(ipcChannel.requestLastColors, "requesting all last colors")
+		.invoke(IpcChannelLibrary.requestLastColors, "requesting all last colors")
 		.then((colors: any) => {
 			clearGrid("grid_last");
 			for (let i = 0; i < colors.length; i++) {
@@ -152,7 +152,7 @@ function requestLastColors() {
 
 function requestFavoriteColors(): void {
 	ipcRenderer
-		.invoke(ipcChannel.requestFavoriteColors, "requesting all favorite colors")
+		.invoke(IpcChannelLibrary.requestFavoriteColors, "requesting all favorite colors")
 		.then((colors: any) => {
 			clearGrid("grid_fav");
 			for (let i = 0; i < colors.length; i++) {
@@ -162,7 +162,7 @@ function requestFavoriteColors(): void {
 }
 
 function openLink(link: String): void {
-	ipcRenderer.sendSync(ipcChannel.linkPressed, link);
+	ipcRenderer.sendSync(IpcChannelLibrary.linkPressed, link);
 }
 
 function requestConfig() {
@@ -174,7 +174,7 @@ function requestConfig() {
 	let chooseFromFavorites = options[4];
 
 	ipcRenderer
-		.invoke(ipcChannel.requestConfig, "requesting settings from config")
+		.invoke(IpcChannelLibrary.requestConfig, "requesting settings from config")
 		.then((config: any) => {
 			autoLaunch.checked = config.autoLaunch;
 			dithering.checked = config.dithering;
@@ -185,7 +185,7 @@ function requestConfig() {
 }
 
 // events
-ipcRenderer.on(ipcChannel.refreshedLastColors, (event: any, arg: any) => {
+ipcRenderer.on(IpcChannelLibrary.refreshedLastColors, (event: any, arg: any) => {
 	clearGrid("grid_last");
 	for (let i = 0; i < arg.length; i++) {
 		addColorToGrid("grid_last", arg[i], i, "fieldLast", "last");
@@ -220,7 +220,7 @@ defaultsIfShown();
 	const newOptions = validateSettings();
 
 	ipcRenderer.sendSync(
-		ipcChannel.refreshedConfig,
+		IpcChannelLibrary.refreshedConfig,
 		JSON.stringify(newOptions)
 	);
 });

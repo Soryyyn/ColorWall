@@ -12,7 +12,8 @@ import { WallpaperColor } from '../common/models/WallpaperColor';
 const spaceManager = new SpaceManager();
 
 // register font for use without the need of installing it
-canvas.registerFont(path.join(__dirname, "..", "..", "media/unifont.ttf"), { family: "Unifont" });
+canvas.registerFont(path.join(__dirname, "..", "..", "media", "unifont.ttf"), { family: "Unifont" });
+
 
 /**
  * used for all wallpaper managing
@@ -146,7 +147,7 @@ export class WallpaperManager {
    * @param {boolean} fontEnabled
    * @memberof WallpaperManager
    */
-  public updateWallpaperSettings(ditherEnabled: boolean, fontSize: number, fontEnabled: boolean) {
+  public updateSettings(ditherEnabled: boolean, fontSize: number, fontEnabled: boolean) {
     this._ditherEnabled = ditherEnabled;
     this._fontSize = fontSize;
     this._fontEnabled = fontEnabled;

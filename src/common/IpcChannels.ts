@@ -1,4 +1,5 @@
-export enum ipcChannel {
+
+export enum IpcChannelLibrary {
   linkPressed = "link-pressed",
   requestLastColors = "request-last-colors",
   refreshedLastColors = "refreshed-last-colors",

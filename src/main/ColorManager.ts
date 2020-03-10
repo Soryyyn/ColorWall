@@ -16,8 +16,8 @@ import { WallpaperColors } from '../common/models/WallpaperColors';
  * @class ColorManager
  */
 export class ColorManager {
-  private _lastColors: WallpaperColors;
-  private _favoriteColors: WallpaperColors;
+  private _lastColors: WallpaperColors = [];
+  private _favoriteColors: WallpaperColors = [];
   private _favoritesFilePath = "favorites.json";
 
   /**
@@ -30,13 +30,10 @@ export class ColorManager {
     }
 
     let favorites = require(path.join(configurationFilesDir, this._favoritesFilePath));
-    if (favorites !== null || favorites !== undefined || favorites.length <= 0) {
+
+    if (favorites !== null || favorites !== undefined || favorites.length > 0) {
       for (let i = 0; i < favorites.length; i++) {
-        this._favoriteColors.unshift({
-          mainColor: favorites[i].mainColor,
-          fontColor: favorites[i].fontColor,
-          ditherColor: favorites[i].ditherColor
-        });
+        this._favoriteColors.unshift(favorites[i]);
       }
     }
   }
