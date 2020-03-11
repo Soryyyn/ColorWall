@@ -2,10 +2,10 @@
   "name": "hexwall",
   "version": "1.0.4",
   "description": "generates a wallpaper & sets it everyday",
-  "main": "public/electron.js",
-  "types": "public/electron.js",
+  "main": "dist/main/Main.js",
+  "types": "dist/main/Main.js",
   "bin": {
-    "hexwall": "public/electron.js"
+    "hexwall": "dist/main/Main.js"
   },
   "scripts": {
     "start": "electron .",
@@ -25,7 +25,7 @@
       "package.json",
       "public/*"
     ],
-    "asar": true,
+    "asar": false,
     "target": "nsis",
     "icon": "media/single_icon.ico",
     "directories": {
@@ -58,13 +58,8 @@
     "@types/open": "^6.2.1",
     "@types/wallpaper": "^2.5.1",
     "electron-builder": "^22.4.0",
-    "electron-packager": "^14.2.1",
-<<<<<<< HEAD
     "electron": "^8.1.1",
-    "electron-rebuild": "^1.10.0"
-=======
     "electron-rebuild": "^1.10.1"
->>>>>>> ea9f3d34391a42aa98bc4817910c43008ac074e5
   },
   "dependencies": {
     "canvas": "^2.6.1",

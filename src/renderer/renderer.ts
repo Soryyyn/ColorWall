@@ -195,7 +195,6 @@ function requestLastColors() {
 		});
 }
 
-
 /**
  * request favorite colors from main process
  */

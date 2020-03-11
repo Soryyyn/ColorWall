@@ -19,8 +19,7 @@ const spaceManager = new SpaceManager();
 
 import { IpcChannelLibrary } from '../common/IpcChannels';
 import { WallpaperColor } from '../common/models/WallpaperColor';
-import { WallpaperColors } from '../common/models/WallpaperColors';
-import { Settings } from '../common/models/Settings';
+
 
 let win: BrowserWindow = null;
 let tray: Tray = null;

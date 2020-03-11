@@ -5,6 +5,10 @@ $fontHovered: white;
 $red: #FF4651;
 $green: #48EA8B;
 
+$navWidth: 8rem;
+$topBarHeight: 2rem;
+$colorFieldAmount: 6;
+
 // animations
 @keyframes blob {
   0%, 100% {
@@ -40,6 +44,13 @@ $green: #48EA8B;
   }
 }
 
+@keyframes reveal-colorField {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -65,7 +76,7 @@ body {
   -webkit-app-region: drag;
   float: left;
   width: 100%;
-  height: 2rem;
+  height: $topBarHeight;
   background: $bgFront;
   align-items: right;
   display: flex;
@@ -97,10 +108,11 @@ nav {
   z-index: 1;
   background: $bgFront;
   position: fixed;
-  top: 2rem;
+  top: $topBarHeight;
   left: 0;
-  height: 100%;
-  width: 8rem;
+  height: 94.5%;
+  width: $navWidth;
+
   #navbarContainer {
     list-style: none;
     padding: 0;
@@ -108,6 +120,7 @@ nav {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
 
     li {
       display: block;
@@ -127,8 +140,8 @@ nav {
 
 main {
   position: fixed;
-  top: 2rem;
-  left: 8rem;
+  top: $topBarHeight;
+  left: $navWidth;
   height: 94.5%;
   width: 84%;
   // border: red solid 2px;
@@ -205,12 +218,16 @@ main {
       width: 100%;
       height: 100%;
       display: grid;
-      grid-template-columns: repeat(8, 1fr);
+      grid-template-columns: repeat($colorFieldAmount, 1fr);
       grid-auto-flow: row dense;
       grid-gap: 1rem;
 
       .field {
         position: relative;
+
+        &:first-child {
+          animation: reveal-colorField 0.25s ease-in-out;
+        }
 
         &:before {
           content: "";
@@ -219,7 +236,7 @@ main {
         }
 
         #hash {
-          font-size: 30px;
+          font-size: 250%;
           font-weight: bold;
           opacity: 0;
           display: block;
