@@ -45,10 +45,22 @@ $colorFieldAmount: 6;
 }
 
 @keyframes reveal-colorField {
-  from {
+  0% {
     transform: scale(0);
     opacity: 0;
   }
+  65% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.revealColorField {
+  animation: reveal-colorField 0.33s ease-in-out;
 }
 
 * {
@@ -224,10 +236,6 @@ main {
 
       .field {
         position: relative;
-
-        &:first-child {
-          animation: reveal-colorField 0.25s ease-in-out;
-        }
 
         &:before {
           content: "";

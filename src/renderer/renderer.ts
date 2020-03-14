@@ -5,6 +5,7 @@ const { ipcRenderer, remote } = require("electron");
 const { IpcChannelLibrary } = remote.require("../common/IpcChannels");
 const { Settings } = remote.require("../common/models/Settings");
 
+
 let remoteWindow = remote.getCurrentWindow();
 const elementLib = new ElementLibrary();
 
@@ -99,18 +100,6 @@ function clearGrid(grid: string): void {
 }
 
 /**
- * styles the specified color field
- * @param {*} color
- * @param {number} index
- * @param {string} type
- */
-function styleColorField(color: any, index: number, type: string) {
-	let colorField = document.getElementById(`${type}_${index}`);
-	colorField.style.backgroundColor = color.mainColor;
-	colorField.style.borderRadius = "5px";
-}
-
-/**
  * handle the click of the last colors field
  * @param {Number} button
  * @param {*} color
@@ -166,9 +155,18 @@ function addColorToGrid(grid: string, color: any, index: number, type: string, p
 	hash.setAttribute("id", "hash");
 	colorField.appendChild(hash);
 
-	document.getElementById(grid).appendChild(colorField);
+	colorField.setAttribute("style", `background-color: ${color.mainColor}; border-radius: 5px`);
 
-	styleColorField(color, index, type);
+	colorField.classList.add("revealColorField");
+	colorField.addEventListener("animationend", () => {
+		colorField.classList.remove("revealColorField");
+	});
+
+	if (index == 0) {
+		document.getElementById(grid).appendChild(colorField);
+	} else {
+		document.getElementById(grid).insertBefore(colorField, document.getElementById(`${type}_${index - 1}`));
+	}
 
 	if (page == "last") {
 		colorField.addEventListener("mousedown", (event: any) => {
@@ -276,10 +274,10 @@ elementLib.favoritesNavigationLink.addEventListener("click", requestFavoriteColo
 elementLib.settingsNavigationLink.addEventListener("click", requestConfig);
 
 ipcRenderer.on(IpcChannelLibrary.refreshedLastColors, (event: Event, arg: any) => {
-	clearGrid("grid_last");
 	for (let i = 0; i < arg.length; i++) {
-		addColorToGrid("grid_last", arg[i], i, "fieldLast", "last");
+		if (i == arg.length - 1) {
+			addColorToGrid("grid_last", arg[0], i, "fieldLast", "last");
+		}
 	}
-
 	event.returnValue = true;
 });
