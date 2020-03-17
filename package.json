@@ -12,7 +12,8 @@
     "rebuild": "electron-rebuild -f -w hexwall",
     "watch": "tsc --watch",
     "compile-tsc": "tsc",
-    "build-win": "electron-builder ."
+    "build-win": "npm run compile-tsc && electron-builder .",
+    "test": "echo does nothing right now"
   },
   "build": {
     "appId": "com.soryyyn.hexwall",

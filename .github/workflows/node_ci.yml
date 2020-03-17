@@ -1,0 +1,20 @@
+name: Nodejs Continuous Integration
+
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+
+jobs:
+  test_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/chechout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - run: npm ci
+      - run: npm run build-win

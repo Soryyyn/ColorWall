@@ -9,6 +9,5 @@ dist/
 favorites.json
 config.json
 
-# vscode and github folders
+# vscode
 .vscode/
-.github/
