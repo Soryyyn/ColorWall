@@ -17,6 +17,7 @@
   "build": {
     "appId": "com.soryyyn.hexwall",
     "remoteBuild": true,
+    "extends": null,
     "files": [
       "page/**",
       "dist/**/*",
