@@ -12,7 +12,7 @@
     "rebuild": "electron-rebuild -f -w hexwall",
     "watch": "tsc --watch",
     "compile-tsc": "tsc",
-    "build-win": "npm run compile-tsc && electron-builder .",
+    "build-win": "electron-builder .",
     "test": "echo does nothing right now"
   },
   "build": {
