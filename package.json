@@ -19,12 +19,11 @@
     "remoteBuild": true,
     "extends": null,
     "files": [
-      "page/**",
-      "dist/**/*",
-      "media/**",
-      "node_modules/**",
-      "package.json",
-      "public/*"
+      "./page/**",
+      "./dist/**/*",
+      "./media/**",
+      "./node_modules/**",
+      "./package.json"
     ],
     "asar": false,
     "win": {
@@ -32,7 +31,8 @@
       "icon": "./media/single_icon.ico"
     },
     "directories": {
-      "output": "builds"
+      "output": "builds",
+      "buildResources": "./dist"
     },
     "nsis": {
       "allowToChangeInstallationDirectory": true,
