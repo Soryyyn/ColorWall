@@ -2,10 +2,9 @@
   "name": "hexwall",
   "version": "1.0.4",
   "description": "generates a wallpaper & sets it everyday",
-  "main": "dist/main/Main.js",
-  "types": "dist/main/Main.js",
+  "main": "./dist/main/Main.js",
   "bin": {
-    "hexwall": "dist/main/Main.js"
+    "hexwall": "./dist/main/Main.js"
   },
   "scripts": {
     "start": "electron .",
@@ -29,7 +28,7 @@
     "asar": false,
     "win": {
       "target": "nsis",
-      "icon": "media/single_icon.ico"
+      "icon": "./media/single_icon.ico"
     },
     "directories": {
       "output": "builds"
