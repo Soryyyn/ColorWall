@@ -20,5 +20,6 @@ jobs:
       - run: npm ci # install all dependencies
       - run: npm test # runs tests
       - run: npm run compile-tsc # compiles all typescript files to javascript
+      - run: ls dist/
       - run: sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev # install dependencies for node-canvas
       - run: npm run build-win # build project
