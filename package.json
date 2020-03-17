@@ -27,8 +27,10 @@
       "public/*"
     ],
     "asar": false,
-    "target": "nsis",
-    "icon": "media/single_icon.ico",
+    "win": {
+      "target": "nsis",
+      "icon": "media/single_icon.ico"
+    },
     "directories": {
       "output": "builds"
     },
