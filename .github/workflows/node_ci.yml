@@ -20,3 +20,4 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run compile-tsc
+      - run: npm run build-win
