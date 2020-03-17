@@ -7,7 +7,8 @@ on:
     branches: [ master ]
 
 jobs:
-  test_push:
+  ci:
+    name: Continuous Integration Testing
     runs-on: ubuntu-latest
 
     steps:
