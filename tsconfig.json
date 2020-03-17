@@ -10,7 +10,6 @@
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
-    "watch": true,
     "strictNullChecks": false,
     "noImplicitAny": true,
     "removeComments": true,
