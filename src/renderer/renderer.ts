@@ -1,5 +1,5 @@
 // npm modules
-const { ipcRenderer, remote } = require("electron");
+// const { ipcRenderer, remote } = require("electron");
 
 // classes / self made modules
 const { IpcChannelLibrary } = remote.require("../common/IpcChannels");
