@@ -13,6 +13,7 @@ import { WallpaperColor } from '../common/models/WallpaperColor';
 
 const spaceManager = new SpaceManager();
 
+
 // install needed font
 let exists = 0;
 fontList.getFonts().then((fonts: Array<string>) => {
@@ -21,7 +22,6 @@ fontList.getFonts().then((fonts: Array<string>) => {
       exists++;
     }
   });
-
 
   if (exists === 0) {
     installfont(path.join(app.getAppPath(), "media/unifont.ttf"), (err: Error) => {
