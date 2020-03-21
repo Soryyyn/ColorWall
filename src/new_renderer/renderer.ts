@@ -1,7 +1,5 @@
 const { ipcRenderer, remote } = require("electron");
-const mithril = require("mithril");
-const { TestComponent } = remote.require("../new_renderer/components/TestComponent");
-const { yeetComponent } = remote.require("../new_renderer/components/yeetComponent");
+const m = require("mithril");
+const { TitlebarComponent } = require("./../new_renderer/components/TitlebarComponent");
 
-mithril.mount(document.getElementById('test'), TestComponent);
-mithril.mount(document.getElementById('yeet'), yeetComponent);
+m.mount(document.getElementById("titlebar"), TitlebarComponent);

@@ -30,7 +30,8 @@ export class ColorManager {
       this.saveChanges();
     }
 
-    let favorites = require(path.join(configurationFilesDir, this._favoritesFilePath));
+    let temp = fs.readFileSync(path.join(configurationFilesDir, this._favoritesFilePath));
+    let favorites = JSON.parse(temp.toString());
 
     if (favorites !== null || favorites !== undefined || favorites.length > 0) {
       for (let i = 0; i < favorites.length; i++) {

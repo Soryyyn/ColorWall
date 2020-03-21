@@ -31,7 +31,8 @@ export class ConfigManager {
     if (!fs.existsSync(path.join(configurationFilesDir, this._configPath))) {
       fs.writeFileSync(path.join(configurationFilesDir, this._configPath), JSON.stringify(this._settings));
     } else {
-      this._settings = require(path.join(configurationFilesDir, "config.json"));
+      let temp = fs.readFileSync(path.join(configurationFilesDir, "config.json"));
+      this._settings = JSON.parse(temp.toString());
     }
   }
 

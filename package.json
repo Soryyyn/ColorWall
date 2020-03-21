@@ -2,15 +2,14 @@
   "name": "hexwall",
   "version": "1.0.4",
   "description": "generates a wallpaper & sets it everyday",
-  "main": "./dist/main/Main.js",
+  "main": "./dist/main/main.js",
   "bin": {
-    "hexwall": "./dist/main/Main.js"
+    "hexwall": "./dist/main/main.js"
   },
   "scripts": {
-    "start": "electron .",
+    "start": "npm run compile && electron .",
     "rebuild": "electron-rebuild -f -w hexwall",
-    "watch": "tsc --watch",
-    "compile-tsc": "tsc",
+    "compile": "tsc && browserify -t electron-renderify ./dist/new_renderer/renderer.js > ./dist/bundle.js",
     "build-win": "electron-builder .",
     "test": "echo does nothing right now"
   },
@@ -18,26 +17,31 @@
     "appId": "com.soryyyn.hexwall",
     "remoteBuild": true,
     "extends": null,
+    "asar": true,
+    "asarUnpack": [
+      "media"
+    ],
     "files": [
       "./page/**",
       "./dist/**/*",
-      "./media/**",
       "./node_modules/**",
-      "./package.json"
+      "./package.json",
+      "./media/**",
+      "./new_page/**"
     ],
-    "asar": false,
-    "win": {
-      "target": "nsis",
-      "icon": "./media/single_icon.ico"
-    },
     "directories": {
       "output": "builds",
       "buildResources": "./dist"
     },
+    "win": {
+      "target": "nsis",
+      "icon": "./media/single_icon.ico"
+    },
     "nsis": {
       "allowToChangeInstallationDirectory": true,
       "oneClick": false,
-      "perMachine": true
+      "perMachine": true,
+      "deleteAppDataOnUninstall": true
     }
   },
   "repository": {
@@ -61,16 +65,19 @@
     "@types/node": "12.12.6",
     "@types/open": "^6.2.1",
     "@types/wallpaper": "^2.5.1",
+    "browserify": "^16.5.0",
     "electron": "^8.1.1",
     "electron-builder": "^22.4.1",
     "electron-rebuild": "^1.10.1",
-    "ts-loader": "^6.2.1",
+    "electron-renderify": "0.0.2",
     "typescript": "^3.8.3"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.12.1",
     "canvas": "^2.6.1",
     "color-convert": "^2.0.1",
+    "font-list": "^1.2.6",
+    "installfont": "0.0.12",
     "mithril": "^2.0.4",
     "open": "^7.0.3",
     "wallpaper": "^4.4.1"

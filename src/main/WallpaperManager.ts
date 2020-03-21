@@ -1,9 +1,11 @@
 // npm modules
 import canvas from 'canvas';
 import wallpaper from 'wallpaper';
-import { screen } from 'electron';
+import { screen, app } from 'electron';
 import fs from 'fs';
 import path from 'path';
+const installfont = require('installfont');
+const fontList = require('font-list')
 
 // classes / self made modules
 import { SpaceManager } from './SpaceManager';
@@ -11,8 +13,23 @@ import { WallpaperColor } from '../common/models/WallpaperColor';
 
 const spaceManager = new SpaceManager();
 
-// register font for use without the need of installing it
-canvas.registerFont(path.join(__dirname, "..", "..", "media", "unifont.ttf"), { family: "Unifont" });
+// install needed font
+let exists = 0;
+fontList.getFonts().then((fonts: Array<string>) => {
+  fonts.forEach((font: string) => {
+    if (font === "\"Unifont Medium\"") {
+      exists++;
+    }
+  });
+
+
+  if (exists === 0) {
+    installfont(path.join(app.getAppPath(), "media/unifont.ttf"), (err: Error) => {
+      if (err) console.log(err, err.stack);
+    });
+  }
+});
+
 
 
 /**

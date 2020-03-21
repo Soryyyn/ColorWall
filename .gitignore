@@ -6,6 +6,7 @@ walls/
 wall/
 builds/
 dist/
+bundle/
 favorites.json
 config.json
 

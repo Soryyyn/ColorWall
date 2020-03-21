@@ -2,9 +2,7 @@
 // const { ipcRenderer, remote } = require("electron");
 
 // classes / self made modules
-const { IpcChannelLibrary } = remote.require("../common/IpcChannels");
-const { Settings } = remote.require("../common/models/Settings");
-
+const { IpcChannelLibrary } = remote.require("./IpcChannels");
 
 let remoteWindow = remote.getCurrentWindow();
 const elementLib = new ElementLibrary();
