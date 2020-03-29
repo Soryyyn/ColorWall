@@ -1,12 +1,12 @@
 // npm modules
-// const { ipcRenderer, remote } = require("electron");
+const { ipcRenderer, remote } = require("electron");
 
 // classes / self made modules
-const { IpcChannelLibrary } = remote.require("./IpcChannels");
+const { IpcChannelLibrary } = remote.require("./../common/IpcChannels");
+const { ElementLibrary } = remote.require("./../renderer/Elements");
 
 let remoteWindow = remote.getCurrentWindow();
-const elementLib = new ElementLibrary();
-
+let elementLib = new ElementLibrary();
 
 /**
  * defaults that are being set on app start

@@ -9,7 +9,7 @@
   "scripts": {
     "start": "npm run compile && electron .",
     "rebuild": "electron-rebuild -f -w hexwall",
-    "compile": "tsc && browserify -t electron-renderify ./dist/new_renderer/renderer.js > ./dist/bundle.js",
+    "compile": "tsc && browserify -t electron-renderify ./dist/renderer/renderer.js > ./dist/bundle.js",
     "build-win": "electron-builder .",
     "test": "echo does nothing right now"
   },
