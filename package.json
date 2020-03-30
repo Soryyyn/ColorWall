@@ -61,7 +61,6 @@
   "homepage": "https://github.com/Soryyyn/HexWall#readme",
   "devDependencies": {
     "@types/color-convert": "^1.9.0",
-    "@types/mithril": "^2.0.2",
     "@types/node": "12.12.6",
     "@types/open": "^6.2.1",
     "@types/wallpaper": "^2.5.1",
@@ -78,7 +77,6 @@
     "color-convert": "^2.0.1",
     "font-list": "^1.2.6",
     "installfont": "0.0.12",
-    "mithril": "^2.0.4",
     "open": "^7.0.3",
     "wallpaper": "^4.4.1"
   }
