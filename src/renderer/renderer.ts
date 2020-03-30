@@ -3,7 +3,6 @@ const { ipcRenderer, remote } = require("electron");
 
 // classes / self made modules
 const { IpcChannelLibrary } = remote.require("./../common/IpcChannels");
-const { ElementLibrary } = remote.require("./../renderer/Elements");
 
 let remoteWindow = remote.getCurrentWindow();
 let elementLib = new ElementLibrary();
@@ -31,8 +30,8 @@ function closeWindow() {
  * shows the differnt content & styles nav text
  * @param {String} element
  */
-function showElement(element: String) {
-	if (element === "about") {
+function navHandling() {
+	elementLib.aboutNavigationLink.addEventListener("click", () => {
 		elementLib.aboutContentDiv.setAttribute("style", "display: block");
 		elementLib.aboutNavigationLink.setAttribute("style", "color: white");
 
@@ -44,8 +43,9 @@ function showElement(element: String) {
 
 		elementLib.settingsContentDiv.setAttribute("style", "display: none");
 		elementLib.settingsNavigationLink.setAttribute("style", "color: #9e9e9e");
+	});
 
-	} else if (element === "lastcolors") {
+	elementLib.lastColorsNavigationLink.addEventListener("click", () => {
 		elementLib.aboutContentDiv.setAttribute("style", "display: none");
 		elementLib.aboutNavigationLink.setAttribute("style", "color: #9e9e9e");
 
@@ -57,8 +57,9 @@ function showElement(element: String) {
 
 		elementLib.settingsContentDiv.setAttribute("style", "display: none");
 		elementLib.settingsNavigationLink.setAttribute("style", "color: #9e9e9e");
+	});
 
-	} else if (element === "favorites") {
+	elementLib.favoritesNavigationLink.addEventListener("click", () => {
 		elementLib.aboutContentDiv.setAttribute("style", "display: none");
 		elementLib.aboutNavigationLink.setAttribute("style", "color: #9e9e9e");
 
@@ -70,7 +71,9 @@ function showElement(element: String) {
 
 		elementLib.settingsContentDiv.setAttribute("style", "display: none");
 		elementLib.settingsNavigationLink.setAttribute("style", "color: #9e9e9e");
-	} else if (element === "settings") {
+	});
+
+	elementLib.settingsNavigationLink.addEventListener("click", () => {
 		elementLib.aboutContentDiv.setAttribute("style", "display: none");
 		elementLib.aboutNavigationLink.setAttribute("style", "color: #9e9e9e");
 
@@ -82,7 +85,7 @@ function showElement(element: String) {
 
 		elementLib.settingsContentDiv.setAttribute("style", "display: block");
 		elementLib.settingsNavigationLink.setAttribute("style", "color: white");
-	}
+	});
 }
 
 /**
@@ -267,6 +270,8 @@ function validateSettings(): any {
 
 
 // events
+navHandling();
+
 elementLib.lastColorsNavigationLink.addEventListener("click", requestLastColors);
 elementLib.favoritesNavigationLink.addEventListener("click", requestFavoriteColors);
 elementLib.settingsNavigationLink.addEventListener("click", requestConfig);

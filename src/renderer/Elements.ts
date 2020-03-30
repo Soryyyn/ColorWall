@@ -1,4 +1,4 @@
-export class ElementLibrary {
+class ElementLibrary {
 
   // window
   closeWindowButton = document.getElementsByClassName("fa-times")[0];
