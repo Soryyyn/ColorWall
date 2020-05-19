@@ -60,7 +60,7 @@
     "@types/node": "12.12.6",
     "@types/open": "^6.2.1",
     "@types/wallpaper": "^2.5.1",
-    "electron-builder": "^22.4.1",
+    "electron-builder": "^22.6.1",
     "electron": "^8.2.0",
     "electron-rebuild": "^1.10.1"
   },
