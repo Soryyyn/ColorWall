@@ -67,7 +67,7 @@
   "dependencies": {
     "canvas": "^2.6.1",
     "color-convert": "^2.0.1",
-    "open": "^7.0.3",
+    "open": "^7.1.0",
     "wallpaper": "^4.4.1",
     "@fortawesome/fontawesome-free": "^5.13.0"
   }
